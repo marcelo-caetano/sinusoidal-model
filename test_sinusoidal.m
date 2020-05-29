@@ -38,11 +38,11 @@ hopsize = fix(winlen/2);
 % nfft = 2^nextpow2(8*winlen);
 nfft = 4096;
 
-% Normalize window during analysis (sum(window)==1) and preserve energy upon resynthesis
-normflag = 1;
+% Normalize window during analysis and preserve energy upon resynthesis
+normflag = true;
 
 % Use zero phase window
-zphflag = 1;
+zphflag = true;
 
 % Magnitude spectrum scaling
 magflag = {'lin','log','pow'};

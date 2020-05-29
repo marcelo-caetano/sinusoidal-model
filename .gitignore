@@ -1,0 +1,6 @@
+# Ignore temporary files
+*.asv
+# Ignore folders that start with _
+/_*/
+# Ignore .gitattributes
+.gitattributes
