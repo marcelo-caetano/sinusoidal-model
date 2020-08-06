@@ -49,7 +49,7 @@ disp('Sinusoidal Analysis')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Short-Time Fourier Transform
-[fft_frame,nsample,dc,center_frame] = stft(wav,framelen,hop,nfft,winflag,cfwflag,normflag,zphflag);
+[fft_frame,nsample,dc,center_frame] = smt_stft(wav,framelen,hop,nfft,winflag,cfwflag,normflag,zphflag);
 
 % Number of frames
 nframe = numframe(nsample,framelen,hop,cfwflag);
