@@ -1,3 +1,40 @@
+# SM 0.3.0-alpha.1
+Sinusoidal Model (SM)
+
+Run the Matlab script 'sm_run_sm.m' for an example of how to use the code.
+
+The file 'sm_run_sm_dependency.txt lists all file dependencies.
+
+## What's new in version 0.3.0-alpha.1
+
+- Vectorized sinusoidal re-synthesis
+- Restructured and modularized code
+- Added standard partial tracking
+- Added plotting functions
+
+## New features
+
+- Added prefix 'sm_' to all functions to avoid conflict with native Matlab functions
+- Fully vectorized analysis + re-synthesis
+- Fully restructured
+- Fully modularized
+- Auxiliary plotting functions
+
+## Deprecated functions/features
+
+- zpad.m -> flexpad.m
+- swipep.m -> swipep_mod.m
+- Folder ./SM totally restructured
+
+## Backwards compatibility
+
+- Tested on Matlab R2018b
+- WARNING! Matlab R2016a does not accept the syntax used in the call to max/min
+
+## Bug fixes
+
+- No bug fixes in 0.3.0-alpha.1
+
 # SM 0.2.0
 Sinusoidal Model (SM)
 
@@ -18,3 +55,8 @@ The file 'run_sinusoidal_model_production_dependencies.txt' lists all file depen
 
 - Fixed bug in absolute threshold function 'absdb.m'
 - Fixed bug in relative threshold function 'reldb.m'
+
+# SM 0.1.0
+Sinusoidal Model (SM)
+
+## Initial release
