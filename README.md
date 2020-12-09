@@ -1,3 +1,30 @@
+# SM 0.3.0-alpha.2
+Sinusoidal Model (SM)
+
+Run the Matlab script 'sm_run_sm.m' for an example of how to use the code.
+
+The file 'sm_run_sm_dependency.txt lists all file dependencies.
+
+## What's new in version 0.3.0-alpha.2
+
+- Added folders with data and audio
+
+## New features
+
+- Same as 0.3.0-alpha.1
+
+## Deprecated functions/features
+
+- Same as 0.3.0-alpha.1
+
+## Backwards compatibility
+
+- Same as 0.3.0-alpha.1
+
+## Bug fixes
+
+- Same as 0.3.0-alpha.1
+
 # SM 0.3.0-alpha.1
 Sinusoidal Model (SM)
 
