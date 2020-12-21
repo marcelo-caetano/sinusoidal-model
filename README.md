@@ -1,3 +1,34 @@
+# SM 0.3.1-alpha.1
+Sinusoidal Model (SM) version 0.3.1 alpha release build 1
+
+Run the script 'run_sm.m' inside the folder 'sinusoidal-model-master' for an example of how to use the code. NOTE: You must change directories and go into 'sinusoidal-model-master' to run 'run_sm.m' because 'run_sm.m' uses a relative path to point to the audio file and also because the folder 'sinusoidal-model-master' is not automatically added to the Matlab search path.
+
+The file 'run_sm_dependency.txt lists all file dependencies.
+
+## What's new in version 0.3.1-alpha.1
+
+- Folder +STFT is a Matlab package that creates the namespace STFT/stft.m. Use the syntax STFT.stft.m to call SM's implementation of the short-time Fourier transform
+
+## New functions/features
+
+- Added function /Resources/misc/isfrac.m
+- Updated function /Resources/misc/isint.m
+- The functions '/Resources/misc/{iseven,isodd}.m' operate on multidimensional arrays now
+
+## Deprecated functions/features
+
+- No deprecated function or features
+
+## Backwards compatibility
+
+- Matlab R2018b introduced the syntax FUN(ARRAY,'all') to call several functions (e.g., SUM/PROD/MAX/MIN/MEDIAN/MEAN/STD/VAR/MODE/ALL/ANY), where the flag 'all' means apply FUN over all elements of ARRAY. Previous versions do not accept this syntax, resulting in bug fix \#0.3.1-bug.2
+
+## Bug fixes
+
+- \#0.3.1-bug.1 - Updated call to function Resources/dsp/cfw.m inside function /OLA/sof.m (line 108) to correct bug 'Undefined function or variable cfw'
+- \#0.3.1-bug.2 - Updated calls to functions SUM/PROD/MAX/MIN/MEDIAN/MEAN/STD/VAR/MODE/ALL/ANY to guarantee backwards compatibility
+- \#0.3.1-bug.3 - Created namespace (+STFT/stft.m) to avoid conflict with Matlab's own 'stft.m' introduced in R2019a. Use the syntax STFT.stft.m to call SM's implementation of the short-time Fourier transform
+
 # SM 0.3.0-alpha.2
 Sinusoidal Model (SM)
 
