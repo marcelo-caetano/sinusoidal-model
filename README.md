@@ -25,6 +25,7 @@ The file 'run_sm_dependency.txt lists all file dependencies.
 
 ## Bug fixes
 
+- Thanks to Samuel Poirot for testing version 0.3.0-alpha.2 and for the bug report
 - \#0.3.1-bug.1 - Updated call to function Resources/dsp/cfw.m inside function /OLA/sof.m (line 108) to correct bug 'Undefined function or variable cfw'
 - \#0.3.1-bug.2 - Updated calls to functions SUM/PROD/MAX/MIN/MEDIAN/MEAN/STD/VAR/MODE/ALL/ANY to guarantee backwards compatibility
 - \#0.3.1-bug.3 - Created namespace (+STFT/stft.m) to avoid conflict with Matlab's own 'stft.m' introduced in R2019a. Use the syntax STFT.stft.m to call SM's implementation of the short-time Fourier transform
