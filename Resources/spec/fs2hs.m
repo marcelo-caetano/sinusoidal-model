@@ -10,7 +10,7 @@ function half_spec = fs2hs(full_spec,nfft,nrgflag)
 %
 %   See also HS2FS, FFT2MAG, FFT2PH, FFT2PMS, FFT2PPS
 
-% 2020 M Caetano SMT 0.1.2% $Id 2020 M Caetano SM 0.3.1-alpha.1 $Id
+% 2020 M Caetano SMT 0.1.2% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

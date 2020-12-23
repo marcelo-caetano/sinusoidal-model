@@ -11,7 +11,7 @@ function sample = f2s(frame,cfw,hopsize)
 
 % 2016 M Caetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2020 M Caetano SM 0.3.1-alpha.1 $Id
+% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
 
 
 % Return sample number (column vector)

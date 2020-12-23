@@ -54,7 +54,7 @@ Required MATLAB functions:
 .\SM\maxnumpeak.m
 .\SM\parameter_interpolation.m
 .\SM\partial_tracking.m
-.\SM\peak2peak.m
+.\SM\peak2peak_freq_matching.m
 .\SM\peak_picking.m
 .\SM\peakpick.m
 .\SM\phase_interp.m

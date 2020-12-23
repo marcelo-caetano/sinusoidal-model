@@ -17,7 +17,7 @@ function [amp,freq,ph,npart] = partial_tracking(amplitude,frequency,phase,delta,
 % Sinusoidal Representation, IEEE TRANSACTIONS ON ACOUSTICS, SPEECH,
 % AND SIGNAL PROCESSING, VOL. ASSP-34, NO. 4.
 
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,7 +42,7 @@ switch lower(trackflag)
         % PEAK TO PEAK MATCHING
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
-        [amp,freq,ph,npart] = peak2peak(amplitude,frequency,phase,delta,hop,fs,nframe);
+        [amp,freq,ph,npart] = peak2peak_freq_matching(amplitude,frequency,phase,delta,hop,fs,nframe);
         
         
     otherwise
@@ -51,7 +51,7 @@ switch lower(trackflag)
         % PEAK TO PEAK MATCHING
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
-        [amp,freq,ph,npart] = peak2peak(amplitude,frequency,phase,delta,hop,fs,nframe);
+        [amp,freq,ph,npart] = peak2peak_freq_matching(amplitude,frequency,phase,delta,hop,fs,nframe);
         
 end
 

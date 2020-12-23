@@ -8,7 +8,7 @@ function [amp,freq,ph,npart] = peak2peak(amplitude,frequency,phase,delta,hop,fs,
 % Sinusoidal Representation, IEEE TRANSACTIONS ON ACOUSTICS, SPEECH,
 % AND SIGNAL PROCESSING, VOL. ASSP-34, NO. 4.
 
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

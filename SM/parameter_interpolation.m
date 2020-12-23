@@ -27,7 +27,7 @@ function [amplitude,frequency,phase] = parameter_interpolation(amp,freq,ph,hop,f
 % 2016 M Caetano
 % Revised 2019 (SM 0.1.1)
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
 
 
 % Transpose input

@@ -1,3 +1,28 @@
+# SM 0.3.1-alpha.2
+Sinusoidal Model (SM) version 0.3.1 alpha release build 2
+
+Run the script 'run_sm.m' inside the folder 'sinusoidal-model-master' for an example of how to use the code. NOTE: You must change directories and go into 'sinusoidal-model-master' to run 'run_sm.m' because 'run_sm.m' uses a relative path to point to the audio file and also because the folder 'sinusoidal-model-master' is not automatically added to the Matlab search path.
+
+The file 'run_sm_dependency.txt lists all file dependencies.
+
+## What's new in version 0.3.1-alpha.2
+- Rebuild of version 0.3.1-alpha.1 after function rename. See 'Backwards compatibility' for details.
+
+## New functions/features
+- No new functions or features
+
+## Deprecated functions/features
+- No deprecated functions or features
+
+## Backwards compatibility
+- Renamed function 'SM/peak2peak.m' as 'SM/peak2peak_freq_matching.m' to avoid conflict with Matlab's own 'peak2peak.m' introduced in R2012a
+
+## Bug fixes
+- No bug fixes
+
+## Thanks
+- Thanks to Philippe Depalle for testing SM 0.3.1-alpha.1
+
 # SM 0.3.1-alpha.1
 Sinusoidal Model (SM) version 0.3.1 alpha release build 1
 

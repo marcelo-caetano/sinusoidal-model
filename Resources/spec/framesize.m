@@ -16,7 +16,7 @@ function [framelen,f0] = framesize(f0,fs,mult,f0flag)
 %
 %   See also HOPSIZE, FFTSIZE, CEPSORDER
 
-% 2020 MCaetano SMT% $Id 2020 M Caetano SM 0.3.1-alpha.1 $Id
+% 2020 MCaetano SMT% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
