@@ -1,14 +1,14 @@
-function [amp,freq,ph,npart] = peak2peak(amplitude,frequency,phase,delta,hop,fs,nframe)
-%PEAK2PEAK Peak-to-peak frequency matching.
-%   [Amp,Freq,Ph] = PEAK2PEAK(A,F,P,DELTA,HOP,FS,NFRAME) performs partial
-%   tracking using the peak-to-peak frequency matching algorithm adapted
-%   from [1].
+function [amp,freq,ph,npart] = peak2peak_freq_matching(amplitude,frequency,phase,delta,hop,fs,nframe)
+%PEAK2PEAK_FREQ_MATCHING Peak-to-peak frequency matching.
+%   [Amp,Freq,Ph] = PEAK2PEAK_FREQ_MATCHING(A,F,P,DELTA,HOP,FS,NFRAME)
+%   performs partial tracking using the peak-to-peak frequency matching
+%   algorithm adapted from [1].
 %
 % [1] McAulay and Quatieri (1986) Speech Analysis/Synthesis Based on a
 % Sinusoidal Representation, IEEE TRANSACTIONS ON ACOUSTICS, SPEECH,
 % AND SIGNAL PROCESSING, VOL. ASSP-34, NO. 4.
 
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
+% 2020 MCaetano SMT% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

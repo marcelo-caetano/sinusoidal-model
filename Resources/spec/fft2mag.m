@@ -4,7 +4,7 @@ function magspec = fft2mag(fft_frame)
 %
 %   See also FFT2PH, FS2HS, HS2FS, FFT2PMS, FFT2PPS
 
-% 2020 M Caetano SMT 0.1.1% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
+% 2020 M Caetano SMT 0.1.1% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -29,7 +29,7 @@ function [zpadframe] = flexpad(frame,nfft,varargin)
 %   See also IZPAD
 
 % 2020 MCaetano SMT 0.1.1
-% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
+% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
 
 
 %TODO: CHECK CLASS OF INPUT ARGUMENTS

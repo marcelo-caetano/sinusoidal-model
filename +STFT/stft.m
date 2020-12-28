@@ -30,7 +30,7 @@ function [fft_frame,nsample,dc,center_frame,nframe] = stft(wav,framelen,hop,nfft
 % 2016 M Caetano; Revised 2019
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0 (Revised)
-% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
+% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
 
 
 % TODO: CHECK INPUT ARGUMENTS (NaN,class, etc)

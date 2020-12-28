@@ -1,3 +1,28 @@
+# SM 0.3.1-alpha.3
+Sinusoidal Model (SM) version 0.3.1 alpha release build 3
+
+Run the script 'run_sm.m' inside the folder 'sinusoidal-model-master' for an example of how to use the code. NOTE: You must change directories and go into 'sinusoidal-model-master' to run 'run_sm.m' because 'run_sm.m' uses a relative path to point to the audio file and also because the folder 'sinusoidal-model-master' is not automatically added to the Matlab search path.
+
+The file 'run_sm_dependency.txt lists all file dependencies.
+
+## What's new in version 0.3.1-alpha.3
+- Rebuild of version 0.3.1-alpha.2 after small bug fix. See 'Bug fixes' for further details
+
+## New functions/features
+- No new functions or features
+
+## Deprecated functions/features
+- No deprecated functions or features
+
+## Backwards compatibility
+- No backwards compatibility issues
+
+## Bug fixes
+- Fixed name of function 'peak2peak_freq_matching.m' inside function definition after renaming file.
+
+## Thanks
+- Thanks to Philippe Depalle for testing version 0.3.1-alpha.2
+
 # SM 0.3.1-alpha.2
 Sinusoidal Model (SM) version 0.3.1 alpha release build 2
 
@@ -50,10 +75,12 @@ The file 'run_sm_dependency.txt lists all file dependencies.
 
 ## Bug fixes
 
-- Thanks to Samuel Poirot for testing version 0.3.0-alpha.2 and for the bug report
 - \#0.3.1-bug.1 - Updated call to function Resources/dsp/cfw.m inside function /OLA/sof.m (line 108) to correct bug 'Undefined function or variable cfw'
 - \#0.3.1-bug.2 - Updated calls to functions SUM/PROD/MAX/MIN/MEDIAN/MEAN/STD/VAR/MODE/ALL/ANY to guarantee backwards compatibility
 - \#0.3.1-bug.3 - Created namespace (+STFT/stft.m) to avoid conflict with Matlab's own 'stft.m' introduced in R2019a. Use the syntax STFT.stft.m to call SM's implementation of the short-time Fourier transform
+
+## Thanks
+- Thanks to Samuel Poirot for testing version 0.3.0-alpha.2 and for the bug report
 
 # SM 0.3.0-alpha.2
 Sinusoidal Model (SM)

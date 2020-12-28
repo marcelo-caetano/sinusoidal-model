@@ -19,7 +19,7 @@ function [fig,figaxes,wavform,timelbl,amplbl,titlelbl] = plotwav(timesample,wav)
 %   See also PLOTSPECTROGRAM, PLOTPEAKGRAM, PLOTSPECTROPEAKGRAM
 
 % 2020 MCaetano SMT 0.2.0
-% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
+% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

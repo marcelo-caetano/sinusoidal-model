@@ -21,7 +21,7 @@ function [peakamp,peakfreq,peakph] = peak_picking(magspec,phspec,nfft,fs)
 
 % 2016 M Caetano;
 % Revised 2019 SMT 0.1.1
-% 2020 MCaetano SMT 0.1.1 (Revised)% $Id 2020 M Caetano SM 0.3.1-alpha.2 $Id
+% 2020 MCaetano SMT 0.1.1 (Revised)% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
