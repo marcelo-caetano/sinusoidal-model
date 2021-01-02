@@ -66,7 +66,7 @@ function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_anal
 % 2016 M Caetano;
 % Revised 2019 SMT 0.1.1
 % 2020 MCaetano SMT 0.1.2 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,7 +90,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Import namespace for STFT
-import STFT.stft
+% import STFT.stft
 
 disp('Sinusoidal Analysis')
 
@@ -98,11 +98,8 @@ disp('Sinusoidal Analysis')
 % SHORT-TIME FOURIER TRANSFORM
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Short-Time Fourier Transform
-[fft_frame,nsample,dc,center_frame,nframe] = stft(wav,framelen,hop,nfft,winflag,cfwflag,normflag,zphflag);
-
-% Number of frames
-% nframe = numframe(nsample,framelen,hop,cfwflag);
+% Short-Time Fourier Transform from namespace STFT
+[fft_frame,nsample,dc,center_frame,nframe] = STFT.stft(wav,framelen,hop,nfft,winflag,cfwflag,normflag,zphflag);
 
 % Scale the magnitude spectrum (Linear, Log, Power)
 [mag_spec,p] = scale_magspec(fft_frame,framelen,nfft,winflag,magflag);

@@ -31,7 +31,7 @@ function log_mag_spec = fft2lms(fft_frame,lmsflag,nfft,nrgflag,nanflag)
 %   See also FFT2RC, LIN2LOG, LOG2LIN, RCEPS, CCEPS, ICCEPS
 
 % 2020 MCaetano SMT 0.1.2
-% 2020 MCaetano SMT 0.2.1% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
+% 2020 MCaetano SMT 0.2.1% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

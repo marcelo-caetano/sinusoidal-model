@@ -9,7 +9,7 @@ function bin = ind2bin(ind,nfft)
 %
 %   See also BIN2IND, IND2FREQ, FREQ2IND, FREQ2BIN, BIN2FREQ, MKFREQ, NYQ
 
-% 2020 MCaetano SMT 0.1.1% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
+% 2020 MCaetano SMT 0.1.1% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -7,7 +7,7 @@ function [addsynth,partial] = OLA_resynthesis(amplitude,phase,synthwin)
 %
 %   See also PI_RESYNTHESIS, PRFI_RESYNTHESIS
 
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

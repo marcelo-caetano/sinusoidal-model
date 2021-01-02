@@ -16,7 +16,7 @@ function rh = rhw(winlen)
 
 % 2016 MCaetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
+% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
 
 
 % The periodic flag is useful for spectral analysis.

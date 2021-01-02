@@ -14,7 +14,7 @@ function shift = zpadlen(framelen,cfwflag)
 %
 %   See also OLA, SINUSOIDAL_RESYNTHESIS_OLA, SINUSOIDAL_RESYNTHESIS_PI, SINUSOIDAL_RESYNTHESIS_PRFI
 
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.3 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
