@@ -9,7 +9,7 @@ function [addsynth,partial] = PRFI_resynthesis(amplitude,phase)
 % [1] McAulay,R., Quatieri,T. (1984) Magnitude-only reconstruction using
 % a sinusoidal speech model. Proc. ICASSP. vol. 9, pp. 441-444.
 
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
 
 
 % Synthesize partials

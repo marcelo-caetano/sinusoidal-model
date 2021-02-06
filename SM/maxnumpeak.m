@@ -1,6 +1,6 @@
-function [amp,freq,ph] = maxnumpeak(peak_amp,peak_freq,peak_ph,maxnpeak,nbin,nframe,npeakflag)
+function [amp,freq,ph] = maxnumpeak(peak_amp,peak_freq,peak_ph,maxnpeak,nfft,nframe,npeakflag)
 %MAXNUMPEAK Maximum number of peaks.
-%   [A,F,P] = MAXNUMPEAK(Ap,Fp,Pp,MAXNPEAK,NPEAK,NFRAME) selects up to
+%   [A,F,P] = MAXNUMPEAK(Ap,Fp,Pp,MAXNPEAK,NFFT,NFRAME) selects up to
 %   MAXNPEAKS peaks per frame with the highest amplitude. Ap are the
 %   amplitudes of the spectral peaks returned by PEAK_PICKING, Fp are the
 %   frequencies of the spectral peaks, and Pp are the phases. Ap, Fp, and
@@ -10,7 +10,7 @@ function [amp,freq,ph] = maxnumpeak(peak_amp,peak_freq,peak_ph,maxnpeak,nbin,nfr
 %
 %   See also ABSDB, RELDB
 
-% 2020 MCaetano SMT 0.1.2 (Revised)% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
+% 2020 MCaetano SMT 0.1.2 (Revised)% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
 
 
 % TODO: Add option to return only MAXNPEAK per frame: size(amp)=[MAXNPEAK,NFRAME]
@@ -39,6 +39,9 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Number of positive frequency bins
+nbin = nyq(nfft);
 
 if isinf(maxnpeak)
     

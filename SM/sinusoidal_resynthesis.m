@@ -15,7 +15,7 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 % Revised 2019 (SM 0.1.1)
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% 2020 MCaetano SMT 0.2.1% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
+% 2020 MCaetano SMT 0.2.1% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,7 +99,7 @@ switch lower(synthflag)
         % POLYNOMIAL INTERPOLATION BY DEFAULT
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
-        warning(['SMT:NoSynthFlag: ', 'Undefined synthesis flag.\n'...
+        warning('SMT:SINUSOIDAL_RESYNTHESIS:NoSynthFlag',['Undefined synthesis flag.\n'...
             'Synthesis flag entered was %s.\n'...
             'Using default PI (polynomial interpolation) synthesis'],synthflag)
         

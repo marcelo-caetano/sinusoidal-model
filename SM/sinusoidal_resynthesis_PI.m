@@ -2,7 +2,7 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
     npartial,nframe,cfwflag,dispflag)
 %SINUSOIDAL_RESYNTHESIS_PI_VEC Sinusoidal resynthesis by parameter
 %interpolation as described in [1].
-%   [SIN,PART,AMP,PH,FREQ] = SINUSOIDAL_RESYNTHESIS_PI(A,F,P,M,H,Fs,NSAMPLE,CFR,NPEAK,CFWFLAG,DISPFLAG)
+%   [SIN,PART,AMP,PH,FREQ] = SINUSOIDAL_RESYNTHESIS_PI(A,F,P,M,H,Fs,NSAMPLE,CFR,NPEAK,NFRAME,CFWFLAG,DISPFLAG)
 %   resynthesizes the sinusoidal model SIN from the output parameters of
 %   SINUSOIDAL_ANALYSIS (A,F,P), where A=amplitude, F=frequency, and
 %   P=phases estimated with a hop H and a frame size of M. DELTA
@@ -18,7 +18,7 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 % 2016 M Caetano
 % Revised 2019 (SM 0.1.1)
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -8,7 +8,7 @@ function [amp,freq,ph,npart] = peak2peak_freq_matching(amplitude,frequency,phase
 % Sinusoidal Representation, IEEE TRANSACTIONS ON ACOUSTICS, SPEECH,
 % AND SIGNAL PROCESSING, VOL. ASSP-34, NO. 4.
 
-% 2020 MCaetano SMT% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
+% 2020 MCaetano SMT% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

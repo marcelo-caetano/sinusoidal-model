@@ -1,3 +1,33 @@
+# SM 0.4.0-alpha.1
+Sinusoidal Model (SM) version 0.4.0 alpha release build 1
+
+Run the script 'run_sm.m' inside the folder 'sinusoidal-model-master' for an example of how to use the code. NOTE: You must change directories and go into 'sinusoidal-model-master' to run 'run_sm.m' because 'run_sm.m' uses a relative path to point to the audio file and also because the folder 'sinusoidal-model-master' is not automatically added to the Matlab search path.
+
+The file 'run_sm_dependency.txt lists all file dependencies.
+
+## What's new in version 0.4.0-alpha.1
+- Updated spectral conversion functions
+- Automated calculation of the signal-to-resynthesis error ratio (SRER)
+- Revised spectral conversion functions
+- Added power spectrum scaling functions
+
+## New functions/features
+- Renamed folder /Resources as /tools
+- Added function /tools/wav/srer.m to calculate the SRER
+- Added revised spectral conversion functions in /tools/spec/
+- Updated input arguments of function /SM/maxnumpeak.m
+- Added functions /tools/dsp/lin2pow.m and /tools/dsp/pow2lin.m for power spectrum scaling
+
+## Deprecated functions/features
+- Replaced several deprecated functions in /tools/spec/{fft2mag, fft2ph, fft2pms, fft2pps, fft2lms, fs2hs, hs2fs}.m
+- Replaced deprecated functions in /SM/{phase_unwrap, scale_magspec, unscale_magspec}.m
+
+## Backwards compatibility
+- Input arguments of function /SM/maxnumpeak.m changed, so call inside /SM/sinusoidal_analysis.m was updated accordingly
+
+## Bug fixes
+- Fixed bug in scaling of the magnitude spectrum for flags 'nne' and 'lin' in function /SM/sinusoidal_analysis.m
+
 # SM 0.3.1-alpha.4
 Sinusoidal Model (SM) version 0.3.1 alpha release build 4
 
@@ -147,7 +177,7 @@ The file 'sm_run_sm_dependency.txt lists all file dependencies.
 
 ## New features
 
-- Added prefix 'sm_' to all functions to avoid conflict with native Matlab functions
+- Added prefix 'sm\_' to all functions to avoid conflict with native Matlab functions
 - Fully vectorized analysis + re-synthesis
 - Fully restructured
 - Fully modularized

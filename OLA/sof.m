@@ -30,7 +30,7 @@ function [time_frame,nsample,dc,center_frame,nframe] = sof(wav,framelen,hop,winf
 % 2016 M Caetano
 % 2019 MCaetano (Revised)
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
+% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

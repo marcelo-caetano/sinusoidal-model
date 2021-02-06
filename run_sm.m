@@ -88,7 +88,7 @@ time_sample = mktime(nsample,fs);
 f0 = swipep_mod(wav,fs,[75 500],1000/fs,[],1/20,0.5,0.2);
 
 % Fallback to f0 = C0
-if all(isnan(f0)), f0 = note2freq('C0');end
+if all(isnan(f0(:))), f0 = note2freq('C0');end
 
 % Frame size = n*T0
 [framelen,ref0] = framesize(f0,fs,nT0);
@@ -170,8 +170,8 @@ mkfigpeakgram(plot_part,axes_lim,axes_lbl,fig_layout);
 % Make residual
 residual = wav - sinusoidal;
 
-% Calculate signal to resynthesis energy ratio (SRER)
-srer = lin2log(std(wav)/std(residual),'dbp');
+% Calculate signal-to-resynthesis energy ratio (SRER)
+srer_db = srer(wav,residual);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIGURE PARAMETERS
@@ -201,7 +201,7 @@ fig_layout.legdisp = ["Original";"Sinusoidal";"Residual"];
 % Axes label
 axes_lbl.tlbl = 'Time (s)';
 axes_lbl.albl = 'Amplitude (Normalized)';
-axes_lbl.ttl = sprintf('SRER: %2.2fdB %s',srer,sndname);
+axes_lbl.ttl = sprintf('SRER: %2.2fdB %s',srer_db,sndname);
 
 % Axes limits
 axes_lim.tlim = [plot_wav.time(1) plot_wav.time(end)];

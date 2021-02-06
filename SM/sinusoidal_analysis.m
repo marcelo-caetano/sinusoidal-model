@@ -66,7 +66,7 @@ function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_anal
 % 2016 M Caetano;
 % Revised 2019 SMT 0.1.1
 % 2020 MCaetano SMT 0.1.2 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -94,46 +94,66 @@ end
 
 disp('Sinusoidal Analysis')
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SHORT-TIME FOURIER TRANSFORM
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Short-Time Fourier Transform from namespace STFT
 [fft_frame,nsample,dc,center_frame,nframe] = STFT.stft(wav,framelen,hop,nfft,winflag,cfwflag,normflag,zphflag);
 
-% Scale the magnitude spectrum (Linear, Log, Power)
-[mag_spec,p] = scale_magspec(fft_frame,framelen,nfft,winflag,magflag);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FOURIER SPECTRUM PRE-PROCESSING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Number of positive frequency bins
-nbin = nyq(nfft);
+% Scale the magnitude spectrum (Linear, Log, Power)
+[mag_spec,pow] = fft2scaled_magnitude_spectrum(fft_frame,framelen,nfft,winflag,magflag);
 
 % Unwrap the phase spectrum
-ph_spec = phase_unwrap(fft_frame,nfft);
+ph_spec = fft2unwrapped_phase_spectrum(fft_frame,nfft,true);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VECTORIZED SINUSOIDAL ANALYSIS
+% PARAMETER ESTIMATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Peak picking
 [amp_peak,freq_peak,ph_peak] = peak_picking(mag_spec,ph_spec,nfft,fs);
 
-% Magnitude interpolation (quadratic)
-[frequency,amplitude] = mag_interp(freq_peak,amp_peak);
+if strcmpi(magflag,'nne')
+    
+    % No interpolation for NNE (nearest neighbor estimation)
+    amplitude = amp_peak(:,:,2);
+    frequency = freq_peak(:,:,2);
+    phase = ph_peak(:,:,2);
+    
+else
+    
+    % Magnitude interpolation (quadratic)
+    [frequency,amplitude] = mag_interp(freq_peak,amp_peak);
+    
+    % Phase interpolation (linear)
+    phase = phase_interp(freq_peak,ph_peak,frequency);
+    
+end
 
-% Unscale magnitude spectrum
-amplitude = unscale_magspec(amplitude,p,magflag);
+% Revert magnitude spectrum scaling
+amplitude = revert_magnitude_spectrum_scaling(amplitude,pow,magflag);
 
-% Phase interpolation (linear)
-phase = phase_interp(freq_peak,ph_peak,frequency);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SPECTRAL POST-PROCESSING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Return only the MAXNPEAK highest amplitude peaks in MAG SPEC
-[amplitude,frequency,phase] = maxnumpeak(amplitude,frequency,phase,maxnpeak,nbin,nframe);
+% Return only the MAXNPEAK highest amplitude peaks
+[amplitude,frequency,phase] = maxnumpeak(amplitude,frequency,phase,maxnpeak,nfft,nframe);
 
-% Absolute threshold (corrected for full spectral energy)
+% Apply absolute threshold
 [amplitude,frequency,phase] = absdb(amplitude,frequency,phase,absthres);
 
-% Relative threshold
+% Apply relative threshold
 [amplitude,frequency,phase] = reldb(amplitude,frequency,phase,relthres);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PARTIAL TRACKING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Handle partial tracking
 if ~isempty(ptrackflag)

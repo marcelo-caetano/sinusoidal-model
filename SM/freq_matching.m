@@ -10,7 +10,7 @@ function [amp,freq,ph] = freq_matching(amp,freq,ph,A,F,P,delta,hop,fs,ifr)
 % based on a sinusoidal representation. IEEE Transactions on Acoustics,
 % Speech, and Signal Processing ASSP-34(4),744-754.
 
-% 2020 MCaetano SMT 0.2.1 (Revised)% $Id 2020 M Caetano SM 0.3.1-alpha.4 $Id
+% 2020 MCaetano SMT 0.2.1 (Revised)% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
 
 
 % Indices of numeric frequencies
