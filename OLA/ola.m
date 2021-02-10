@@ -1,11 +1,11 @@
-function [olasynth,olawin] = ola(time_frame,framelen,hop,nsample,center_frame,nframe,winflag,cfwflag)
-%OLA Overlap-Add time frames to resynthesize waveform
-%   SYNTH = OLA(FR,M,H,NSAMPLE,CFR,WINFLAG,CFWFLAG) overlap-adds the time
+function [olasynth,olawin] = ola(time_frame,framelen,hop,nsample,center_frame,nframe,winflag,causalflag)
+%OLA Overlap-Add time frames to resynthesize waveform.
+%   SYNTH = OLA(FR,M,H,NSAMPLE,CFR,WINFLAG,CAUSALFLAG) overlap-adds the time
 %   frames FR by M - H, where M is the frame length and H is the hop size
 %   used to make the time frames and returns SYNTH.
 %
 %   NSAMPLE is the length of the original signal in samples. NSAMPLE is
-%   usually different than CFW+(NFRAME-1)*H because the last frame is
+%   usually different than CENTERWIN+(NFRAME-1)*H because the last frame is
 %   always zero-padded to M. Therefore, SYNTH must be truncated to NSAMPLE
 %   to recover the original signal length.
 %
@@ -22,10 +22,10 @@ function [olasynth,olawin] = ola(time_frame,framelen,hop,nsample,center_frame,nf
 %   6 - Blackman-Harris
 %   7 - Hamming
 %
-%   CFWFLAG is a flag that determines the center of the first analysis
-%   window. CFWFLAG can be 'ONE', 'HALF', or 'NHALF'. The sample CFW
-%   corresponding to the center of the first window is obtained as
-%   CFW = cfw(M,CFWFLAG). Type help cfw for further details.
+%   CAUSALFLAG is a flag that determines the center of the first analysis
+%   window. CAUSALFLAG can be 'CAUSAL', 'NON', or 'ANTI'. The sample CENTERWIN
+%   corresponding to the causalflag of the first window is obtained as
+%   CENTERWIN = tools.dsp.tools.dsp.centerwin(M,CAUSALFLAG). Type help tools.dsp.tools.dsp.centerwin for further details.
 %
 %   [SYNTH,OLAWIN] = OLA(...) also returns the overlap-added window OLAWIN
 %   specified by WINFLAG.
@@ -33,7 +33,7 @@ function [olasynth,olawin] = ola(time_frame,framelen,hop,nsample,center_frame,nf
 % 2016 M Caetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,7 +57,7 @@ end
 
 if ~isequal(length(center_frame),nframe)
     
-    warning(['SMT:WrongArrayDim: ', 'Wrong number of frames.\n'...
+    warning('SMT:OLA:WrongArrayDim',['Wrong number of frames.\n'...
         'Input number of frames was %d.\n'...
         'Length of CFR is %d.\n'...
         'Using NFRAME = LENGTH(CFR)'],nframe,length(center_frame));
@@ -70,7 +70,7 @@ end
 nchannel = size(time_frame,3);
 
 % Zero-padding at start and end for frame-based processing
-shift = zpadlen(framelen,cfwflag);
+shift = tools.dsp.causal_zeropad(framelen,causalflag);
 
 % Preallocate with zero-padding
 olasynth = zeros(nsample+2*shift,nchannel);
@@ -79,6 +79,9 @@ olawin = zeros(nsample+2*shift,nchannel);
 % Make synthesis window
 synthesis_window = mkcolawin(framelen,winflag);
 
+% Center of first window
+center_win = tools.dsp.centerwin(framelen,causalflag);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % OVERLAP-ADD PROCEDURE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -86,13 +89,17 @@ synthesis_window = mkcolawin(framelen,winflag);
 for cf = center_frame'
     
     % Frame number
-    iframe = s2f(cf,cfw(framelen,cfwflag),hop);
+    iframe = tools.dsp.sample2frame(cf,center_win,hop);
     
     % Overlap-Add TIME_FRAME
-    olasynth(cf-lhw(framelen)+shift:cf+rhw(framelen)+shift,:) = olasynth(cf-lhw(framelen)+shift:cf+rhw(framelen)+shift,:) + squeeze(time_frame(:,iframe,:));
+    olasynth(cf-tools.dsp.leftwin(framelen)+shift:cf+tools.dsp.rightwin(framelen)+shift,:) = ...
+        olasynth(cf-tools.dsp.leftwin(framelen)+shift:cf+tools.dsp.rightwin(framelen)+shift,:) + ...
+        squeeze(time_frame(:,iframe,:));
     
     % Overlap-Add SYNTHESIS_WINDOW
-    olawin(cf-lhw(framelen)+shift:cf+rhw(framelen)+shift,:) = olawin(cf-lhw(framelen)+shift:cf+rhw(framelen)+shift,:) + repmat(synthesis_window,1,nchannel);
+    olawin(cf-tools.dsp.leftwin(framelen)+shift:cf+tools.dsp.rightwin(framelen)+shift,:) = ...
+        olawin(cf-tools.dsp.leftwin(framelen)+shift:cf+tools.dsp.rightwin(framelen)+shift,:) + ...
+        repmat(synthesis_window,1,nchannel);
     
 end
 

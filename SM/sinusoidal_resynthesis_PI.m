@@ -1,8 +1,8 @@
 function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis_PI(amp,freq,ph,framelen,hop,fs,nsample,center_frame,...
-    npartial,nframe,cfwflag,dispflag)
+    npartial,nframe,causalflag,dispflag)
 %SINUSOIDAL_RESYNTHESIS_PI_VEC Sinusoidal resynthesis by parameter
 %interpolation as described in [1].
-%   [SIN,PART,AMP,PH,FREQ] = SINUSOIDAL_RESYNTHESIS_PI(A,F,P,M,H,Fs,NSAMPLE,CFR,NPEAK,NFRAME,CFWFLAG,DISPFLAG)
+%   [SIN,PART,AMP,PH,FREQ] = SINUSOIDAL_RESYNTHESIS_PI(A,F,P,M,H,Fs,NSAMPLE,CFR,NPEAK,NFRAME,CAUSALFLAG,DISPFLAG)
 %   resynthesizes the sinusoidal model SIN from the output parameters of
 %   SINUSOIDAL_ANALYSIS (A,F,P), where A=amplitude, F=frequency, and
 %   P=phases estimated with a hop H and a frame size of M. DELTA
@@ -18,7 +18,8 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 % 2016 M Caetano
 % Revised 2019 (SM 0.1.1)
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,7 +43,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Zero-padding at start and end for frame-based processing
-shift = zpadlen(framelen,cfwflag);
+shift = tools.dsp.causal_zeropad(framelen,causalflag);
 
 % Preallocate
 sinusoidal = zeros(nsample+2*shift,1);
@@ -52,25 +53,25 @@ frequency = zeros(nsample+2*shift,npartial);
 phase = zeros(nsample+2*shift,npartial);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FROM CFRAME-LHW(WINSIZE) TO CFRAME (LEFT HALF OF FIRST WINDOW)
+% FROM CFRAME-LEFTWIN(WINSIZE) TO CFRAME (LEFT HALF OF FIRST WINDOW)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Range of time samples (including SHIFT)
-range_row = center_frame(1)-lhw(framelen)+shift:center_frame(1)-1+shift;
+range_row = center_frame(1)-tools.dsp.leftwin(framelen)+shift:center_frame(1)-1+shift;
 range_col = 1:npartial;
 
-%%%%%%%%%%%%%%%%%%%%
-% Estimation for LHW
-%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Estimation for LEFT HALF OF FIRST WINDOW
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Constant amplitude
-amp_lhw = cat(2,amp(:,1),amp(:,1));
+amp_leftwin = cat(2,amp(:,1),amp(:,1));
 
 % Constant frequency
-freq_lhw = cat(2,freq(:,1),freq(:,1));
+freq_leftwin = cat(2,freq(:,1),freq(:,1));
 
 % Linear phase
-ph_lhw = cat(2,ph(:,1)-(freq(:,1)*2*pi*lhw(framelen)/fs),ph(:,1));
+phase_leftwin = cat(2,ph(:,1)-(freq(:,1)*2*pi*tools.dsp.leftwin(framelen)/fs),ph(:,1));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ADDITIVE SYNTHESIS BY PARAMETER INTERPOLATION
@@ -78,7 +79,7 @@ ph_lhw = cat(2,ph(:,1)-(freq(:,1)*2*pi*lhw(framelen)/fs),ph(:,1));
 
 % Parameter interpolation
 [amplitude(range_row,range_col),frequency(range_row,range_col),phase(range_row,range_col)] = ...
-    parameter_interpolation(amp_lhw,freq_lhw,ph_lhw,lhw(framelen),fs);
+    parameter_interpolation(amp_leftwin,freq_leftwin,phase_leftwin,tools.dsp.leftwin(framelen),fs);
 
 % Additive resynthesis
 [sinusoidal(range_row,1),partial(range_row,range_col)] = PI_resynthesis(amplitude(range_row,range_col),phase(range_row,range_col));
@@ -113,25 +114,25 @@ for iframe = 1:nframe-1
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FROM CFRAME TO CFRAME+RHW(WINSIZE) (RIGHT HALF OF LAST WINDOW)
+% FROM CFRAME TO CFRAME+RIGHTWIN(WINSIZE) (RIGHT HALF OF LAST WINDOW)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Range of time samples (including SHIFT)
 range_row = center_frame(nframe)+shift:nsample+shift;
 range_col = 1:npartial;
 
-%%%%%%%%%%%%%%%%%%%%
-% Estimation for RHW
-%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Estimation for RIGHT HALF OF LAST WINDOW
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Constant amplitude
-amp_rhw = cat(2,amp(:,nframe),amp(:,nframe));
+amp_rightwin = cat(2,amp(:,nframe),amp(:,nframe));
 
 % Constant frequency
-freq_rhw = cat(2,freq(:,nframe),freq(:,nframe));
+freq_rightwin = cat(2,freq(:,nframe),freq(:,nframe));
 
 % Linear phase
-ph_rhw = cat(2,ph(:,nframe),ph(:,nframe) + (freq(:,nframe)*2*pi*(nsample-center_frame(nframe)+1)/fs));
+phase_rightwin = cat(2,ph(:,nframe),ph(:,nframe) + (freq(:,nframe)*2*pi*(nsample-center_frame(nframe)+1)/fs));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ADDITIVE SYNTHESIS BY PARAMETER INTERPOLATION
@@ -139,7 +140,7 @@ ph_rhw = cat(2,ph(:,nframe),ph(:,nframe) + (freq(:,nframe)*2*pi*(nsample-center_
 
 % Parameter interpolation
 [amplitude(range_row,range_col),frequency(range_row,range_col),phase(range_row,range_col)] = ...
-    parameter_interpolation(amp_rhw,freq_rhw,ph_rhw,nsample-center_frame(nframe)+1,fs);
+    parameter_interpolation(amp_rightwin,freq_rightwin,phase_rightwin,nsample-center_frame(nframe)+1,fs);
 
 % Additive resynthesis
 [sinusoidal(range_row,1),partial(range_row,range_col)] = PI_resynthesis(amplitude(range_row,range_col),phase(range_row,range_col));

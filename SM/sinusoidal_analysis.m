@@ -1,8 +1,8 @@
 function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,...
-    winflag,cfwflag,normflag,zphflag,magflag,ptrackflag)
+    winflag,causalflag,normflag,zphflag,magflag,ptrackflag)
 %SINUSOIDAL_ANALYSIS Perform sinusoidal analysis [1].
 %   [A,F,P,L,DC,CFR,NPART] = SINUSOIDAL_ANALYSIS(S,M,H,NFFT,FS,MAXNPEAK,
-%   RELTHRES,ABSTHRES,DELTA,WINFLAG,CFWFLAG,NORMFLAG,ZPHFLAG,MAGFLAG,DISPFLAG)
+%   RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,NORMFLAG,ZPHFLAG,MAGFLAG,DISPFLAG)
 %   splits the input sound S into overlapping frames of length M with a hop
 %   size H and returns the amplitudes A, frequencies F, and phases P of the
 %   partials assumed to be the MAXNPEAK peaks with maximum power spectral
@@ -26,16 +26,16 @@ function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_anal
 %   WINFLAG is a numerical flag that controls the window used. Type HELP
 %   WHICHWIN to see the possibilities.
 %
-%   CFWFLAG controls the placement of the center of the first analysis window
-%   CFWFLAG = 'NHALF' places the first analysis window just before the
+%   CAUSALFLAG controls the placement of the causalflag of the first analysis window
+%   CAUSALFLAG = 'NCAUSAL' places the first analysis window just before the
 %   first sample of the waveform being analyzed, so the rightmost window
 %   sample must be shifted by one position to the right to overlap with the
 %   first sample of the waveform.
-%   CFWFLAG = 'ONE' places the sample at the center of the first analysis
+%   CAUSALFLAG = 'NON' places the sample at the causalflag of the first analysis
 %   window at the first sample of the waveform, so the left half of the
 %   window is outside the signal range and the right half of the window
 %   overlaps with the waveform.
-%   CFWFLAG = 'HALF' places the first analysis window entirely overlapping
+%   CAUSALFLAG = 'CAUSAL' places the first analysis window entirely overlapping
 %   with the waveform being analyzed, so the leftmost window sample
 %   coincides with the first sample of the waveform.
 %
@@ -66,7 +66,8 @@ function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_anal
 % 2016 M Caetano;
 % Revised 2019 SMT 0.1.1
 % 2020 MCaetano SMT 0.1.2 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,17 +100,17 @@ disp('Sinusoidal Analysis')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Short-Time Fourier Transform from namespace STFT
-[fft_frame,nsample,dc,center_frame,nframe] = STFT.stft(wav,framelen,hop,nfft,winflag,cfwflag,normflag,zphflag);
+[fft_frame,nsample,dc,center_frame,nframe] = STFT.stft(wav,framelen,hop,nfft,winflag,causalflag,normflag,zphflag);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FOURIER SPECTRUM PRE-PROCESSING
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Scale the magnitude spectrum (Linear, Log, Power)
-[mag_spec,pow] = fft2scaled_magnitude_spectrum(fft_frame,framelen,nfft,winflag,magflag);
+[mag_spec,pow] = tools.spec.fft2scaled_mag_spec(fft_frame,framelen,nfft,winflag,magflag);
 
 % Unwrap the phase spectrum
-ph_spec = fft2unwrapped_phase_spectrum(fft_frame,nfft,true);
+ph_spec = tools.spec.fft2unwrapped_phase_spec(fft_frame,nfft,true);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PARAMETER ESTIMATION
@@ -136,7 +137,7 @@ else
 end
 
 % Revert magnitude spectrum scaling
-amplitude = revert_magnitude_spectrum_scaling(amplitude,pow,magflag);
+amplitude = tools.spec.revert_mag_spec_scaling(amplitude,pow,magflag);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SPECTRAL POST-PROCESSING

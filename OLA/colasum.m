@@ -1,4 +1,4 @@
-function sumfactor = colasum(wintype)
+function sumfactor = colasum(winflag)
 %COLASUM COLA constant for different windows.
 %   SUM = colasum(WINTYPE) returns SUM for a window of type WINTYPE.
 %
@@ -6,12 +6,12 @@ function sumfactor = colasum(wintype)
 %   window size M. DEN depends on WINTYPE. Type WHICHWIN(WINTYPE) for the
 %   names of the different windows supported.
 %
-%   See also COLADEN, ISCOLA, COLAHS, ALLCOLAHS, OL2HS
+%   See also COLADEN, ISCOLA, COLAHOPSIZE, ALLCOLAHOPSIZE, OVERLAP2HOPSIZE
 
 % 2019 MCaetano SMT 0.1.0
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %   WINDOW_TYPE
@@ -35,11 +35,11 @@ narginchk(1,1);
 nargoutchk(1,1);
 
 % Validate input
-validateattributes(wintype,{'single','double'},{'scalar','>',0,'<',8});
+validateattributes(winflag,{'single','double'},{'scalar','>',0,'<',8});
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BODY OF FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-sumfactor = infowin(wintype,'sum');
+sumfactor = tools.dsp.infowin(winflag,'sum');
 
 end

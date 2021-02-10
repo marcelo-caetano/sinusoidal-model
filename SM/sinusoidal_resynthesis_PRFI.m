@@ -1,9 +1,9 @@
 function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis_PRFI(amp,freq,framelen,hop,fs,nsample,center_frame,...
-    npartial,nframe,cfwflag,dispflag)
+    npartial,nframe,causalflag,dispflag)
 %SINUSOIDAL_RESYNTHESIS_PRFI Sinusoidal resynthesis via phase
 %reconstruction by frequency integration (PRFI) as described in [1].
 %   [SIN,PART,At,Ft] = SINUSOIDAL_RESYNTHESIS_PRFI(A,F,Delta,M,H,Fs,NSAMPLE,
-%   CFR,MAXNPEAK,CFWFLAG,DISPFLAG) synthesizes the sinusoidal model SIN
+%   CFR,MAXNPEAK,CAUSALFLAG,DISPFLAG) synthesizes the sinusoidal model SIN
 %   from the amplitude A and frequency F returned by
 %   SINUSOIDAL_ANALYSIS. DELTA determines the frequency difference for peak
 %   continuation as described in [1]. All other parameters come from the
@@ -23,7 +23,8 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 
 % 2016 M Caetano
 % 2020 MCaetano SMT 0.1.2 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,7 +48,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Zero-padding at start and end for frame-based processing
-shift = zpadlen(framelen,cfwflag);
+shift = tools.dsp.causal_zeropad(framelen,causalflag);
 
 % Preallocate for NFRAME
 ph_cont = nan(npartial,nframe);
@@ -60,28 +61,28 @@ frequency = zeros(nsample+2*shift,npartial);
 phase = zeros(nsample+2*shift,npartial);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FROM CFRAME-LHW(WINSIZE) TO CFRAME (LEFT HALF OF FIRST WINDOW)
+% FROM CFRAME-LEFTWIN(WINSIZE) TO CFRAME (LEFT CAUSAL OF FIRST WINDOW)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Range of time samples (including SHIFT)
-range_row = center_frame(1)-lhw(framelen)+shift:center_frame(1)-1+shift;
+range_row = center_frame(1)-tools.dsp.leftwin(framelen)+shift:center_frame(1)-1+shift;
 range_col = 1:npartial;
 
 %%%%%%%%%%%%%%%%%%%%
-% Estimation for LHW
+% Estimation for LEFTWIN
 %%%%%%%%%%%%%%%%%%%%
 
 % Constant amplitude
-amp_lhw = cat(2,zeros(npartial,1),amp(:,1));
+amp_leftwin = cat(2,zeros(npartial,1),amp(:,1));
 
 % Constant frequency
-freq_lhw = cat(2,freq(:,1),freq(:,1));
+freq_leftwin = cat(2,freq(:,1),freq(:,1));
 
 % When FREQUENCY_INTEGRATION uses COS for resynthesis
-% ph_cont = -freq(:,1)*2*pi*lhw(framelen)/fs -pi/2*ones(npartial,1);
+% ph_cont = -freq(:,1)*2*pi*tools.dsp.leftwin(framelen)/fs -pi/2*ones(npartial,1);
 
 % Phase continuation (FREQUENCY_INTEGRATION uses SIN for resynthesis)
-ph_lhw = -freq(:,1)*2*pi*lhw(framelen)/fs;
+phase_leftwin = -freq(:,1)*2*pi*tools.dsp.leftwin(framelen)/fs;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ADDITIVE SYNTHESIS BY PHASE RECONSTRUCTION BY FREQUENCY INTEGRATION
@@ -89,7 +90,7 @@ ph_lhw = -freq(:,1)*2*pi*lhw(framelen)/fs;
 
 % Frequency integration
 [amplitude(range_row,range_col),frequency(range_row,range_col),phase(range_row,range_col)] = frequency_integration...
-    (amp_lhw,freq_lhw,ph_lhw,lhw(framelen),fs);
+    (amp_leftwin,freq_leftwin,phase_leftwin,tools.dsp.leftwin(framelen),fs);
 
 % Additive resynthesis (with linear phase estimation)
 [sinusoidal(range_row),partial(range_row,range_col)] = PRFI_resynthesis(amplitude(range_row,range_col),phase(range_row,range_col));
@@ -127,7 +128,7 @@ for iframe = 1:nframe-1
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FROM CFRAME TO CFRAME+RHW(WINSIZE) (RIGHT HALF OF LAST WINDOW)
+% FROM CFRAME TO CFRAME+RIGHTWIN(WINSIZE) (RIGHT CAUSAL OF LAST WINDOW)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Range of time samples (including SHIFT)
@@ -135,17 +136,17 @@ range_row = center_frame(nframe)+shift:nsample+shift;
 range_col = 1:npartial;
 
 %%%%%%%%%%%%%%%%%%%%
-% Estimation for RHW
+% Estimation for RIGHTWIN
 %%%%%%%%%%%%%%%%%%%%
 
 % Constant amplitude
-amp_rhw = cat(2,amp(:,nframe),amp(:,nframe));
+amp_rightwin = cat(2,amp(:,nframe),amp(:,nframe));
 
 % Constant frequency
-freq_rhw = cat(2,freq(:,nframe),freq(:,nframe));
+freq_rightwin = cat(2,freq(:,nframe),freq(:,nframe));
 
 % Phase continuation (FREQUENCY_INTEGRATION uses SIN for resynthesis)
-ph_rhw = phase(center_frame(nframe)-1+shift,:)';
+phase_rightwin = phase(center_frame(nframe)-1+shift,:)';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ADDITIVE SYNTHESIS BY PHASE RECONSTRUCTION BY FREQUENCY INTEGRATION
@@ -153,7 +154,7 @@ ph_rhw = phase(center_frame(nframe)-1+shift,:)';
 
 % Frequency integration
 [amplitude(range_row,range_col),frequency(range_row,range_col),phase(range_row,range_col)] = frequency_integration...
-    (amp_rhw,freq_rhw,ph_rhw,nsample-center_frame(nframe)+1,fs);
+    (amp_rightwin,freq_rightwin,phase_rightwin,nsample-center_frame(nframe)+1,fs);
 
 % Additive resynthesis (with linear phase estimation)
 [sinusoidal(range_row),partial(range_row,range_col)] = PRFI_resynthesis(amplitude(range_row,range_col),phase(range_row,range_col));

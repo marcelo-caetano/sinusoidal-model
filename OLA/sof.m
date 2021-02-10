@@ -1,6 +1,6 @@
-function [time_frame,nsample,dc,center_frame,nframe] = sof(wav,framelen,hop,winflag,cfwflag,normflag)
+function [time_frame,nsample,dc,center_frame,nframe] = sof(wav,framelen,hop,winflag,causalflag,normflag)
 %SOF Split into overlapping frames.
-%   FR = SOF(S,M,H,WINFLAG,CFWFLAG,NORMFLAG) splits the input S into
+%   FR = SOF(S,M,H,WINFLAG,CAUSALFLAG,NORMFLAG) splits the input S into
 %   overlapping frames FR of length M with a hop size H.
 %
 %   WINFLAG is a numeric flag that specifies the following windows
@@ -13,24 +13,24 @@ function [time_frame,nsample,dc,center_frame,nframe] = sof(wav,framelen,hop,winf
 %   6 - Blackman-Harris
 %   7 - Hamming
 %
-%   CFWFLAG is a string that determines the center of the first analysis
-%   window. CFWFLAG can be 'ONE', 'HALF', or 'NHALF'. The sample CFW
-%   corresponding to the center of the first window is obtained as
-%   CFW = cfw(M,CFWFLAG).
+%   CAUSALFLAG is a string that determines the causalflag of the first analysis
+%   window. CAUSALFLAG can be 'NON', 'CAUSAL', or 'NCAUSAL'. The sample CENTERWIN
+%   corresponding to the causalflag of the first window is obtained as
+%   CENTERWIN = tools.dsp.tools.dsp.centerwin(M,CAUSALFLAG).
 %
 %   NORMFLAG is a boolean that specifies if the window is normalized as
 %   normw(n)=w(n)/sum(w(n)). NORMFLAG=TRUE normalizes and FALSE does not.
 %
 %   [FR,NSAMPLE,DC,CFR] = SOF(...) also returns the original length NSAMPLE
 %   of S (in samples), the dc value DC of S, and the vector CFR with the
-%   samples corresponding to the center of the time frames FR.
+%   samples corresponding to the causalflag of the time frames FR.
 %
 %   See also OLA
 
 % 2016 M Caetano
 % 2019 MCaetano (Revised)
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,7 +54,7 @@ nargoutchk(0,5);
 [nsample,nchannel] = size(wav);
 
 % Prepare SOF
-[analysis_window,dc,nframe,center_frame] = sofprep(nsample,framelen,hop,cfwflag,winflag,normflag);
+[analysis_window,dc,nframe,center_frame] = sofprep(nsample,framelen,hop,causalflag,winflag,normflag);
 
 % Execute SOF
 [time_frame] = sofexe(wav,nsample,analysis_window,framelen,center_frame,nframe,nchannel);
@@ -62,7 +62,7 @@ nargoutchk(0,5);
 end
 
 % LOCAL FUNCTION THAT PREPARES SOF
-function [analysis_window,dc,nframe,center_frame] = sofprep(nsample,framelen,hop,cfwflag,winflag,normflag)
+function [analysis_window,dc,nframe,center_frame] = sofprep(nsample,framelen,hop,causalflag,winflag,normflag)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CHECK WINDOW OVERLAP
@@ -104,13 +104,13 @@ else
 end
 
 % Number of time_frame
-nframe = numframe(nsample,framelen,hop,cfwflag);
+nframe = tools.dsp.numframe(nsample,framelen,hop,causalflag);
 
 % Center of first window
-center_fwin = cfw(framelen,cfwflag);
+cfwin = tools.dsp.centerwin(framelen,causalflag);
 
 % Center of each frame in signal reference
-center_frame = f2s(1:nframe,center_fwin,hop);
+center_frame = tools.dsp.frame2sample(1:nframe,cfwin,hop);
 
 end
 
@@ -143,10 +143,10 @@ function frame = mkframe(wav,cf,framelen,nsample,nchannel)
 frame = zeros(framelen,nchannel);
 
 % First half window (right of CW)
-fhw = rhw(framelen);
+fhw = tools.dsp.rightwin(framelen);
 
 % Second half window (left of CW)
-shw = lhw(framelen);
+shw = tools.dsp.leftwin(framelen);
 
 if cf < 1
     

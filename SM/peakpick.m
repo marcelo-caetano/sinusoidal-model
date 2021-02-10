@@ -4,18 +4,19 @@ function index = peakpick(mag)
 %   indices of the peaks of the magnitude spectrum MAG.
 %
 %   MAG is NFREQ x NFRAME, where NFREQ is the number of frequency bins and
-%   NFRAME is the number of frames of the STFT. Typically, NFREQ = NYQ(NFFT)
-%   and NFRAME = NUMFRAME(NSAMPLE,M,H,CFWFLAG). Type HELP NYQ and HELP
+%   NFRAME is the number of frames of the STFT. Typically, NFREQ = NYQ_FREQ(NFFT)
+%   and NFRAME = NUMFRAME(NSAMPLE,M,H,CAUSALFLAG). Type HELP NYQ_FREQ and HELP
 %   NUMFRAME for their syntaxes.
 %
 %   INDEX is the same size as MAG and contains logical 1 for positions
 %   that correspond to peaks and logical 0 otherwise.
 %
-%   See also PEAKFIND, NYQ, NUMFRAME
+%   See also PEAKFIND, NYQ_FREQ, NUMFRAME
 
 % 2016 M Caetano;
 % Revised 2019 SMT 0.1.1
-% 2020 MCaetano SMT 0.1.1 (Revised)% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.1.1 (Revised)
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 [~,nframe] = size(mag);

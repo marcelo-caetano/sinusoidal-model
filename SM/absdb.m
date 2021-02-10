@@ -5,11 +5,12 @@ function [amp,freq,ph] = absdb(amp,freq,ph,absthres)
 %
 %   See also RELDB
 
-% 2020 MCaetano SMT 0.1.1% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.1.1
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 % Convert log threshold into linear
-linthres = log2lin(-(abs(absthres)),'dbp');
+linthres = tools.dsp.log2lin(-(abs(absthres)),'dbp');
 
 % Find indices of amplitudes below the threshold
 ind = amp < linthres;

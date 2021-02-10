@@ -1,4 +1,30 @@
+# SM 0.5.0-alpha.1
+
+Sinusoidal Model (SM) version 0.5.0 alpha release build 1
+
+Run the script 'run_sm.m' inside the folder 'sinusoidal-model-master' for an example of how to use the code. NOTE: You must change directories and go into 'sinusoidal-model-master' to run 'run_sm.m' because 'run_sm.m' uses a relative path to point to the audio file and also because the folder 'sinusoidal-model-master' is not automatically added to the Matlab search path.
+
+The file 'run_sm_dependency.txt lists all file dependencies.
+
+## What's new in version 0.5.0-alpha.1
+- Refactored folder tools and subfolders within as packages to make the functions comprising the kernel functionality run in dedicated protected namespaces
+- Automated calculation of the frequency difference for partial matching
+
+## New functions/features
+- Renamed folder tools/ as +tools/ to make it a package
+- Renamed all subfolders inside +tools/ as packages
+- Added function +tools/+f0/reference_f0.m
+
+## Deprecated functions/features
+- Renamed several functions to make it easier to understand what they do
+- Refactored function +tools/+dsp/framesize.m according to the single responsibility principle
+
+## Backwards compatibility
+- Matlab packages require a different syntax to call the functions inside packages, making version 0.5.0-alpha.1 totally backwards incompatible with previous versions
+
+
 # SM 0.4.0-alpha.1
+
 Sinusoidal Model (SM) version 0.4.0 alpha release build 1
 
 Run the script 'run_sm.m' inside the folder 'sinusoidal-model-master' for an example of how to use the code. NOTE: You must change directories and go into 'sinusoidal-model-master' to run 'run_sm.m' because 'run_sm.m' uses a relative path to point to the audio file and also because the folder 'sinusoidal-model-master' is not automatically added to the Matlab search path.

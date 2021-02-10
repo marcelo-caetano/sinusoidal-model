@@ -9,8 +9,8 @@ function [amplitude,frequency,phase] = frequency_integration(amp,freq,ph_prev,ho
 %   Ac is the current AMPLITUDE and An is the next AMPLITUDE.
 %   Fc is the current FREQUENCY and Fn is the next FREQUENCY.
 %   Pp is the last PHASE value (argument of sinusoid) of the previous frame.
-%   T is the time elapsed between the center pf the previous frame and the
-%   center of the current frame (i.e., the frame advance or hop).
+%   T is the time elapsed between the causalflag pf the previous frame and the
+%   causalflag of the current frame (i.e., the frame advance or hop).
 %   SR is the sampling rate.
 %
 %   S is the final synthetic signal over T.
@@ -27,7 +27,8 @@ function [amplitude,frequency,phase] = frequency_integration(amp,freq,ph_prev,ho
 
 % 2016 M Caetano
 % 2019 MCaetano SMT 0.1.0 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 % Transpose input

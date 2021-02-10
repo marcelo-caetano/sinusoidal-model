@@ -21,7 +21,8 @@ function [peakamp,peakfreq,peakph] = peak_picking(magspec,phspec,nfft,fs)
 
 % 2016 M Caetano;
 % Revised 2019 SMT 0.1.1
-% 2020 MCaetano SMT 0.1.1 (Revised)% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.1.1 (Revised)
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,7 +46,7 @@ nargoutchk(0,3);
 ind = repmat((1:nbin)',1,nframe);
 
 % Frequency array (Hz)
-freq = ind2freq(ind,fs,nfft);
+freq = tools.spec.ind2freq(ind,fs,nfft);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PICK INDICES OF PEAKS IN MAGNITUDE SPECTRUM

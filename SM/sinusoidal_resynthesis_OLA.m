@@ -1,7 +1,7 @@
 function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis_OLA(amp,freq,ph,framelen,hop,fs,nsample,center_frame,...
-    npartial,nframe,winflag,cfwflag,dispflag)
+    npartial,nframe,winflag,causalflag,dispflag)
 %SINUSOIDAL_RESYNTHESIS_OLA Overlap-add resynthesis for sinusoidal analysis.
-%   [SIN,PART,AMP,FREQ,PH] = SINUSOIDAL_RESYNTHESIS_OLA(A,F,P,M,H,Fs,NSAMPLE,CFR,WINFLAG,CFWFLAG,DISPFLAG)
+%   [SIN,PART,AMP,FREQ,PH] = SINUSOIDAL_RESYNTHESIS_OLA(A,F,P,M,H,Fs,NSAMPLE,CFR,WINFLAG,CAUSALFLAG,DISPFLAG)
 %   resynthesizes the frames resulting from the sinusoidal analysis via
 %   overlap-add and returns the result in SIN. PART has the partials, AMP
 %   has the amplitudes, FREQ has the frequencies, and PH has the phases of
@@ -11,7 +11,8 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 
 % 2016 M Caetano;
 % Revised 2019 SMT 0.1.1
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,18 +62,18 @@ end
 sc = colasum(winflag)*(framelen/2)/hop;
 
 % Overlap-add time_frame
-sinusoidal = ola(time_frame,framelen,hop,nsample,center_frame,nframe,winflag,cfwflag)/sc;
+sinusoidal = ola(time_frame,framelen,hop,nsample,center_frame,nframe,winflag,causalflag)/sc;
 
 % Overlap-add partials
-partial = ola(partial_frame,framelen,hop,nsample,center_frame,nframe,winflag,cfwflag)/sc;
+partial = ola(partial_frame,framelen,hop,nsample,center_frame,nframe,winflag,causalflag)/sc;
 
 % Overlap-add amplitude
-amplitude = ola(amplitude_frame,framelen,hop,nsample,center_frame,nframe,winflag,cfwflag)/sc;
+amplitude = ola(amplitude_frame,framelen,hop,nsample,center_frame,nframe,winflag,causalflag)/sc;
 
 % Overlap-add frequency
-frequency = ola(amplitude_frame,framelen,hop,nsample,center_frame,nframe,winflag,cfwflag)/sc;
+frequency = ola(amplitude_frame,framelen,hop,nsample,center_frame,nframe,winflag,causalflag)/sc;
 
 % Overlap-add phase
-phase = ola(amplitude_frame,framelen,hop,nsample,center_frame,nframe,winflag,cfwflag)/sc;
+phase = ola(amplitude_frame,framelen,hop,nsample,center_frame,nframe,winflag,causalflag)/sc;
 
 end

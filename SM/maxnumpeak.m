@@ -10,7 +10,8 @@ function [amp,freq,ph] = maxnumpeak(peak_amp,peak_freq,peak_ph,maxnpeak,nfft,nfr
 %
 %   See also ABSDB, RELDB
 
-% 2020 MCaetano SMT 0.1.2 (Revised)% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.1.2 (Revised)
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 % TODO: Add option to return only MAXNPEAK per frame: size(amp)=[MAXNPEAK,NFRAME]
@@ -41,7 +42,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Number of positive frequency bins
-nbin = nyq(nfft);
+nbin = tools.spec.nyq_freq(nfft);
 
 if isinf(maxnpeak)
     

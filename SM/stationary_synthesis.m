@@ -8,7 +8,8 @@ function [amplitude,frequency,phase_argument,synthwin] = stationary_synthesis(am
 %   See also PARAMETER_INTERPOLATION, FREQUENCY_INTEGRATION
 
 % 2017 M Caetano; Revised 2019
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -26,12 +27,12 @@ nargoutchk(0,4);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make samples spanning frame framelen
-samples = (cframe-lhw(framelen):cframe+rhw(framelen))';
+samples = (cframe-tools.dsp.leftwin(framelen):cframe+tools.dsp.rightwin(framelen))';
 
 % Make synthesis window
 synthwin = mkcolawin(framelen,winflag);
 
-% Calculate phase shift (using center of frame as reference)
+% Calculate phase shift (using causalflag of frame as reference)
 phase_shift = ph - (2*pi*cframe/fs)*freq;
 
 % Calculate phase argument

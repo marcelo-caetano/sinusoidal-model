@@ -1,8 +1,8 @@
 function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis(amp,freq,ph,framelen,hop,fs,nsample,center_frame,...
-    npartial,nframe,delta,winflag,cfwflag,synthflag,ptrackflag,dispflag)
+    npartial,nframe,delta,winflag,causalflag,synthflag,ptrackflag,dispflag)
 %SINUSOIDAL_RESYNTHESIS Resynthesis from the output of sinusoidal analysis [1].
 %   [SIN,PART,AMP,FREQ] = SINUSOIDAL_RESYNTHESIS(A,F,P,DELTA,M,H,FS,...
-%   NSAMPLE,CFR,MAXNPEAK,WINFLAG,CFWFLAG,SYNTHFLAG,DISPFLAG)
+%   NSAMPLE,CFR,MAXNPEAK,WINFLAG,CAUSALFLAG,SYNTHFLAG,DISPFLAG)
 %   resynthesizes the sinusoidal model SIN from the output parameters of
 %   SINUSOIDAL_ANALYSIS (A,F,P), where A=amplitude, F=frequency, and
 %   P=phases estimated with a hop H and a frame size of M. DELTA
@@ -15,7 +15,8 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 % Revised 2019 (SM 0.1.1)
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% 2020 MCaetano SMT 0.2.1% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.1
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,7 +70,7 @@ switch lower(synthflag)
         disp('Overlap-Add Resynthesis')
         
         [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis_OLA...
-            (amp,freq,ph,framelen,hop,fs,nsample,center_frame,npartial,nframe,winflag,cfwflag,dispflag);
+            (amp,freq,ph,framelen,hop,fs,nsample,center_frame,npartial,nframe,winflag,causalflag,dispflag);
         
     case 'pi'
         
@@ -80,7 +81,7 @@ switch lower(synthflag)
         disp('Resynthesis by Polynomial Interpolation')
         
         [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis_PI...
-            (amp,freq,ph,framelen,hop,fs,nsample,center_frame,npartial,nframe,cfwflag,dispflag);
+            (amp,freq,ph,framelen,hop,fs,nsample,center_frame,npartial,nframe,causalflag,dispflag);
         
     case 'prfi'
         
@@ -91,7 +92,7 @@ switch lower(synthflag)
         disp('Resynthesis by Phase Reconstruction via Frequency Integration')
         
         [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis_PRFI...
-            (amp,freq,framelen,hop,fs,nsample,center_frame,npartial,nframe,cfwflag,dispflag);
+            (amp,freq,framelen,hop,fs,nsample,center_frame,npartial,nframe,causalflag,dispflag);
         
     otherwise
         
@@ -106,7 +107,7 @@ switch lower(synthflag)
         disp('Resynthesis by Parameter Interpolation')
         
         [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis_PI...
-            (amp,freq,ph,framelen,hop,fs,nsample,center_frame,npartial,nframe,cfwflag,dispflag);
+            (amp,freq,ph,framelen,hop,fs,nsample,center_frame,npartial,nframe,causalflag,dispflag);
         
 end
 

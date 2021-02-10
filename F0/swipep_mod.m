@@ -57,7 +57,8 @@ function [p,t,s] = swipep_mod(x,fs,plim,dt,dlog2p,dERBs,woverlap,sTHR)
 
 %    MAINTENANCE HISTORY:
 %    - Added line 153 to avoid division by zero in line 154 if loudness
-%      equals zero (06/23/2010).% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+%      equals zero (06/23/2010).
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 
@@ -99,7 +100,7 @@ for i = 1 : length(ws)
     % [S,F,T1] = SPECTROGRAM(X,window,noverlap,nfft,fs);
     % WARNING!
     % SPECGRAM returns T column vector always starting at 0
-    % SPECTROGRAM returns T1 row vector at center of frame
+    % SPECTROGRAM returns T1 row vector at causalflag of frame
     % [0; T1(1:end-1)] == T isequal([0;ti1(1:end-1)'],ti)
     [ X, f, ti ] = spectrogram(xzp,w,o,ws(i),fs);
     

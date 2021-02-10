@@ -1,4 +1,4 @@
-function win = mkcolawin(winlen,winflag)
+function win = mkcolawin(framelen,winflag)
 %MKCOLAWIN Make COLA window.
 %   W = MKCOLAWIN(WINLEN,WINFLAG) makes a window W that is WINLEN samples
 %   long and that has the constant overlap-add (COLA) property. The flag
@@ -13,17 +13,17 @@ function win = mkcolawin(winlen,winflag)
 %   7 - Hamming
 %
 %   The window W is carefully designed to be COLA and to ensure that the
-%   center of W is an integer sample number. Consequently, even WINLEN
+%   causalflag of W is an integer sample number. Consequently, even WINLEN
 %   results in periodic windows, whereas odd WINLEN results in symmetric
 %   windows. See the help for each window given by WINFLAG for further
 %   information.
 %
-%   See also COLADEN, COLASUM, ISCOLA, COLAHS, OL2HS
+%   See also COLADEN, COLASUM, ISCOLA, COLAHOPSIZE, OVERLAP2HOPSIZE
 
 % 2016 M Caetano
 % 2019 MCaetano (Revised)
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,20 +37,20 @@ narginchk(2,2);
 nargoutchk(0,1);
 
 % Check WINLEN
-if ~isnumeric(winlen)
+if ~isnumeric(framelen)
     
     error('SMT:WrongWindowLength',['The window length must be numeric. '...
-        'The window length entered is class %s.\n'],class(winlen))
+        'The window length entered is class %s.\n'],class(framelen))
     
-elseif isfrac(winlen)
+elseif tools.misc.isfrac(framelen)
     
     error('SMT:WrongWindowLength',['The window length must be integer. '...
-        'The window length entered is %f.\n'],winlen)
+        'The window length entered is %f.\n'],framelen)
     
-elseif winlen <= 0
+elseif framelen <= 0
     
     error('SMT:WrongWindowLength',['The window length must be positive. '...
-        'The window length entered is %d.\n'],winlen)
+        'The window length entered is %d.\n'],framelen)
     
 end
 
@@ -60,7 +60,7 @@ if ~isnumeric(winflag)
     error('SMT:UnknownWindowFlag',['The window flag must be numeric. '...
         'The window flag entered is class %s.\n'],class(winflag))
     
-elseif isfrac(winflag)
+elseif tools.misc.isfrac(winflag)
     
     error('SMT:UnknownWindowFlag',['The window flag must be integer. '...
         'The window flag entered is %f.\n'],winflag)
@@ -79,7 +79,7 @@ end
 % BODY OF FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if iseven(winlen)
+if tools.misc.iseven(framelen)
     
     % Even window length
     wflag = 'periodic';
@@ -97,39 +97,39 @@ switch winflag
     case 1
         
         % RECTANGULAR
-        win = rectwin(winlen);
+        win = rectwin(framelen);
         
     case 2
         
         % BARTLETT
-        if iseven(winlen)
-            win = bartlett(winlen+1);
+        if tools.misc.iseven(framelen)
+            win = bartlett(framelen+1);
             win(end)=[];
         else
-            win = bartlett(winlen);
+            win = bartlett(framelen);
         end
         
     case 3
         
         % HANN
-        win = hann(winlen,wflag);
+        win = hann(framelen,wflag);
         
     case 4
         
         % HANNING (OLA > 1)
-        win = hanning(winlen,wflag);
+        win = hanning(framelen,wflag);
         
     case 5
         
         % BLACKMAN
-        win = blackman(winlen,wflag);
+        win = blackman(framelen,wflag);
         
     case 6
         
         % BLACKMAN-HARRIS
-        win = blackmanharris(winlen,wflag);
+        win = blackmanharris(framelen,wflag);
         
-        if isodd(winlen)
+        if tools.misc.isodd(framelen)
             win(1) = win(1)/2;
             win(end) = win(end)/2;
         end
@@ -137,9 +137,9 @@ switch winflag
     case 7
         
         % HAMMING (OLA > 1)
-        win = hamming(winlen,wflag);
+        win = hamming(framelen,wflag);
         
-        if isodd(winlen)
+        if tools.misc.isodd(framelen)
             win(1) = win(1)/2;
             win(end) = win(end)/2;
         end

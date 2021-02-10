@@ -7,17 +7,18 @@ function [amp,freq,ph] = reldb(amp,freq,ph,relthres)
 
 % 2019 MCaetano SMT 0.1.0
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2020 M Caetano SM 0.4.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0
+% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
 
 
 % Maximum amplitude per frame
 maxamp = max(amp,[],1,'omitnan');
 
 % Sum in dB
-relampdB = lin2log(maxamp,'dbp') - abs(relthres);
+relampdB = tools.dsp.lin2log(maxamp,'dbp') - abs(relthres);
 
 % Convert from dB to linear to compare
-ind = amp < log2lin(relampdB,'dbp');
+ind = amp < tools.dsp.log2lin(relampdB,'dbp');
 
 % Replace with NaN
 amp(ind) = nan(1);

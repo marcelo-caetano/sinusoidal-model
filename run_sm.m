@@ -8,11 +8,11 @@
 winflag = 3;
 
 % Display name of analysis window in the terminal
-fprintf(1,'%s analysis window\n',infowin(winflag,'name'));
+fprintf(1,'%s analysis window\n',tools.dsp.infowin(winflag,'name'));
 
-% Flag for center of first window
-cfwflag = {'nhalf','one','half'};
-cf = 1;
+% Flag for causality of first window
+causalflag = {'causal','non','anti'};
+cf = 3;
 
 % Flag for log magnitude spectrum
 lmsflag = {'dbr','dbp','nep','oct','bel'};
@@ -76,38 +76,38 @@ fprintf(1,'Sound %s\n',sndname);
 [wav,fs] = audioread(sndfile);
 
 % Convert from stereo to mono
-wav = stereo2mono(wav);
+wav = tools.wav.stereo2mono(wav);
 
 % Get number of samples
 nsample = length(wav);
 
 % Make time sample vector
-time_sample = mktime(nsample,fs);
+time_sample = tools.plot.mktime(nsample,fs);
 
 % Fundamental freq of source sound
 f0 = swipep_mod(wav,fs,[75 500],1000/fs,[],1/20,0.5,0.2);
 
-% Fallback to f0 = C0
-if all(isnan(f0(:))), f0 = note2freq('C0');end
+% Reference f0
+ref0 = tools.f0.reference_f0(f0);
 
 % Frame size = n*T0
-[framelen,ref0] = framesize(f0,fs,nT0);
+framelen = tools.dsp.framesize(f0,fs,nT0);
 
 % 50% overlap
-hop = hopsize(framelen,0.5);
+hop = tools.dsp.hopsize(framelen,0.5);
 
 % FFT size
-nfft = fftsize(framelen);
+nfft = tools.dsp.fftsize(framelen);
 
 % Frequency difference for peak matching (Hz)
-delta = fix(ref0/2);
+delta = tools.dsp.freq_diff4peak_matching(ref0);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SINUSOIDAL ANALYSIS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [amplitude,frequency,phase,nsample,ds,center_frame,npartial,nframe] = sinusoidal_analysis(wav,...
-    framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,winflag,cfwflag{cf},normflag,zphflag,magflag{mf},ptrackflag{ptrck});
+    framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,winflag,causalflag{cf},normflag,zphflag,magflag{mf},ptrackflag{ptrck});
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIGURE PARAMETERS
@@ -143,7 +143,7 @@ axes_lim.dblim = [-120 0];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Log Mag Amp peaks
-plot_part.specpeak = lin2log(amplitude,lmsflag{lmsf},nanflag);
+plot_part.specpeak = tools.dsp.lin2log(amplitude,lmsflag{lmsf},nanflag);
 
 % Time peaks
 plot_part.time = repmat(center_frame/fs,[1,npartial])';
@@ -158,27 +158,27 @@ axes_lim.tlim = [plot_part.time(1,1) plot_part.time(1,end)];
 axes_lbl.ttl = 'Partial Tracking';
 
 % Make figure
-mkfigpeakgram(plot_part,axes_lim,axes_lbl,fig_layout);
+tools.plot.mkfigpeakgram(plot_part,axes_lim,axes_lbl,fig_layout);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SINUSOIDAL RESYNTHESIS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [sinusoidal,partial,amp_partial,freq_partial,phase_partial] = sinusoidal_resynthesis(amplitude,frequency,phase,...
-    framelen,hop,fs,nsample,center_frame,npartial,nframe,delta,winflag,cfwflag{cf},synthflag{rf},ptrackflag{ptrck},dispflag);
+    framelen,hop,fs,nsample,center_frame,npartial,nframe,delta,winflag,causalflag{cf},synthflag{rf},ptrackflag{ptrck},dispflag);
 
 % Make residual
 residual = wav - sinusoidal;
 
 % Calculate signal-to-resynthesis energy ratio (SRER)
-srer_db = srer(wav,residual);
+srer_db = tools.wav.srer(wav,residual);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIGURE PARAMETERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Plot data
-plot_wav.time = mktime(nsample,fs);
+plot_wav.time = tools.plot.mktime(nsample,fs);
 plot_wav.wav = wav;
 plot_wav.wav(:,2) = sinusoidal;
 plot_wav.wav(:,3) = residual;
@@ -212,4 +212,4 @@ axes_lim.alim = [min(plot_wav.wav,[],'all','omitnan') max(plot_wav.wav,[],'all',
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make figure
-mkfigwav(plot_wav,axes_lim,axes_lbl,fig_layout);
+tools.plot.mkfigwav(plot_wav,axes_lim,axes_lbl,fig_layout);
