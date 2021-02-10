@@ -15,7 +15,7 @@ function lh = leftwin(framelen)
 %   See also RIGHTWIN, CENTERWIN, MKCOLAWIN
 
 % 2016 MCaetano
-% 2020 MCaetano SMT 0.1.1 (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.1.1 (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
 
 
 % The periodic flag is useful for spectral analysis.

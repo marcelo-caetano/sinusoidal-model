@@ -67,7 +67,7 @@ function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_anal
 % Revised 2019 SMT 0.1.1
 % 2020 MCaetano SMT 0.1.2 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -15,7 +15,7 @@ function shift = causal_zeropad(framelen,causalflag)
 %   See also OLA, SINUSOIDAL_RESYNTHESIS_OLA, SINUSOIDAL_RESYNTHESIS_PI, SINUSOIDAL_RESYNTHESIS_PRFI
 
 % 2020 MCaetano SMT 0.2.0
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
+% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -9,7 +9,7 @@ function frame = sample2frame(sample,center_win,hop)
 %   See also FRAME2SAMPLE
 
 % 2016 M Caetano
-% 2020 MCaetano SMT 0.1.1 (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.1.1 (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
 
 
 % Return frame number (column vector)

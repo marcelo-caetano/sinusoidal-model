@@ -19,7 +19,7 @@ function freq = ind2freq(ind,fs,nfft,freqlimflag)
 %
 %   See also FREQ2IND, FREQ2BIN, BIN2FREQ, BIN2IND, IND2BIN, MKFREQ, NYQ_FREQ
 
-% 2020 MCaetano SMT 0.1.1% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.1.1% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
 
 
 % TODO: Check classes and dimensions of input arguments

@@ -32,7 +32,7 @@ function fig = mkfigwav(plotdata,axeslim,axeslbl,figlayout)
 %
 %   See also MKFIGSPEC, MKFIGSPECTROGRAM, MKFIGPEAKGRAM, MKFIGPARTTRACK, MKFIGSPECTROPEAKGRAM
 
-% 2020 MCaetano SMT 0.2.0% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
 
 
 % https://www.mathworks.com/help/matlab/creating_plots/save-figure-at-specific-size-and-resolution.html

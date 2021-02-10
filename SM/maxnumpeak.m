@@ -11,7 +11,7 @@ function [amp,freq,ph] = maxnumpeak(peak_amp,peak_freq,peak_ph,maxnpeak,nfft,nfr
 %   See also ABSDB, RELDB
 
 % 2020 MCaetano SMT 0.1.2 (Revised)
-% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
 
 
 % TODO: Add option to return only MAXNPEAK per frame: size(amp)=[MAXNPEAK,NFRAME]

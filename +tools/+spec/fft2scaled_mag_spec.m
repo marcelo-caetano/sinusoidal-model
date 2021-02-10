@@ -6,7 +6,7 @@ function [scaled_magspec,pow] = fft2scaled_mag_spec(fft_frame,framelen,nfft,winf
 
 % 2019 MCaetano SMT 0.1.0
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
 
 
 % Scale the magnitude spectrum

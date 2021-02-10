@@ -4,6 +4,9 @@ function offset = causal_offset(framelen,causalflag)
 %
 %   See also CAUSAL_ZEROPAD
 
+% 2021 M Caetano SMT% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+
+
 switch lower(causalflag)
     
     case 'causal'
@@ -28,7 +31,6 @@ switch lower(causalflag)
         
         offset = 0;
         
-end% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
-
+end
 
 end

@@ -7,7 +7,7 @@ function [p] = xqifft_temp(framelen,winflag)
 % 2019 MCaetano SMT 0.1.0
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
 
 
 XQIFFT = load('xqifft.mat');
