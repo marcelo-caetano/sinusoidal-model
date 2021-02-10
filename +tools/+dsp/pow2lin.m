@@ -15,7 +15,7 @@ function linmag = pow2lin(powmag,pow,tol)
 %   See also LIN2POW, LIN2LOG, LOG2LIN
 
 % 2021 MCaetano SMT
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 % TODO: Check inputs

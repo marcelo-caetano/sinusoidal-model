@@ -5,7 +5,7 @@ function [phpeak,ph_slope,ph_intercept] = phase_interp(freq,ph,freqpeak)
 % 2016 M Caetano
 % 2019 MCaetano SMT 0.1.0 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 % Number of frequency bins and number of frames

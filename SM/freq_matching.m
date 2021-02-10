@@ -11,7 +11,7 @@ function [amp,freq,ph] = freq_matching(amp,freq,ph,A,F,P,delta,hop,fs,ifr)
 % Speech, and Signal Processing ASSP-34(4),744-754.
 
 % 2020 MCaetano SMT 0.2.1 (Revised)
-% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 % Indices of numeric frequencies

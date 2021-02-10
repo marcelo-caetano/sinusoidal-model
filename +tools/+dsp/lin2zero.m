@@ -7,7 +7,7 @@ function zeroph = lin2zero(linphase,framelen)
 
 % 2016 MCaetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 % Left half of the window

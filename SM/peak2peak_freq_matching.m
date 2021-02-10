@@ -9,7 +9,7 @@ function [amp,freq,ph,npart] = peak2peak_freq_matching(amplitude,frequency,phase
 % AND SIGNAL PROCESSING, VOL. ASSP-34, NO. 4.
 
 % 2020 MCaetano SMT
-% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -10,7 +10,7 @@ function [addsynth,partial] = PRFI_resynthesis(amplitude,phase)
 % a sinusoidal speech model. Proc. ICASSP. vol. 9, pp. 441-444.
 
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 % Synthesize partials

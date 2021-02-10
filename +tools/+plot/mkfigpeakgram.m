@@ -38,7 +38,7 @@ function fig = mkfigpeakgram(plotdata,axeslim,axeslbl,figlayout)
 %
 %   See also MKFIGWAV, MKFIGSPEC, MKFIGSPECTROGRAM, MKFIGPARTTRACK, MKFIGSPECTROPEAKGRAM
 
-% 2020 MCaetano SMT 0.2.0% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 % https://www.mathworks.com/help/matlab/creating_plots/save-figure-at-specific-size-and-resolution.html

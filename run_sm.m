@@ -78,12 +78,6 @@ fprintf(1,'Sound %s\n',sndname);
 % Convert from stereo to mono
 wav = tools.wav.stereo2mono(wav);
 
-% Get number of samples
-nsample = length(wav);
-
-% Make time sample vector
-time_sample = tools.plot.mktime(nsample,fs);
-
 % Fundamental freq of source sound
 f0 = swipep_mod(wav,fs,[75 500],1000/fs,[],1/20,0.5,0.2);
 

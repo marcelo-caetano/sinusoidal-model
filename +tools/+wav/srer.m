@@ -14,7 +14,7 @@ function rms_db = srer(sig,res,lmsflag)
 %
 %   See also LIN2LOG, RMSDB
 
-% 2021 M Caetano SMT 0.3.2% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% 2021 M Caetano SMT 0.3.2% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

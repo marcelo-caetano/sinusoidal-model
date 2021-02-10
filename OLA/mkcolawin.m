@@ -23,7 +23,7 @@ function win = mkcolawin(framelen,winflag)
 % 2016 M Caetano
 % 2019 MCaetano (Revised)
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

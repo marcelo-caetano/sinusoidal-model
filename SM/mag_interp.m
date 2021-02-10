@@ -18,7 +18,7 @@ function [amppeak,freqpeak,a] = mag_interp(amp,freq)
 % 2016 M Caetano
 % Revised 2019 SMT 0.1.1
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2021 M Caetano SM 0.5.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
 
 
 amppeak = ((freq(:,:,2) - freq(:,:,1)).*(amp(:,:,3) - amp(:,:,1)).*(amp(:,:,3) + amp(:,:,1)) + ...
