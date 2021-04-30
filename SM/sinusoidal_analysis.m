@@ -1,8 +1,8 @@
 function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,...
-    winflag,causalflag,normflag,zphflag,magflag,ptrackflag)
+    winflag,causalflag,normflag,zphflag,scaleflag,ptrackflag)
 %SINUSOIDAL_ANALYSIS Perform sinusoidal analysis [1].
 %   [A,F,P,L,DC,CFR,NPART] = SINUSOIDAL_ANALYSIS(S,M,H,NFFT,FS,MAXNPEAK,
-%   RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,NORMFLAG,ZPHFLAG,MAGFLAG,DISPFLAG)
+%   RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,NORMFLAG,ZPHFLAG,SCALEFLAG,DISPFLAG)
 %   splits the input sound S into overlapping frames of length M with a hop
 %   size H and returns the amplitudes A, frequencies F, and phases P of the
 %   partials assumed to be the MAXNPEAK peaks with maximum power spectral
@@ -46,12 +46,12 @@ function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_anal
 %   phase or zero phase. Set ZPHFLAG = TRUE for zero phase and FALSE for
 %   linear phase.
 %
-%   MAGFLAG controls the scaling of the magnitude spectrum for parameter
+%   SCALEFLAG controls the scaling of the magnitude spectrum for parameter
 %   estimation.
-%   MAGFLAG = 'NNE' uses nearest neighbor estimation
-%   MAGFLAG = 'LIN' uses parabolic interpolation over linear scaling
-%   MAGFLAG = 'LOG' uses parabolic interpolation over log scaling
-%   MAGFLAG = 'POW' uses parabolic interpolation over power scaling
+%   SCALEFLAG = 'NNE' uses nearest neighbor estimation
+%   SCALEFLAG = 'LIN' uses parabolic interpolation over linear scaling
+%   SCALEFLAG = 'LOG' uses parabolic interpolation over log scaling
+%   SCALEFLAG = 'POW' uses parabolic interpolation over power scaling
 %
 %   PTRACKFLAG controls partial tracking. Set PTRACKFLAG = 'P2P' to use
 %   peak-to-peak partial tracking. PTRACKFLAG = '' (empty string) sets the
@@ -107,7 +107,7 @@ disp('Sinusoidal Analysis')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Scale the magnitude spectrum (Linear, Log, Power)
-[mag_spec,pow] = tools.spec.fft2scaled_mag_spec(fft_frame,framelen,nfft,winflag,magflag);
+[mag_spec,pow] = tools.spec.fft2scaled_mag_spec(fft_frame,framelen,nfft,winflag,scaleflag);
 
 % Unwrap the phase spectrum
 ph_spec = tools.spec.fft2unwrapped_phase_spec(fft_frame,nfft,true);
@@ -119,7 +119,7 @@ ph_spec = tools.spec.fft2unwrapped_phase_spec(fft_frame,nfft,true);
 % Peak picking
 [amp_peak,freq_peak,ph_peak] = peak_picking(mag_spec,ph_spec,nfft,fs);
 
-if strcmpi(magflag,'nne')
+if strcmpi(scaleflag,'nne')
     
     % No interpolation for NNE (nearest neighbor estimation)
     amplitude = amp_peak(:,:,2);
@@ -137,7 +137,7 @@ else
 end
 
 % Revert magnitude spectrum scaling
-amplitude = tools.spec.revert_mag_spec_scaling(amplitude,pow,magflag);
+amplitude = tools.spec.revert_mag_spec_scaling(amplitude,pow,scaleflag);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SPECTRAL POST-PROCESSING

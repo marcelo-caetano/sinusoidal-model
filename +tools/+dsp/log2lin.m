@@ -1,21 +1,21 @@
-function linmag = log2lin(logmag,magflag,realflag,tol)
+function linmag = log2lin(logmag,scaleflag,realflag,tol)
 %LIN2LOG Convert from log to linear amplitude.
-%   LINMAG = LOG2LIN(LOGMAG,MAGFLAG) scales the log magnitude spectrum
-%   LOGMAG to the linear scale specified by the string MAGFLAG, which
+%   LINMAG = LOG2LIN(LOGMAG,SCALEFLAG) scales the log magnitude spectrum
+%   LOGMAG to the linear scale specified by the string SCALEFLAG, which
 %   can be 'DBR' for decibel root-power, 'DBP' for decibel power, 'BEL' for
 %   bels, 'NEP' for neper, and 'OCT' for octave.
 %
 %   DBR uses 10.^(LOGMAG/10), DBP uses 10.^(LOGMAG/20), BEL uses
 %   10.^(LOGMAG), NEP uses EXP, and OCT uses 2.^(LOGMAG).
 %
-%   LINMAG = LOG2LIN(LOGMAG,MAGFLAG,REALFLAG) uses the logical flag
+%   LINMAG = LOG2LIN(LOGMAG,SCALEFLAG,REALFLAG) uses the logical flag
 %   REALFLAG to handle complex LOGMAG. REALFLAG = TRUE forces LINMAG to be
 %   real and the default LINMAG = FALSE outputs complex LINMAG when the
 %   following condition fails ALL(IMAG(LINMAG) < TOL). The default value
 %   TOL = 1E-10 can be customized by calling LOG2LIN with four input
 %   arguments as described below.
 %
-%   LINMAG = LOG2LIN(LOGMAG,MAGFLAG,REALFLAG,TOL) uses TOL to specify the
+%   LINMAG = LOG2LIN(LOGMAG,SCALEFLAG,REALFLAG,TOL) uses TOL to specify the
 %   minimum tolerance to consider the value of imaginary part as
 %   floating-point conversion error. Use TOL to guarantee that LOG2LIN
 %   reverses the effect of LIN2LOG for negative input. The condition
@@ -56,7 +56,7 @@ end
 % FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-switch lower(magflag)
+switch lower(scaleflag)
     
     case 'dbr'
         
@@ -81,9 +81,9 @@ switch lower(magflag)
     otherwise
         
         warning('SMT:LOG2LIN:InvalidMagFlag', ['Invalid Magnitude Scaling Flag.\n'...
-            'MAGFLAG must be DBR, DBP, NEP, OCT, or BEL.\n'...
+            'SCALEFLAG must be DBR, DBP, NEP, OCT, or BEL.\n'...
             'Flag entered was %s\n.'...
-            'Using default magnitude scaling flag DBP'],magflag)
+            'Using default magnitude scaling flag DBP'],scaleflag)
         
         magscale = @(x) 10.^(x/20);
         

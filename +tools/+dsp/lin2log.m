@@ -1,12 +1,12 @@
-function logmag = lin2log(linmag,magflag,nanflag)
+function logmag = lin2log(linmag,scaleflag,nanflag)
 %LIN2LOG Convert from linear to log amplitude.
-%   LOGMAG = LIN2LOG(LINMAG,MAGFLAG) scales the linear magnitude spectrum
-%   LINMAG to the logarithmic scale specified by the string MAGFLAG, which
+%   LOGMAG = LIN2LOG(LINMAG,SCALEFLAG) scales the linear magnitude spectrum
+%   LINMAG to the logarithmic scale specified by the string SCALEFLAG, which
 %   can be 'DBR' for decibel root-power, 'DBP' for decibel power, 'BEL' for
 %   bels, 'NEP' for neper, and 'OCT' for octave. DBR uses 10*log10, DBP
 %   uses 20*log10, BEL uses log10, NEP uses ln, and OCT uses log2.
 %
-%   LOGMAG = LIN2LOG(LINMAG,MAGFLAG,NANFLAG) uses NANFLAG to handle the
+%   LOGMAG = LIN2LOG(LINMAG,SCALEFLAG,NANFLAG) uses NANFLAG to handle the
 %   case LINMAG = 0. NANFLAG = TRUE replaces 0 with eps(0) to avoid -Inf in
 %   LOGMAG. NANFLAG = FALSE ignores 0 in LINMAG. Use NANFLAG = TRUE to get
 %   numeric values in LOGMAG. NANFLAG defaults to FALSE when LIN2LOG is
@@ -40,7 +40,7 @@ if nargin == 2
     
 end
 
-switch lower(magflag)
+switch lower(scaleflag)
     
     case 'bel'
         
@@ -65,8 +65,8 @@ switch lower(magflag)
     otherwise
         
         warning(['SMT:InvalidMagFlag: Invalid Magnitude Scaling Flag.\n'...
-            'MAGFLAG must be DBR, DBP, NEP, OCT, or BEL.\n'...
-            'MAGFLAG entered was %d. Using default MAGFLAG = DBP'],magflag);
+            'SCALEFLAG must be DBR, DBP, NEP, OCT, or BEL.\n'...
+            'SCALEFLAG entered was %d. Using default SCALEFLAG = DBP'],scaleflag);
         
         magscale = @(x) 20*log10(x);
         

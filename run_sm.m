@@ -19,7 +19,7 @@ lmsflag = {'dbr','dbp','nep','oct','bel'};
 lmsf = 2;
 
 % Magnitude spectrum scaling
-magflag = {'nne','lin','log','pow'};
+scaleflag = {'nne','lin','log','pow'};
 mf = 3;
 
 % Number of fundamental periods
@@ -101,7 +101,7 @@ delta = tools.dsp.freq_diff4peak_matching(ref0);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [amplitude,frequency,phase,nsample,ds,center_frame,npartial,nframe] = sinusoidal_analysis(wav,...
-    framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,winflag,causalflag{cf},normflag,zphflag,magflag{mf},ptrackflag{ptrck});
+    framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,winflag,causalflag{cf},normflag,zphflag,scaleflag{mf},ptrackflag{ptrck});
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIGURE PARAMETERS

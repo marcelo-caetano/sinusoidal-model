@@ -1,6 +1,6 @@
-function magspec = revert_mag_spec_scaling(scaled_magspec,pow,magflag)
+function magspec = revert_mag_spec_scaling(scaled_magspec,pow,scaleflag)
 %REVERT_MAG_SPEC_SCALING Revert scaling of magnitude spectrum.
-%   MAGSPEC = REVERT_MAG_SPEC_SCALING(SCALED_MAGSPEC,POW,MAGFLAG)
+%   MAGSPEC = REVERT_MAG_SPEC_SCALING(SCALED_MAGSPEC,POW,SCALEFLAG)
 %
 %   See also FFT2SCALED_MAG_SPEC
 
@@ -11,7 +11,7 @@ function magspec = revert_mag_spec_scaling(scaled_magspec,pow,magflag)
 
 
 % Unscale the magnitude spectrum
-switch lower(magflag)
+switch lower(scaleflag)
     
     case {'nne','lin'}
         
@@ -32,9 +32,9 @@ switch lower(magflag)
         
         warning('SMT:FFT2SCALED_MAG_SPEC:invalidFlag',...
             ['Invalid Magnitude Scaling Flag.\n'...
-            'MAGFLAG must be LOG, LIN, or POW.\n'...
-            'MAGFLAG entered was %d.\n'...
-            'Using default MAGFLAG = LOG.\n'],scaleflag)
+            'SCALEFLAG must be LOG, LIN, or POW.\n'...
+            'SCALEFLAG entered was %d.\n'...
+            'Using default SCALEFLAG = LOG.\n'],scaleflag)
         
         % From log to linear
         magspec = tools.dsp.log2lin(scaled_magspec,'dbp');

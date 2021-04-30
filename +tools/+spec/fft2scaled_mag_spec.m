@@ -1,6 +1,6 @@
 function [scaled_magspec,pow] = fft2scaled_mag_spec(fft_frame,framelen,nfft,winflag,scaleflag)
 %FFT2SCALED_MAG_SPEC Scale magnitude spectrum.
-%   [SMAGSPEC,POW] = FFT2SCALED_MAG_SPEC(FFTFR,M,NFFT,WINFLAG,MAGFLAG)
+%   [SMAGSPEC,POW] = FFT2SCALED_MAG_SPEC(FFTFR,M,NFFT,WINFLAG,SCALEFLAG)
 %
 %   See also SCALED_MAGNITUDE_SPECTRUM2MAGNITUDE_SPECTRUM
 
@@ -40,9 +40,9 @@ switch lower(scaleflag)
         
         warning('SMT:FFT2SCALED_MAG_SPEC:invalidFlag',...
             ['Invalid Magnitude Scaling Flag.\n'...
-            'MAGFLAG must be LOG, LIN, or POW.\n'...
-            'MAGFLAG entered was %d.\n'...
-            'Using default MAGFLAG = LOG.\n'],scaleflag)
+            'SCALEFLAG must be LOG, LIN, or POW.\n'...
+            'SCALEFLAG entered was %d.\n'...
+            'Using default SCALEFLAG = LOG.\n'],scaleflag)
         
         % Power scaling
         pow = 1;
