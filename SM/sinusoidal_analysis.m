@@ -1,24 +1,25 @@
-function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,...
-    winflag,causalflag,normflag,zphflag,scaleflag,ptrackflag)
+function [amp,freq,ph,center_frame,npartial,nsample,nframe,nchannel,dc] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,...
+    winflag,causalflag,paramestflag,ptrackflag,normflag,zphflag,frequnitflag,npeakflag)
 %SINUSOIDAL_ANALYSIS Perform sinusoidal analysis [1].
-%   [A,F,P,L,DC,CFR,NPART] = SINUSOIDAL_ANALYSIS(S,M,H,NFFT,FS,MAXNPEAK,
-%   RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,NORMFLAG,ZPHFLAG,SCALEFLAG,DISPFLAG)
-%   splits the input sound S into overlapping frames of length M with a hop
-%   size H and returns the amplitudes A, frequencies F, and phases P of the
-%   partials assumed to be the MAXNPEAK peaks with maximum power spectral
-%   amplitude.
+%   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   PARAMESTFLAG) splits the input sound S into overlapping frames of length
+%   M with a hop size H and returns the amplitudes A, frequencies F, and
+%   phases P of the partials assumed to be the MAXNPEAK peaks with maximum
+%   power spectral amplitude. NFFT is the size of the FFT used for stectral
+%   analysis and Fs is the sampling frequency.
 %
 %   RELTHRES is a numeric value in dB that sets the minumum spectral energy
 %   of a peak (relative to the maximum energy inside the frame) to be
 %   included among the output spectral peaks. Spectral peaks whose relative
 %   energy is lower than RELTHRES dB are discarded. Set RELTHRES = -Inf to
-%   include all spectral peaks found inside each frame.
+%   turn off the relative threshold RELTHRES.
 %
 %   ABSTHRES is a numeric value in dB that sets the minumum spectral energy
 %   of a peak (relative to the maximum energy of the entire waveform) to be
 %   included among the output spectral peaks. Spectral peaks whose absolute
 %   energy is lower than ABSTHRES dB are discarded. Set ABSTHRES = -Inf to
-%   include all spectral peaks found across the duration of the waveform.
+%   turn off the absolute threshold ABSTHRES.
 %
 %   DELTA sets the frequency interval in Hz around each spectral peak used
 %   in the peak-to-peak continuation algorithm (also P2P partial tracking).
@@ -26,36 +27,63 @@ function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_anal
 %   WINFLAG is a numerical flag that controls the window used. Type HELP
 %   WHICHWIN to see the possibilities.
 %
-%   CAUSALFLAG controls the placement of the causalflag of the first analysis window
+%   CAUSALFLAG controls the placement of the first analysis window
 %   CAUSALFLAG = 'NCAUSAL' places the first analysis window just before the
 %   first sample of the waveform being analyzed, so the rightmost window
 %   sample must be shifted by one position to the right to overlap with the
 %   first sample of the waveform.
-%   CAUSALFLAG = 'NON' places the sample at the causalflag of the first analysis
+%   CAUSALFLAG = 'NON' places the sample at the center of the first analysis
 %   window at the first sample of the waveform, so the left half of the
 %   window is outside the signal range and the right half of the window
 %   overlaps with the waveform.
-%   CAUSALFLAG = 'CAUSAL' places the first analysis window entirely overlapping
-%   with the waveform being analyzed, so the leftmost window sample
-%   coincides with the first sample of the waveform.
+%   CAUSALFLAG = 'CAUSAL' places the first analysis window entirely
+%   overlapping with the waveform being analyzed, so the leftmost window
+%   sample coincides with the first sample of the waveform.
 %
-%   NORMFLAG is a logical flag that controls normalization of the analysis
-%   window. Set NORMFLAG = TRUE to normalize and FALSE otherwise.
+%   PARAMESTFLAG controls the scaling of the magnitude spectrum for
+%   parameter estimation.
+%   PARAMESTFLAG = 'NNE' uses nearest neighbor estimation
+%   PARAMESTFLAG = 'LIN' uses parabolic interpolation over linear scaling
+%   PARAMESTFLAG = 'LOG' uses parabolic interpolation over log scaling
+%   PARAMESTFLAG = 'POW' uses parabolic interpolation over power scaling
 %
-%   ZPHFLAG is a logical flag that controls if the analysis window has linear
-%   phase or zero phase. Set ZPHFLAG = TRUE for zero phase and FALSE for
-%   linear phase.
+%   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   PARAMESTFLAG,PTRACKFLAG) uses the text flag PTRACKFLAG to control
+%   partial tracking. PTRACKFLAG = 'P2P' uses peak-to-peak partial
+%   tracking and PTRACKFLAG = '' (empty string) specifies no partial
+%   tracking. The default is PTRACKFLAG = '' for no partial tracking.
 %
-%   SCALEFLAG controls the scaling of the magnitude spectrum for parameter
-%   estimation.
-%   SCALEFLAG = 'NNE' uses nearest neighbor estimation
-%   SCALEFLAG = 'LIN' uses parabolic interpolation over linear scaling
-%   SCALEFLAG = 'LOG' uses parabolic interpolation over log scaling
-%   SCALEFLAG = 'POW' uses parabolic interpolation over power scaling
+%   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   PARAMESTFLAG,PTRACKFLAG,NORMFLAG) uses the logical flag NORMFLAG to
+%   control normalization of the analysis window. NORMFLAG = TRUE
+%   normalizes the analysis window and NORMFLAG = FALSE does not. The
+%   default is NORMFLAG = TRUE.
 %
-%   PTRACKFLAG controls partial tracking. Set PTRACKFLAG = 'P2P' to use
-%   peak-to-peak partial tracking. PTRACKFLAG = '' (empty string) sets the
-%   default behavior of no partial tracking.
+%   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   PARAMESTFLAG,PTRACKFLAG,NORMFLAG,ZPHFLAG) uses the logical flag ZPHFLAG
+%   to specify whether the analysis window has linear phase or zero phase.
+%   ZPHFLAG = TRUE uses a zero phase analysis window and ZPHFLAG = FALSE
+%   uses a linear phase analysis window. The default is ZPHFLAG = TRUE.
+%
+%   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   PARAMESTFLAG,PTRACKFLAG,NORMFLAG,ZPHFLAG,FREQUNITFLAG) uses the logical
+%   flag FREQUNITFLAG to control the unit of the frequency estimates.
+%   FREQUNITFLAG = TRUE estimates frequencies in Hz directly and
+%   FREQUNITFLAG = FALSE estimates in frequency bin number prior to
+%   conversion to Hz. The default is FREQUNITFLAG = TRUE.
+%
+%   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   PARAMESTFLAG,PTRACKFLAG,NORMFLAG,ZPHFLAG,FREQUNITFLAG,NPEAKFLAG) uses
+%   the logical flag NPEAKFLAG to specify whether the estimation of
+%   parameters should output MAXNPEAK rows instead of NBIN rows, where NBIN
+%   is the number of positive frequency bins. NPEAKFLAG = TRUE sets
+%   MAXNPEAK and NPEAKFLAG = FALSE sets NBIN rows. The default is
+%   NPEAKFLAG = FALSE.
 %
 %   See also SINUSOIDAL_RESYNTHESIS
 %
@@ -67,7 +95,8 @@ function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_anal
 % Revised 2019 SMT 0.1.1
 % 2020 MCaetano SMT 0.1.2 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -75,23 +104,56 @@ function [amp,freq,ph,nsample,dc,center_frame,npartial,nframe] = sinusoidal_anal
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Check number of input arguments
-narginchk(14,15);
+narginchk(12,17);
 
 % Check number of output arguments
-nargoutchk(0,8);
+nargoutchk(0,9);
 
-if nargin == 14
+if nargin == 12
     
     ptrackflag = '';
+    
+    normflag = true;
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+elseif nargin == 13
+    
+    normflag = true;
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+elseif nargin == 14
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+elseif nargin == 15
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+elseif nargin == 16
+    
+    npeakflag = false;
     
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Import namespace for STFT
-% import STFT.stft
 
 disp('Sinusoidal Analysis')
 
@@ -100,51 +162,20 @@ disp('Sinusoidal Analysis')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Short-Time Fourier Transform from namespace STFT
-[fft_frame,nsample,dc,center_frame,nframe] = STFT.stft(wav,framelen,hop,nfft,winflag,causalflag,normflag,zphflag);
+[fft_frame,center_frame,nsample,nframe,nchannel,dc] = STFT.stft(wav,framelen,hop,nfft,winflag,causalflag,normflag,zphflag);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FOURIER SPECTRUM PRE-PROCESSING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Estimation of parameters of sinusoids
+[amplitude,frequency,phase] = parameter_estimation(fft_frame,framelen,nfft,fs,nframe,nchannel,maxnpeak,winflag,paramestflag,frequnitflag,npeakflag);
 
-% Scale the magnitude spectrum (Linear, Log, Power)
-[mag_spec,pow] = tools.spec.fft2scaled_mag_spec(fft_frame,framelen,nfft,winflag,scaleflag);
-
-% Unwrap the phase spectrum
-ph_spec = tools.spec.fft2unwrapped_phase_spec(fft_frame,nfft,true);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PARAMETER ESTIMATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Peak picking
-[amp_peak,freq_peak,ph_peak] = peak_picking(mag_spec,ph_spec,nfft,fs);
-
-if strcmpi(scaleflag,'nne')
+if ~frequnitflag
     
-    % No interpolation for NNE (nearest neighbor estimation)
-    amplitude = amp_peak(:,:,2);
-    frequency = freq_peak(:,:,2);
-    phase = ph_peak(:,:,2);
-    
-else
-    
-    % Magnitude interpolation (quadratic)
-    [frequency,amplitude] = mag_interp(freq_peak,amp_peak);
-    
-    % Phase interpolation (linear)
-    phase = phase_interp(freq_peak,ph_peak,frequency);
+    frequency = tools.spec.bin2freq(frequency,fs,nfft);
     
 end
-
-% Revert magnitude spectrum scaling
-amplitude = tools.spec.revert_mag_spec_scaling(amplitude,pow,scaleflag);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SPECTRAL POST-PROCESSING
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Return only the MAXNPEAK highest amplitude peaks
-[amplitude,frequency,phase] = maxnumpeak(amplitude,frequency,phase,maxnpeak,nfft,nframe);
 
 % Apply absolute threshold
 [amplitude,frequency,phase] = absdb(amplitude,frequency,phase,absthres);
@@ -159,7 +190,6 @@ amplitude = tools.spec.revert_mag_spec_scaling(amplitude,pow,scaleflag);
 % Handle partial tracking
 if ~isempty(ptrackflag)
     
-    % Partial tracking
     [amp,freq,ph,npartial] = partial_tracking(amplitude,frequency,phase,delta,hop,fs,nframe,ptrackflag);
     
 else

@@ -1,20 +1,21 @@
 function hop = hopsize(framelen,overlap)
-%HOPSIZE Returns the hop size.
-%   H = HOPSIZE(LFRAME) returns the hop size H corresponding to 50% overlap
-%   of consecutive frames.
+%HOPSIZE Hop size corresponding to overlap.
+%   H = HOPSIZE(FRAMELEN) returns the hop size H corresponding to 50%
+%   overlap of consecutive frames.
 %
-%   H = HOPSIZE(LFRAME,OVERLAP) returns H corresponding to consecutive
+%   H = HOPSIZE(FRAMELEN,OVERLAP) returns H corresponding to consecutive
 %   frames overlapping by 0 <= OVERLAP < 1. OVERLAP = 0 means no overlap,
-%   so the frames will be adjacent with H = LFRAME. Note that OVERLAP = 1
+%   so the frames will be adjacent with H = FRAMELEN. Note that OVERLAP = 1
 %   is not allowed because it implies H = 0.
 %
 %   See also FRAMESIZE, FFTSIZE, CEPSORDER
 
-% 2020 MCaetano SMT 0.1.1% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2020 MCaetano SMT 0.1.1
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CHECK INPUT ARGUMENTS
+% CHECK ARGUMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Number of input arguments
@@ -32,15 +33,16 @@ end
 % Edge case OVERLAP = 1 - 1e-16 (lower values OVERLAP == 1)
 if overlap < 0 || overlap >= 1
     
-    warning(['SMT:wrongInputArgValue: ','OVERLAP must be between 0 and 1.\n'...
-        'Value entered was %2.5g. Using default value OVERLAP = 0.5\n'],overlap);
+    warning('SMT:HOPSIZE:InvalidInputArgument',['OVERLAP must be between 0 and 1.\n'...
+        'Value entered was %2.5g.\n'...
+        'Using default value OVERLAP = 0.5\n'],overlap);
     
     overlap = 0.5;
     
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BODY OF FUNCTION
+% FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Remaining fraction

@@ -1,54 +1,52 @@
-function logmagspec = fft2log_mag_spec(fft_frame,nfft,lmsflag,posfreqflag,nrgflag,nanflag)
+function logmagspec = fft2log_mag_spec(fft_frame,nfft,logflag,posfreqflag,nrgflag,nanflag)
 %FFT2LOG_MAG_SPEC From complex FFT to log magnitude spectrum.
 %   LMS = FFT2LOG_MAG_SPEC(FFT) retuns the log magnitude spectrum
-%   LMS of the full frequency range of the complex FFT vector or matrix in
-%   dB power. FFT can be either an NFFT x 1 column vector or NFFT x NFRAME
-%   matrix with NFRAME frames of the STFT. LMS is the same size as FFT.
+%   LMS of the full frequency range of the complex FFT multi-dimensional
+%   array in dB power. FFT is size NFFT x NFRAME x NCHANNEL, where NFFT is
+%   the FFT size, NFRAME is the number of frames of the STFT, and NCHANNEL
+%   is the number of channels of the original signal S transformed with the
+%   STFT. NCHANNEL = 1 for mono, NCHANNEL = 2 for stereo, and so on. FFT is
+%   a colum vector when NFRAME = 1 and NCHANNEL = 1. LMS will have the same
+%   size as FFT.
 %
 %   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT) uses NFFT as the size of the
 %   FFT.
 %
-%   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LMSFLAG) uses the string
-%   LMSFLAG to specify the magnitude scaling of the spectrum. LMSFLAG can
-%   be 'DBR' for dB root-power, 'DBP' for dB power, 'NEP' for neper, 'OCT'
-%   for octave, and 'BEL' for bels.
+%   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LOGFLAG) uses the text flag LOGFLAG to
+%   specify the magnitude scaling of the spectrum. LOGFLAG can be 'DBR' for
+%   dB root-power, 'DBP' for dB power, 'NEP' for neper, 'OCT' for octave,
+%   and 'BEL' for bels.
 %
-%   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LMSFLAG,POSFREQFLAGFLAG) uses
+%   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LOGFLAG,POSFREQFLAGFLAG) uses
 %   the logical flag POSFREQFLAG to specify the frequency range of LMS.
 %   POSFREQFLAG = FALSE is the default to output the full frequency range
 %   of the log magnitude spectrum. POSFREQFLAG = TRUE forces
 %   FFT2LOG_MAG_SPEC to output the positive half of the FFT.
-%   LMS is NFFT/2+1 x NFRAME, where NFFT/2+1 is the number of _nonnegative_
-%   frequency bins of the FFT.
+%   LMS is NBIN x NFRAME x NCHANNEL, where NBIN = NFFT/2+1 is the number of
+%   _non-negative_ frequency bins of the FFT.
 %
-%   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LMSFLAG,POSFREQFLAGFLAG,
+%   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LOGFLAG,POSFREQFLAGFLAG,
 %   NRGFLAG) uses the logical flag NRGFLAG to specify if LMS should also
 %   contain the spectral energy of the negative frequency bins.
 %   NRGFLAG = TRUE adds the negative frequency energy to the log magnitude
 %   spectrum and NRGFLAG = FALSE does not. The default is NRGFLAG = FALSE.
-%   POSFREQFLAG must be TRUE when NRGFLAG = TRUE.
+%   POSFREQFLAG must be TRUE when NRGFLAG = TRUE, otherwise
+%   FFT2LOG_MAG_SPEC issues a warning and forces POSFREQFLAG = TRUE.
 %
-%   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LMSFLAG,POSFREQFLAGFLAG,
+%   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LOGFLAG,POSFREQFLAGFLAG,
 %   NRGFLAG,NANFLAG) uses the logical flag NANFLAG to handle the case
 %   FFT = 0. NANFLAG = TRUE replaces 0 with eps(0) to avoid -Inf in LMS
 %   because log(0) = -Inf. NANFLAG = FALSE does not replace 0 in FFT. Use
 %   NANFLAG = TRUE to get only numeric values in LMS. NANFLAG defaults to
 %   FALSE for the previous syntaxes.
 %
-%   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LMSFLAG,POSFREQFLAGFLAG,
-%   NRGFLAG,NANFLAG) uses the logical flag NANFLAG to handle the case where
-%   FFT = 0 that results in LMS = -Inf. NANFLAG = TRUE replaces 0 with
-%   eps(0) to avoid -Inf in LMS. The default value NANFLAG = FALSE  ignores
-%   0 in FFT when FFT2LOG_MAG_SPEC is called with fewer than 6
-%   input arguments. Use NANFLAG = TRUE to get only numeric values in LMS.
-%
-%   See also FFT2UNWRAP_PHASE_SPEC, FFT2MAG_SPEC,
-%   FFT2PHASE_SPEC, FFT2POS_MAG_SPEC,
+%   See also FFT2LIN_PHASE_SPEC, FFT2POW_MAG_SPEC, FFT2SCALED_PHASE_SPEC
 %   FFT2POS_PHASE_SPEC
 
 % 2020 MCaetano SMT 0.1.2
 % 2020 MCaetano SMT 0.2.1
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,7 +63,7 @@ if nargin == 1
     
     [nfft,~] = size(fft_frame);
     
-    lmsflag = 'dbp';
+    logflag = 'dbp';
     
     posfreqflag = false;
     
@@ -75,7 +73,7 @@ if nargin == 1
     
 elseif nargin == 2
     
-    lmsflag = 'dbp';
+    logflag = 'dbp';
     
     posfreqflag = false;
     
@@ -108,7 +106,7 @@ end
 
 if nfft ~= nrow
     
-    warning('SMT:LOG_MAGNITUDE_SPECTRUM:invalidInputArgument',...
+    warning('SMT:FFT2LOG_MAG_SPEC:invalidInputArgument',...
         ['Input argument NFFT does not match the dimensions of FFT.\n'...
         'FFT must be NFFT x NFRAME.\nSize of FFT entered was %d x %d.\n'...
         'NFFT entered was %d.\nUsing NFFT = %d'],nrow,ncol,nfft,nrow);
@@ -120,7 +118,7 @@ end
 % POSFREQFLAG must be TRUE when NRGFLAG is TRUE
 if nrgflag && ~posfreqflag
     
-    warning('SMT:LOG_MAGNITUDE_SPECTRUM:wrongFlagCombination',...
+    warning('SMT:FFT2LOG_MAG_SPEC:wrongFlagCombination',...
         ['POSFREQFLAG must be TRUE when NRGFLAG is TRUE.\n'...
         'POSFREQFLAG entered was %d but NRGFLAG entered was %d.\n'...
         'Using POSFREQFLAG = TRUE'],posfreqflag,nrgflag);
@@ -136,16 +134,16 @@ end
 if posfreqflag
     
     % Positive magnitude spectrum
-    magspec = tools.spec.fft2pos_mag_spec(fft_frame,nfft,nrgflag);
+    magspec = tools.fft2.fft2pos_mag_spec(fft_frame,nfft,nrgflag);
     
 else
     
     % Full magnitude spectrum
-    magspec = tools.spec.fft2mag_spec(fft_frame);
+    magspec = tools.fft2.fft2mag_spec(fft_frame);
     
 end
 
 % Log magnitude spectrum
-logmagspec = tools.dsp.lin2log(magspec,lmsflag,nanflag);
+logmagspec = tools.math.lin2log(magspec,logflag,nanflag);
 
 end

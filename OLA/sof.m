@@ -1,4 +1,4 @@
-function [time_frame,nsample,dc,center_frame,nframe] = sof(wav,framelen,hop,winflag,causalflag,normflag)
+function [time_frame,center_frame,nsample,nframe,nchannel,dc] = sof(wav,framelen,hop,winflag,causalflag,normflag)
 %SOF Split into overlapping frames.
 %   FR = SOF(S,M,H,WINFLAG,CAUSALFLAG,NORMFLAG) splits the input S into
 %   overlapping frames FR of length M with a hop size H.
@@ -13,24 +13,27 @@ function [time_frame,nsample,dc,center_frame,nframe] = sof(wav,framelen,hop,winf
 %   6 - Blackman-Harris
 %   7 - Hamming
 %
-%   CAUSALFLAG is a string that determines the causalflag of the first analysis
-%   window. CAUSALFLAG can be 'NON', 'CAUSAL', or 'NCAUSAL'. The sample CENTERWIN
-%   corresponding to the causalflag of the first window is obtained as
-%   CENTERWIN = tools.dsp.tools.dsp.centerwin(M,CAUSALFLAG).
+%   CAUSALFLAG is a character flag that determines the causality of the
+%   window. CAUSALFLAG can be 'ANTI', 'NON', or 'CAUSAL' for anti-causal,
+%   non-causal, or causal respectively. The sample CENTERWIN corresponding
+%   to the center of the first window is obtained as
+%   CENTERWIN = tools.dsp.centerwin(M,CAUSALFLAG).
 %
 %   NORMFLAG is a boolean that specifies if the window is normalized as
-%   normw(n)=w(n)/sum(w(n)). NORMFLAG=TRUE normalizes and FALSE does not.
+%   normw(n)=w(n)/sum(w(n)). NORMFLAG = TRUE normalizes and FALSE does not.
 %
-%   [FR,NSAMPLE,DC,CFR] = SOF(...) also returns the original length NSAMPLE
-%   of S (in samples), the dc value DC of S, and the vector CFR with the
-%   samples corresponding to the causalflag of the time frames FR.
+%   [FR,CFR,NSAMPLE,NFRAME,NCHANNEL,DC] = SOF(...) also returns the vector
+%   CFR with the samples corresponding to the center of the time frames FR,
+%   the original number of time samples NSAMPLE of S, the number of frames
+%   NFRAME, the number of channels NCHANNEL, AND the dc value DC of S.
 %
 %   See also OLA
 
 % 2016 M Caetano
 % 2019 MCaetano (Revised)
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised for stereo)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,7 +44,7 @@ function [time_frame,nsample,dc,center_frame,nframe] = sof(wav,framelen,hop,winf
 narginchk(6,6);
 
 % Check number of output arguments
-nargoutchk(0,5);
+nargoutchk(0,6);
 
 %TODO: CHECK INPUTS (CLASS/VALUE/NAN)
 %TODO: HANDLE STEREO SOUNDS
@@ -74,13 +77,14 @@ noverlap = framelen - hop;
 %hop == framelen
 if noverlap == 0
     
-    warning('SMT:AdjacentFrames',['Frames are adjacent.\n'...
-        'Frames do not overlap.\n Typically, consecutive time frames overlap by 50%.']);
+    warning('SMT:SOF:AdjacentFrames',...
+        ['Frames are adjacent.\nFrames do not overlap.\n'...
+        'Typically, consecutive time frames overlap by 50%.']);
     
     %hop > framelen
 elseif noverlap < 0
     
-    warning('SMT:NonOverlappingFrames',['Frames do not overlap.\n'...
+    warning('SMT:SOF:NonOverlappingFrames',['Frames do not overlap.\n'...
         'There is a gap of %d samples between consecutive time frames.'],...
         abs(noverlap));
     
@@ -91,22 +95,25 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make analysis window
-analysis_window = mkcolawin(framelen,winflag);
+analysis_window = tools.ola.mkcolawin(framelen,winflag);
+
+% Window normalization factor
+normwin = sum(analysis_window);
 
 % Normalize analysis window energy
 if normflag
     % sum(ANALYSIS_WINDOW) = 1
-    dc = sum(analysis_window);
-    analysis_window = analysis_window/dc;
+    analysis_window = analysis_window/normwin;
+    dc = 1;
 else
     % No normalization
-    dc = 1;
+    dc = normwin;
 end
 
 % Number of time_frame
 nframe = tools.dsp.numframe(nsample,framelen,hop,causalflag);
 
-% Center of first window
+% Position of the center of the first window in samples (signal reference)
 cfwin = tools.dsp.centerwin(framelen,causalflag);
 
 % Center of each frame in signal reference
@@ -117,7 +124,7 @@ end
 % LOCAL FUNCTION THAT EXECUTES SOF
 function [windowed_frames,nsample,center_frame] = sofexe(wav,nsample,analysis_window,framelen,center_frame,nframe,nchannel)
 
-% Initialize the matrix FRAMES that will hold the signal time_frame
+% Initialize the matrix FRAMES that will hold the time frames
 time_frame = zeros(framelen,nframe,nchannel);
 
 % Initialize WINDOWED_FRAMES

@@ -1,89 +1,110 @@
-function [peakamp,peakfreq,peakph] = peak_picking(magspec,phspec,nfft,fs)
+function [peakamp,peakfreq,peakph] = peak_picking(magspec,phspec,nfft,fs,nframe,freqlimflag,funitflag)
 % PEAK_PICKING amplitudes, frequencies, and phases of the spectral peaks.
-%   [A,F,P] = PEAK_PICKING(MAG,PH,NFFT,Fs) returns the amplitudes A, the 
-%   frequencies F, and the phases P corresponding to the peaks of the 
+%   [A,F,P] = PEAK_PICKING(MAG,PH,NFFT,Fs,NFRAME) returns the amplitudes A,
+%   the frequencies F, and the phases P corresponding to the peaks of the
 %   DFT spectrum. MAG is the magnitude spectrum, PH is the phase spectrum,
 %   NFFT is the size of the FFT, and Fs is the sampling frequency.
 %
-%   MAG is used to return A, PH is used to return P in radians, and NFFT 
+%   MAG is used to return A, PH is used to return P in radians, and NFFT
 %   and Fs are used to return F in Hertz. Both MAG and PH only have the
-%   nonnegative frequency half of the DFT spectrum (from 0 to Nyquist), so
+%   non-negative frequency half of the DFT spectrum (from 0 to Nyquist), so
 %   both are size NBIN x NFRAME, where NBIN = NFFT/2+1.
 %
-%   A, F, and P are used in the magnitude and phase interpolation steps of 
-%   sinusoidal analysis. A, F, and P are size NBIN x NFRAME x 3. The 3 
-%   pages correspond to the bin of the spectral peak and its immediate 
-%   neighbors on the left and on the right. The output order is 
-%   [left neighbor, spectral peak, right neighbor]. A, F, and P contain NaN 
-%   for positions that do not correspond to peaks.
+%   A, F, and P are used in the magnitude and phase interpolation steps of
+%   sinusoidal analysis. A, F, and P are structures with fields PREV, PEAK,
+%   and NEXT. For example, F.PEAK contains the frequencies of the spectral
+%   peaks, F.PREV contains the frequencies of its immediate neighbors to
+%   the left, and F.NEXT the immediate neighbor to the right. A, F, and P
+%   contain NaN for positions that do not correspond to peaks.
 %
-%   See also PEAKPICK, QUAD_INTERP, PHASE_INTERP
+%   [A,F,P] = PEAK_PICKING(MAG,PH,NFFT,Fs,NFRAME,FLIMFLAG) uses the text
+%   flag FREQLIMFLAG to control the limits of the frequency axis.
+%   FREQLIMFLAG can be 'POS', 'FULL', or 'NEGPOS'. The default is
+%   FREQLIMGLAG = 'POS' when PEAKPICKING is called with the previous
+%   syntaxes.
+%
+%   FREQLIMFLAG = 'POS' generates frequencies from 0 to Nyquist. Use 'POS'
+%   to get the positive half of the spectrum.
+%
+%   FREQLIMFLAG = 'FULL' generates frequencies from 0 to NFFT-1. Use 'FULL'
+%   to get the full frequency range output by the FFT.
+%
+%   FREQLIMFLAG = 'NEGPOS' generates the negative and positive halves. Use
+%   'NEGPOS' to get the full frequency range with the zero-frequency
+%   component in the middle of the spectrum. Use FFTFLIP to plot the
+%   spectrum.
+%
+%   [A,F,P] = PEAK_PICKING(MAG,PH,NFFT,Fs,NFRAME,FUNITFLAG) uses the
+%   logical flag FUNITFLAG to control the unit of the frequencies F.
+%   FUNITFLAG = TRUE returns frequencies in Hz and FUNITFLAG = FALSE
+%   returns frequencies in spectral bins. The default is FUNITFLAG = TRUE.
+%
+%   See also FIND_SPEC_PEAK, QUAD_INTERP, PHASE_INTERP
 
 % 2016 M Caetano;
 % Revised 2019 SMT 0.1.1
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CHECK INPUT ARGUMENTS
+% CHECK ARGUMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Check number of input arguments
-narginchk(4,4);
+narginchk(5,7);
 
 % Check number of output arguments
 nargoutchk(0,3);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CREATE ARRAY WITH FREQUENCY BINS IN HERTZ
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Number of frequency bins and number of frames
-[nbin,nframe] = size(magspec);
-
-% Array of indices corresponding to frequency bins
-ind = repmat((1:nbin)',1,nframe);
-
-% Frequency array (Hz)
-freq = tools.spec.ind2freq(ind,fs,nfft);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PICK INDICES OF PEAKS IN MAGNITUDE SPECTRUM
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Peak picking: indices of spectral peaks (logical)
-ipeak = peakpick(magspec);
-
-% Indices of bins before the peaks (logical)
-iprev = circshift(ipeak,-1);
-
-% Indices of bins after the peaks (logical)
-inext = circshift(ipeak,1);
-
-% Final array of indices: NBIN x NFRAME x 3
-ifull = repmat(ipeak,1,1,3);
+if nargin == 5
+    
+    freqlimflag = 'pos';
+    
+    funitflag = true;
+    
+elseif nargin == 6
+    
+    funitflag = true;
+    
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% RETURN AMPLITUDES, FREQUENCIES, AND PHASES CORRESPONDING TO PEAKS
+% FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Temporary variable
+[~,~,nchannel] = size(magspec);
+
+% Find logical indices of spectral peaks
+[iprev,ipeak,inext] = find_spec_peak(magspec);
+
+% Frequency bins
+[freqbin,nbin] = tools.spec.mkfreqbin(nfft,fs,nframe,nchannel,freqlimflag,funitflag);
 
 % Initialize amplitudes (NaN)
-peakamp = nan(nbin,nframe,3);
+peakamp = struct('peak',nan(nbin,nframe,nchannel),'prev',nan(nbin,nframe,nchannel),'next',nan(nbin,nframe,nchannel));
 
 % Initialize frequencies (NaN)
-peakfreq = nan(nbin,nframe,3);
+peakfreq = struct('peak',nan(nbin,nframe,nchannel),'prev',nan(nbin,nframe,nchannel),'next',nan(nbin,nframe,nchannel));
 
 % Initialize phases (NaN)
-peakph = nan(nbin,nframe,3);
+peakph = struct('peak',nan(nbin,nframe,nchannel),'prev',nan(nbin,nframe,nchannel),'next',nan(nbin,nframe,nchannel));
 
 % Magnitude of peaks (scaled)
-peakamp(ifull) = cat(3,magspec(iprev),magspec(ipeak),magspec(inext));
+peakamp.peak(ipeak) = magspec(ipeak);
+peakamp.prev(ipeak) = magspec(iprev);
+peakamp.next(ipeak) = magspec(inext);
 
-% Frequency of peaks (Hz)
-peakfreq(ifull) = cat(3,freq(iprev),freq(ipeak),freq(inext));
+% Frequency of peaks (bin or Hz)
+peakfreq.peak(ipeak) = freqbin(ipeak);
+peakfreq.prev(ipeak) = freqbin(iprev);
+peakfreq.next(ipeak) = freqbin(inext);
 
 % Phase of peaks (rad)
-peakph(ifull) = cat(3,phspec(iprev),phspec(ipeak),phspec(inext));
+peakph.peak(ipeak) = phspec(ipeak);
+peakph.prev(ipeak) = phspec(iprev);
+peakph.next(ipeak) = phspec(inext);
 
 end

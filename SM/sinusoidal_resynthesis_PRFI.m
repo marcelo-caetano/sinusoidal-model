@@ -24,7 +24,7 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 % 2016 M Caetano
 % 2020 MCaetano SMT 0.1.2 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

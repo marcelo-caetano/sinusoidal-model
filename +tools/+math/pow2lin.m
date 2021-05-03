@@ -15,7 +15,8 @@ function linmag = pow2lin(powmag,pow,tol)
 %   See also LIN2POW, LIN2LOG, LOG2LIN
 
 % 2021 MCaetano SMT
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 % TODO: Check inputs
@@ -75,7 +76,7 @@ else
     % Indices of complex roots
     icomplex = ~ireal;
     
-    % Real part if real roots
+    % Real part of real roots
     linmag(ireal) = real(dummy(ireal));
     
     % Absolute value of complex roots

@@ -1,8 +1,8 @@
 function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis(amp,freq,ph,framelen,hop,fs,nsample,center_frame,...
     npartial,nframe,delta,winflag,causalflag,synthflag,ptrackflag,dispflag)
 %SINUSOIDAL_RESYNTHESIS Resynthesis from the output of sinusoidal analysis [1].
-%   [SIN,PART,AMP,FREQ] = SINUSOIDAL_RESYNTHESIS(A,F,P,DELTA,M,H,FS,...
-%   NSAMPLE,CFR,MAXNPEAK,WINFLAG,CAUSALFLAG,SYNTHFLAG,DISPFLAG)
+%   [SIN,PART,AMP,FREQ,PH] = SINUSOIDAL_RESYNTHESIS(A,F,P,M,H,FS,NSAMPLE,...
+%   CFR,NPARTIAL,NFRAME,DELTA,WINFLAG,CAUSALFLAG,SYNTHFLAG,PTRACKFLAG,DISPFLAG)
 %   resynthesizes the sinusoidal model SIN from the output parameters of
 %   SINUSOIDAL_ANALYSIS (A,F,P), where A=amplitude, F=frequency, and
 %   P=phases estimated with a hop H and a frame size of M. DELTA
@@ -16,11 +16,12 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
 % 2020 MCaetano SMT 0.2.1
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CHECK INPUT ARGUMENTS
+% CHECK ARGUMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Check number of input arguments
@@ -29,13 +30,7 @@ narginchk(15,16);
 % Check number of output arguments
 nargoutchk(0,5);
 
-if nargin == 14
-    
-    ptrackflag = '';
-    
-    dispflag = false;
-    
-elseif  nargin == 15
+if nargin == 15
     
     dispflag = false;
     
@@ -101,10 +96,11 @@ switch lower(synthflag)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         warning('SMT:SINUSOIDAL_RESYNTHESIS:NoSynthFlag',['Undefined synthesis flag.\n'...
-            'Synthesis flag entered was %s.\n'...
+            'SYNTHFLAG must be OLA, PI, or PRFI.\n'...
+            'SYNTHFLAG entered was %s.\n'...
             'Using default PI (polynomial interpolation) synthesis'],synthflag)
         
-        disp('Resynthesis by Parameter Interpolation')
+        disp('Resynthesis by Polynomial Interpolation')
         
         [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis_PI...
             (amp,freq,ph,framelen,hop,fs,nsample,center_frame,npartial,nframe,causalflag,dispflag);

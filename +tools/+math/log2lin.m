@@ -1,21 +1,21 @@
-function linmag = log2lin(logmag,scaleflag,realflag,tol)
+function linmag = log2lin(logmag,logflag,realflag,tol)
 %LIN2LOG Convert from log to linear amplitude.
-%   LINMAG = LOG2LIN(LOGMAG,SCALEFLAG) scales the log magnitude spectrum
-%   LOGMAG to the linear scale specified by the string SCALEFLAG, which
+%   LINMAG = LOG2LIN(LOGMAG,LOGFLAG) scales the log magnitude spectrum
+%   LOGMAG to the linear scale specified by the string LOGFLAG, which
 %   can be 'DBR' for decibel root-power, 'DBP' for decibel power, 'BEL' for
 %   bels, 'NEP' for neper, and 'OCT' for octave.
 %
 %   DBR uses 10.^(LOGMAG/10), DBP uses 10.^(LOGMAG/20), BEL uses
 %   10.^(LOGMAG), NEP uses EXP, and OCT uses 2.^(LOGMAG).
 %
-%   LINMAG = LOG2LIN(LOGMAG,SCALEFLAG,REALFLAG) uses the logical flag
+%   LINMAG = LOG2LIN(LOGMAG,LOGFLAG,REALFLAG) uses the logical flag
 %   REALFLAG to handle complex LOGMAG. REALFLAG = TRUE forces LINMAG to be
 %   real and the default LINMAG = FALSE outputs complex LINMAG when the
 %   following condition fails ALL(IMAG(LINMAG) < TOL). The default value
 %   TOL = 1E-10 can be customized by calling LOG2LIN with four input
 %   arguments as described below.
 %
-%   LINMAG = LOG2LIN(LOGMAG,SCALEFLAG,REALFLAG,TOL) uses TOL to specify the
+%   LINMAG = LOG2LIN(LOGMAG,LOGFLAG,REALFLAG,TOL) uses TOL to specify the
 %   minimum tolerance to consider the value of imaginary part as
 %   floating-point conversion error. Use TOL to guarantee that LOG2LIN
 %   reverses the effect of LIN2LOG for negative input. The condition
@@ -25,7 +25,8 @@ function linmag = log2lin(logmag,scaleflag,realflag,tol)
 %   See also LIN2LOG, LIN2POW, POW2LIN
 
 % 2020 MCaetano SMT 0.1.1
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 % TODO: Check inputs
@@ -56,7 +57,7 @@ end
 % FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-switch lower(scaleflag)
+switch lower(logflag)
     
     case 'dbr'
         
@@ -76,14 +77,14 @@ switch lower(scaleflag)
         
     case 'oct'
         
-        magscale = @(x) 2.^(x);
+        magscale = @pow2;
         
     otherwise
         
-        warning('SMT:LOG2LIN:InvalidMagFlag', ['Invalid Magnitude Scaling Flag.\n'...
-            'SCALEFLAG must be DBR, DBP, NEP, OCT, or BEL.\n'...
+        warning('SMT:LOG2LIN:InvalidFlag', ['Invalid Log Scale Flag.\n'...
+            'LOGFLAG must be DBR, DBP, NEP, OCT, or BEL.\n'...
             'Flag entered was %s\n.'...
-            'Using default magnitude scaling flag DBP'],scaleflag)
+            'Using default log scale flag DBP'],logflag)
         
         magscale = @(x) 10.^(x/20);
         

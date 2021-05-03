@@ -1,6 +1,6 @@
 function posspec = full_spec2pos_spec(fft_frame,nfft,nrgflag)
 %FULL_SPEC2POS_SPEC Full spectrum to positive spectrum.
-%   PS = FULL_SPEC2POS_SPEC(FFT) returns the _nonnegative_
+%   PS = FULL_SPEC2POS_SPEC(FFT) returns the _non-negative_
 %   frequency half of the complex FFT vector or matrix. FFT can be either a
 %   NFFT x 1 colum vector or an NFFT x NFRAME matrix with NFRAME frames of
 %   the STFT.
@@ -18,7 +18,8 @@ function posspec = full_spec2pos_spec(fft_frame,nfft,nrgflag)
 %   FFT2POS_MAG_SPEC, FFT2POS_PHASE_SPEC
 
 % 2020 M Caetano SMT 0.1.2
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised for stereo)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,14 +48,14 @@ elseif nargin == 2
 end
 
 % Check that NFFT == SIZE(FFT_FRAME,1)
-[nrow,ncol] = size(fft_frame);
+[nrow,nframe,nchannel] = size(fft_frame);
 
 if nfft ~= nrow
     
     warning('SMT:FULL_SPEC2POS_SPEC:wrongInputArgument',...
         ['Input argument NFFT does not match the dimensions of FFT\n'...
         'FFT must be NFFT x NFRAME\nSize of FFT entered was %d x %d\n'...
-        'NFFT entered was %d\nUsing NFFT = %d'],nrow,ncol,nfft,nrow);
+        'NFFT entered was %d\nUsing NFFT = %d'],nrow,nchannel,nfft,nrow);
     
     nfft = nrow;
     
@@ -67,13 +68,33 @@ end
 % Nyquist index
 inyq = tools.spec.nyq_freq(nfft);
 
-% Positive half of FFT
-posspec = fft_frame(1:inyq,:);
-
 if nrgflag
     
-    % Add spectral energy of negative half
-    posspec(2:inyq-1,:) = 2*fft_frame(2:inyq-1,:);
+    % Initialize POSSPEC
+    posspec = zeros(inyq,nframe,nchannel);
+    
+    % Positive frequency half of the spectrum
+    spec_posfreq = fft_frame(2:inyq-1,:,:);
+    
+    % Negative frequency half of the spectrum
+    spec_negfreq = fft_frame(inyq+1:nfft,:,:);
+    
+    % Complex conjugate of negative half of spectrum
+    conj_negfreq = conj(spec_negfreq);
+    
+    % Flip around frequency axis
+    flipped_conj_negfreq = flip(conj_negfreq,1);
+    
+    % Add spectral energy of positive and (flipped complex conjugate of) negative halves
+    posspec(2:inyq-1,:,:) = spec_posfreq + flipped_conj_negfreq;
+    
+    % Add DC and Nyquist
+    posspec([1 inyq],:,:) = fft_frame([1 inyq],:,:);
+    
+else
+    
+    % Positive half of FFT
+    posspec = fft_frame(1:inyq,:,:);
     
 end
 

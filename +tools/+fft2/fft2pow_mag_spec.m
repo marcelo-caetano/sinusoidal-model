@@ -2,8 +2,11 @@ function powmagspec = fft2pow_mag_spec(fft_frame,nfft,pow,posfreqflag,nrgflag,na
 %FFT2POW_MAG_SPEC From complex FFT to power magnitude spectrum.
 %   PMS = FFT2POW_MAG_SPEC(FFT) retuns the power
 %   magnitude spectrum PMS of the full frequency range of the complex FFT
-%   vector or matrix. FFT can be either an NFFT x 1 column vector or
-%   NFFT x NFRAME matrix with NFRAME frames of the STFT. PMS is the same
+%   vector or matrix. FFT is size NFFT x NFRAME x NCHANNEL, where NFFT is
+%   the FFT size, NFRAME is the number of frames of the STFT, and NCHANNEL
+%   is the number of channels of the original signal S transformed with the
+%   STFT. NCHANNEL = 1 for mono, NCHANNEL = 2 for stereo, and so on. FFT is
+%   a colum vector when NFRAME = 1 and NCHANNEL = 1. PMS will have the same
 %   size as FFT. The default power is 2 so PMS = abs(FFT).^2.
 %
 %   PMS = FFT2POW_MAG_SPEC(FFT,NFFT) uses NFFT as the
@@ -18,7 +21,7 @@ function powmagspec = fft2pow_mag_spec(fft_frame,nfft,pow,posfreqflag,nrgflag,na
 %   POSFREQFLAG = FALSE is the default to output the full frequency range
 %   of the power magnitude spectrum. POSFREQFLAG = TRUE forces
 %   FFT2POW_MAG_SPEC to output the positive half of the FFT.
-%   PMS is NFFT/2+1 x NFRAME, where NFFT/2+1 is the number of _nonnegative_
+%   PMS is NFFT/2+1 x NFRAME, where NFFT/2+1 is the number of _non-negative_
 %   frequency bins of the FFT.
 %
 %   PMS = FFT2POW_MAG_SPEC(FFT,NFFT,POW,POSFREQFLAGFLAG,
@@ -26,7 +29,9 @@ function powmagspec = fft2pow_mag_spec(fft_frame,nfft,pow,posfreqflag,nrgflag,na
 %   contain the spectral energy of the negative frequency bins.
 %   NRGFLAG = TRUE adds the negative frequency energy to the power
 %   magnitude spectrum and NRGFLAG = FALSE does not. The default is
-%   NRGFLAG = FALSE. POSFREQFLAG must be TRUE when NRGFLAG = TRUE.
+%   NRGFLAG = FALSE. POSFREQFLAG must be TRUE when NRGFLAG = TRUE,
+%   otherwise FFT2LIN_MAG_SPEC issues a warning and forces
+%   POSFREQFLAG = TRUE.
 %
 %   PMS = FFT2POW_MAG_SPEC(FFT,NFFT,POW,POSFREQFLAGFLAG,
 %   NRGFLAG, NANFLAG) uses the logical flag NANFLAG to handle the case
@@ -39,7 +44,8 @@ function powmagspec = fft2pow_mag_spec(fft_frame,nfft,pow,posfreqflag,nrgflag,na
 %   See also FFT2LOG_MAG_SPEC, FFT2UNWRAP_PHASE_SPEC,
 %   FFT2POS_MAG_SPEC,
 
-% 2021 M Caetano SMT% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,7 +105,7 @@ end
 
 if nfft ~= nrow
     
-    warning('SMT:POWER_MAGNITUDE_SPECTRUM:wrongInputArgument',...
+    warning('SMT:FFT2POW_MAG_SPEC:wrongInputArgument',...
         ['Input argument NFFT does not match the dimensions of FFT.\n'...
         'FFT must be NFFT x NFRAME.\nSize of FFT entered was %d x %d.\n'...
         'NFFT entered was %d.\nUsing NFFT = %d'],nrow,ncol,nfft,nrow);
@@ -111,7 +117,7 @@ end
 % POSFREQFLAG must be TRUE when NRGFLAG is TRUE
 if nrgflag && ~posfreqflag
     
-    warning('SMT:POWER_MAGNITUDE_SPECTRUM:wrongFlagCombination',...
+    warning('SMT:FFT2POW_MAG_SPEC:wrongFlagCombination',...
         ['POSFREQFLAG must be TRUE when NRGFLAG is TRUE.\n'...
         'POSFREQFLAG entered was %d but NRGFLAG entered was %d.\n'...
         'Using POSFREQFLAG = TRUE'],posfreqflag,nrgflag);
@@ -127,16 +133,16 @@ end
 if posfreqflag
     
     % Positive magnitude spectrum
-    magspec = tools.spec.fft2pos_mag_spec(fft_frame,nfft,nrgflag);
+    magspec = tools.fft2.fft2pos_mag_spec(fft_frame,nfft,nrgflag);
     
 else
     
     % Full magnitude spectrum
-    magspec = tools.spec.fft2mag_spec(fft_frame);
+    magspec = tools.fft2.fft2mag_spec(fft_frame);
     
 end
 
 % Power magnitude spectrum
-powmagspec = tools.dsp.lin2pow(magspec,pow,nanflag);
+powmagspec = tools.math.lin2pow(magspec,pow,nanflag);
 
 end

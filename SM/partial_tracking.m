@@ -18,7 +18,8 @@ function [amp,freq,ph,npart] = partial_tracking(amplitude,frequency,phase,delta,
 % AND SIGNAL PROCESSING, VOL. ASSP-34, NO. 4.
 
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

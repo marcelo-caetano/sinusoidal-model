@@ -4,7 +4,7 @@ function posphspec = fft2pos_phase_spec(fft_frame,nfft)
 %   the positive half of the complex FFT vector or matrix. FFT can be
 %   either an NFFT x 1 colum vector or an NFFT x NFRAME matrix with NFRAME
 %   frames of the STFT. PPS is NFFT/2+1 x NFRAME, where NFFT/2+1 is the
-%   number of _nonnegative_ frequency bins of the FFT.
+%   number of _non-negative_ frequency bins of the FFT.
 %
 %   PPS = FFT2POS_PHASE_SPEC(FFT,NFFT) uses NFFT for the size of
 %   the FFT.
@@ -13,7 +13,8 @@ function posphspec = fft2pos_phase_spec(fft_frame,nfft)
 %   FFT2PHASE_SPEC, FFT2LOG_MAG_SPEC,
 %   FFT2UNWRAP_PHASE_SPEC
 
-% 2021 M Caetano SMT% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,9 +54,9 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Phase of the FFT
-phspec = tools.spec.fft2phase_spec(fft_frame);
+phspec = tools.fft2.fft2phase_spec(fft_frame);
 
 % Positive half of phase spectrum
-posphspec = tools.spec.full_spec2pos_spec(phspec,nfft);
+posphspec = tools.fft2.full_spec2pos_spec(phspec,nfft);
 
 end

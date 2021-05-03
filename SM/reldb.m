@@ -8,21 +8,39 @@ function [amp,freq,ph] = reldb(amp,freq,ph,relthres)
 % 2019 MCaetano SMT 0.1.0
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHECK ARGUMENTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Check number of input arguments
+narginchk(4,4);
+
+% Check number of output arguments
+nargoutchk(0,3);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FUNCTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Maximum amplitude per frame
 maxamp = max(amp,[],1,'omitnan');
 
 % Sum in dB
-relampdB = tools.dsp.lin2log(maxamp,'dbp') - abs(relthres);
+relampdB = tools.math.lin2log(maxamp,'dbp') - abs(relthres);
 
-% Convert from dB to linear to compare
-ind = amp < tools.dsp.log2lin(relampdB,'dbp');
+% Convert RELAMPDB in dB to linear
+relamplin = tools.math.log2lin(relampdB,'dbp');
+
+% TRUE when AMP is below RELAMPLIN
+bool = amp < relamplin;
 
 % Replace with NaN
-amp(ind) = nan(1);
-freq(ind) = nan(1);
-ph(ind) = nan(1);
+amp(bool) = nan(1);
+freq(bool) = nan(1);
+ph(bool) = nan(1);
 
 end

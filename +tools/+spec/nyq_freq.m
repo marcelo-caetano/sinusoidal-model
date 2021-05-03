@@ -10,7 +10,8 @@ function inyq = nyq_freq(nfft,nyqflag)
 %
 %   See also MKFREQ, BIN2FREQ, FREQ2BIN
 
-% 2020 MCaetano SMT 0.1.1% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2020 MCaetano SMT 0.1.1
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %TODO: CHECK INPUT ARGUMENTS (integer and power of 2)

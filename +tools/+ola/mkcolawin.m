@@ -11,9 +11,16 @@ function win = mkcolawin(framelen,winflag)
 %   5 - Blackman
 %   6 - Blackman-Harris
 %   7 - Hamming
+%   8 - Bartlett-Hann
+%   9 - Gaussian
+%   10 - Slepian
+%   11 - Kaiser-Bessel
+%   12 - Nuttall
+%   13 - Dolph-Chebychev
+%   14 - Tukey
 %
 %   The window W is carefully designed to be COLA and to ensure that the
-%   causalflag of W is an integer sample number. Consequently, even WINLEN
+%   center of W is an integer sample number. Consequently, even WINLEN
 %   results in periodic windows, whereas odd WINLEN results in symmetric
 %   windows. See the help for each window given by WINFLAG for further
 %   information.
@@ -23,7 +30,8 @@ function win = mkcolawin(framelen,winflag)
 % 2016 M Caetano
 % 2019 MCaetano (Revised)
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,7 +73,7 @@ elseif tools.misc.isfrac(winflag)
     error('SMT:UnknownWindowFlag',['The window flag must be integer. '...
         'The window flag entered is %f.\n'],winflag)
     
-elseif winflag < 1 || winflag > 7
+elseif winflag < 1 || winflag > 14
     
     warning('SMT:UnknownWindowFlag',['The flag entered is out of '...
         'the range [1,...,7].\n Using default HANN window.\n']);
@@ -142,6 +150,71 @@ switch winflag
         if tools.misc.isodd(framelen)
             win(1) = win(1)/2;
             win(end) = win(end)/2;
+        end
+        
+    case 8
+        
+        % BARTLETT-HANN        
+        if tools.misc.iseven(framelen)
+            win = barthannwin(framelen+1);
+            win(end)=[];
+        else
+            win = barthannwin(framelen);
+        end
+        
+    case 9
+        
+        % GAUSSIAN
+        if tools.misc.iseven(framelen)
+            win = gausswin(framelen+1);
+            win(end)=[];
+        else
+            win = gausswin(framelen);
+        end
+        
+    case 10
+        
+        % SLEPIAN
+        if tools.misc.iseven(framelen)
+            win = dpss(framelen+1,3,1);
+            win(end)=[];
+        else
+            win = dpss(framelen,3,1);
+        end
+        
+    case 11
+        
+        % KAISER-BESSEL
+        if tools.misc.iseven(framelen)
+            win = kaiser(framelen+1,0.5);
+            win(end)=[];
+        else
+            win = kaiser(framelen,0.5);
+        end
+        
+    case 12
+        
+        % NUTTALL
+        win = nuttallwin(framelen,wflag);
+        
+    case 13
+        
+        % DOLPH-CHEBYSHEV
+        if tools.misc.iseven(framelen)
+            win = chebwin(framelen+1,100);
+            win(end)=[];
+        else
+            win = chebwin(framelen,100);
+        end
+        
+    case 14
+        
+        % TUKEY
+        if tools.misc.iseven(framelen)
+            win = tukeywin(framelen+1,0.5);
+            win(end)=[];
+        else
+            win = tukeywin(framelen,0.5);
         end
         
 end

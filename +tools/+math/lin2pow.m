@@ -11,10 +11,11 @@ function powmag = lin2pow(linmag,pow,nanflag)
 %   get numeric values in POWMAG. NANFLAG defaults to FALSE when LIN2POW is
 %   called with only two input arguments.
 %
-%   See also POW2LIN, LIN2POW, LOG2LIN
+%   See also POW2LIN, LIN2LOG, LOG2LIN
 
 % 2020 MCaetano SMT 0.1.1
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 % TODO: Check inputs
@@ -43,6 +44,7 @@ end
 % Convert to power scale
 powmag = linmag.^pow;
 
+% Replace Inf with realmax after conversion
 if nanflag
     
     % Replace Inf with realmax

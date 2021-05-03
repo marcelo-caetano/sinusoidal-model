@@ -4,23 +4,27 @@
 % SINUSOIDAL ANALYSIS PARAMETERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Hann analysis window
-winflag = 3;
+% Blackman-Harris analysis window
+winflag = 6;
 
 % Display name of analysis window in the terminal
-fprintf(1,'%s analysis window\n',tools.dsp.infowin(winflag,'name'));
+% fprintf(1,'%s analysis window\n',tools.dsp.infowin(winflag,'name'));
 
 % Flag for causality of first window
 causalflag = {'causal','non','anti'};
 cf = 3;
 
 % Flag for log magnitude spectrum
-lmsflag = {'dbr','dbp','nep','oct','bel'};
+logflag = {'dbr','dbp','nep','oct','bel'};
 lmsf = 2;
 
-% Magnitude spectrum scaling
-scaleflag = {'nne','lin','log','pow'};
-mf = 3;
+% Flag for parameter estimation
+paramestflag = {'nne','lin','log','pow'};
+mf = 4;
+
+% Partial tracking flag
+ptrackflag = {'','p2p'};
+ptrck = 2;
 
 % Number of fundamental periods
 nT0 = 3;
@@ -31,30 +35,33 @@ normflag = true;
 % Use zero phase window
 zphflag = true;
 
-% Replace -Inf in spectrogram
-nanflag = false;
+% Estimate frequencies in Hz
+frequnitflag = true;
 
 % Maximum number of peaks to retrieve from analysis
 maxnpeak = 80;
 
+% MAXNPEAK frequency bins
+% npeakflag = false;
+npeakflag = true;
+
+% Replace -Inf in spectrogram
+nanflag = false;
+
 % Relative threshold
-%relthres = -inf(1);
+% relthres = -inf(1);
 relthres = -100;
 
 % Absolute threshold
-%absthres = -inf(1);
+% absthres = -inf(1);
 absthres = -120;
-
-% Partial tracking flag
-ptrackflag = {'','p2p'};
-ptrck = 2;
 
 % Resynthesis flag
 synthflag = {'OLA','PI','PRFI'};
 rf = 2;
 
 % Display flag
-dispflag = true;
+dispflag = false;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % READ SOUND FILE
@@ -90,8 +97,11 @@ framelen = tools.dsp.framesize(f0,fs,nT0);
 % 50% overlap
 hop = tools.dsp.hopsize(framelen,0.5);
 
+% Oversampling factor
+osfac = 4;
+
 % FFT size
-nfft = tools.dsp.fftsize(framelen);
+nfft = tools.dsp.fftsize(framelen,osfac);
 
 % Frequency difference for peak matching (Hz)
 delta = tools.dsp.freq_diff4peak_matching(ref0);
@@ -100,8 +110,8 @@ delta = tools.dsp.freq_diff4peak_matching(ref0);
 % SINUSOIDAL ANALYSIS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[amplitude,frequency,phase,nsample,ds,center_frame,npartial,nframe] = sinusoidal_analysis(wav,...
-    framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,winflag,causalflag{cf},normflag,zphflag,scaleflag{mf},ptrackflag{ptrck});
+[amplitude,frequency,phase,center_frame,npartial,nsample,nframe,nchannel,dc] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,...
+    winflag,causalflag{cf},paramestflag{mf},ptrackflag{ptrck},normflag,zphflag,frequnitflag,npeakflag);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIGURE PARAMETERS
@@ -137,7 +147,7 @@ axes_lim.dblim = [-120 0];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Log Mag Amp peaks
-plot_part.specpeak = tools.dsp.lin2log(amplitude,lmsflag{lmsf},nanflag);
+plot_part.specpeak = tools.math.lin2log(amplitude,logflag{lmsf},nanflag);
 
 % Time peaks
 plot_part.time = repmat(center_frame/fs,[1,npartial])';

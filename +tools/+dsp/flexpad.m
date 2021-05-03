@@ -1,4 +1,4 @@
-function zpadframe = flexpad(frame,nfft,varargin)
+function zpadframe = flexpad(frame,nfft,padflag)
 %FLEXPAD Flexible padding.
 %   ZP = FLEXPAD(FR,NFFT) pads the columns of FR with zeros up to NFFT.
 %   Assuming SIZE(FR) = [WINLEN,NFR]:
@@ -7,10 +7,10 @@ function zpadframe = flexpad(frame,nfft,varargin)
 %
 %   ZP = [FR;ZEROS(NFFT+WINLEN,NFR)] when NFFT < WINLEN.
 %
-%   [ZP] = FLEXPAD(FR,NFFT,PADFLAG) uses PADFLAG to specify values other
-%   than zeros to do the padding. PADFLAG can be one of the following:
+%   ZP = FLEXPAD(FR,NFFT,PADFLAG) uses PADFLAG to specify values other than
+%   zeros to do the padding. PADFLAG can be one of the following:
 %
-%   NON: Ones
+%   ONE: Ones
 %
 %   +INF, PINF, INF: Plus infinity
 %
@@ -26,29 +26,30 @@ function zpadframe = flexpad(frame,nfft,varargin)
 %
 %   ZERO: Fallback to the default value of zeros.
 %
-%   See also IZPAD
+%   See also ZPAD, IZPAD
 
-% 2020 MCaetano SMT 0.1.1% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2020 MCaetano SMT 0.1.1
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %TODO: CHECK CLASS OF INPUT ARGUMENTS
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CHECK NUMBER OF INPUT AND OUTPUT ARGUMENTS
+% CHECK ARGUMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Check number of input arguments
 narginchk(2,3);
 
-% Check number of output arguments (unnecessary)
+% Check number of output arguments
 nargoutchk(0,1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PARSE INPUT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Window length and Number of frames
-[framelen,nframe] = size(frame);
+% Window length, number of frames, number of channels
+[framelen,nframe,nchannel] = size(frame);
 
 % Get length of padding
 padlen = parseinput(framelen,nfft);
@@ -64,7 +65,7 @@ if nargin == 2
 else
     
     % Padding function handle and multiplicative factor
-    [padfun,mult] = mkpadfun(varargin{1});
+    [padfun,mult] = mkpadfun(padflag);
     
 end
 
@@ -73,7 +74,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Padding array
-padarray = mult*padfun(padlen,nframe);
+padarray = mult*padfun(padlen,nframe,nchannel);
 
 % Zero pad (concatenate PADARRAY to FRAME)
 zpadframe = [frame;padarray];
@@ -90,9 +91,9 @@ funflag = {'zero','one','-inf','minf','+inf','pinf','inf',...
     'nan','eps','min','max'};
 
 % Check if PADFLAG matches any of the supported options
-logicfun = strcmpi(funinput,funflag);
+boolfun = strcmpi(funinput,funflag);
 
-if any(logicfun)
+if any(boolfun)
     
     % Create padding function handle and mult factor using PADFLAG
     [padfunhandle,mult] = mkpadfunhandle(funinput);

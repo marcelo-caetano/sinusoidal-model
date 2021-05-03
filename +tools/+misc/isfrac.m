@@ -14,7 +14,8 @@ function res = isfrac(num)
 % 2016 MCaetano (Revised)
 % 2019 MCaetano SMT 0.1.0
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% 2020 MCaetano SMT 0.2.0% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2020 MCaetano SMT 0.2.0
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,11 +30,11 @@ nargoutchk(0,1);
 
 if ~isnumeric(num) || any(isnan(num(:))) || any(isinf(num(:)))
     
-    error('SMT:ERROR:InputNotNumeric:The input NUM must be numeric');
+    error('SMT:ISFRAC:InputNotNumeric','The input NUM must be numeric');
     
-elseif not(isreal(num))
+elseif ~isreal(num)
     
-    error('SMT:ERROR:ComplexInput:The input NUM must be real');
+    error('SMT:ISFRAC:ComplexInput','The input NUM must be real');
     
 end
 

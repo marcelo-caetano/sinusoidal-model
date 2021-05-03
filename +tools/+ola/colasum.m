@@ -1,6 +1,6 @@
 function sumfactor = colasum(winflag)
 %COLASUM COLA constant for different windows.
-%   SUM = colasum(WINTYPE) returns SUM for a window of type WINTYPE.
+%   SUM = tools.ola.colasum(WINTYPE) returns SUM for a window of type WINTYPE.
 %
 %   SUM = COLA(R) for hop size R = M/DEN, expressed as a fraction of the
 %   window size M. DEN depends on WINTYPE. Type WHICHWIN(WINTYPE) for the
@@ -11,7 +11,7 @@ function sumfactor = colasum(winflag)
 % 2019 MCaetano SMT 0.1.0
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %   WINDOW_TYPE

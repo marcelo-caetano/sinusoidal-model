@@ -1,8 +1,8 @@
 function [olasynth,olawin] = ola(time_frame,framelen,hop,nsample,center_frame,nframe,winflag,causalflag)
 %OLA Overlap-Add time frames to resynthesize waveform.
-%   SYNTH = OLA(FR,M,H,NSAMPLE,CFR,WINFLAG,CAUSALFLAG) overlap-adds the time
-%   frames FR by M - H, where M is the frame length and H is the hop size
-%   used to make the time frames and returns SYNTH.
+%   SYNTH = OLA(FR,M,H,NSAMPLE,CFR,NFRAME,WINFLAG,CAUSALFLAG) overlap-adds
+%   the time frames FR by M - H, where M is the frame length and H is the
+%   hop size used to make the time frames and returns SYNTH.
 %
 %   NSAMPLE is the length of the original signal in samples. NSAMPLE is
 %   usually different than CENTERWIN+(NFRAME-1)*H because the last frame is
@@ -11,6 +11,8 @@ function [olasynth,olawin] = ola(time_frame,framelen,hop,nsample,center_frame,nf
 %
 %   CFR is an array with the samples corresponding to the center of the
 %   frames.
+%
+%   NFRAME is the number of time frames FR. FR is size NSAMPLE x NFRAME.
 %
 %   WINFLAG is a numeric flag that specifies the following windows
 %
@@ -22,18 +24,22 @@ function [olasynth,olawin] = ola(time_frame,framelen,hop,nsample,center_frame,nf
 %   6 - Blackman-Harris
 %   7 - Hamming
 %
-%   CAUSALFLAG is a flag that determines the center of the first analysis
-%   window. CAUSALFLAG can be 'CAUSAL', 'NON', or 'ANTI'. The sample CENTERWIN
-%   corresponding to the causalflag of the first window is obtained as
-%   CENTERWIN = tools.dsp.tools.dsp.centerwin(M,CAUSALFLAG). Type help tools.dsp.tools.dsp.centerwin for further details.
+%   CAUSALFLAG is a character flag that determines the causality of the
+%   window. CAUSALFLAG can be 'ANTI', 'NON', or 'CAUSAL' for anti-causal,
+%   non-causal, or causal respectively. The sample CENTERWIN corresponding
+%   to the center of the first window is obtained as
+%   CENTERWIN = tools.dsp.centerwin(M,CAUSALFLAG). Type help
+%   tools.dsp.centerwin for further details.
 %
 %   [SYNTH,OLAWIN] = OLA(...) also returns the overlap-added window OLAWIN
 %   specified by WINFLAG.
+%
+%   See also SOF
 
 % 2016 M Caetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -77,7 +83,7 @@ olasynth = zeros(nsample+2*shift,nchannel);
 olawin = zeros(nsample+2*shift,nchannel);
 
 % Make synthesis window
-synthesis_window = mkcolawin(framelen,winflag);
+synthesis_window = tools.ola.mkcolawin(framelen,winflag);
 
 % Center of first window
 center_win = tools.dsp.centerwin(framelen,causalflag);
@@ -90,6 +96,8 @@ for cf = center_frame'
     
     % Frame number
     iframe = tools.dsp.sample2frame(cf,center_win,hop);
+    
+    fprintf(1,'Frame %d\n',iframe);
     
     % Overlap-Add TIME_FRAME
     olasynth(cf-tools.dsp.leftwin(framelen)+shift:cf+tools.dsp.rightwin(framelen)+shift,:) = ...

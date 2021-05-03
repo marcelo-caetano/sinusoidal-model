@@ -1,12 +1,13 @@
-function logmag = lin2log(linmag,scaleflag,nanflag)
+function logmag = lin2log(linmag,logflag,nanflag)
 %LIN2LOG Convert from linear to log amplitude.
-%   LOGMAG = LIN2LOG(LINMAG,SCALEFLAG) scales the linear magnitude spectrum
-%   LINMAG to the logarithmic scale specified by the string SCALEFLAG, which
-%   can be 'DBR' for decibel root-power, 'DBP' for decibel power, 'BEL' for
-%   bels, 'NEP' for neper, and 'OCT' for octave. DBR uses 10*log10, DBP
-%   uses 20*log10, BEL uses log10, NEP uses ln, and OCT uses log2.
+%   LOGMAG = LIN2LOG(LINMAG,LOGFLAG) scales the linear magnitude spectrum
+%   LINMAG to the logarithmic scale specified by the text flag LOGFLAG,
+%   which can be 'DBR' for decibel root-power, 'DBP' for decibel power,
+%   'BEL' for bels, 'NEP' for neper, and 'OCT' for octave. DBR uses
+%   10*log10, DBP uses 20*log10, BEL uses log10, NEP uses ln, and OCT uses
+%   log2.
 %
-%   LOGMAG = LIN2LOG(LINMAG,SCALEFLAG,NANFLAG) uses NANFLAG to handle the
+%   LOGMAG = LIN2LOG(LINMAG,LOGFLAG,NANFLAG) uses NANFLAG to handle the
 %   case LINMAG = 0. NANFLAG = TRUE replaces 0 with eps(0) to avoid -Inf in
 %   LOGMAG. NANFLAG = FALSE ignores 0 in LINMAG. Use NANFLAG = TRUE to get
 %   numeric values in LOGMAG. NANFLAG defaults to FALSE when LIN2LOG is
@@ -15,7 +16,8 @@ function logmag = lin2log(linmag,scaleflag,nanflag)
 %   See also LOG2LIN, LIN2POW, POW2LIN
 
 % 2020 MCaetano SMT 0.1.1
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 % TODO: Check inputs
@@ -40,7 +42,7 @@ if nargin == 2
     
 end
 
-switch lower(scaleflag)
+switch lower(logflag)
     
     case 'bel'
         
@@ -65,19 +67,21 @@ switch lower(scaleflag)
     otherwise
         
         warning(['SMT:InvalidMagFlag: Invalid Magnitude Scaling Flag.\n'...
-            'SCALEFLAG must be DBR, DBP, NEP, OCT, or BEL.\n'...
-            'SCALEFLAG entered was %d. Using default SCALEFLAG = DBP'],scaleflag);
+            'LOGFLAG must be DBR, DBP, NEP, OCT, or BEL.\n'...
+            'LOGFLAG entered was %d. Using default LOGFLAG = DBP'],logflag);
         
         magscale = @(x) 20*log10(x);
         
 end
 
+% Replace 0 by eps(0) before conversion
 if nanflag
     
     linmag(linmag==0) = eps(0);
     
 end
 
+% Convert from linear to log
 logmag = magscale(linmag);
 
 end

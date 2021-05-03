@@ -6,7 +6,7 @@ function framelen = framesize(f0,fs,mult,f0flag)
 %   or a multidimensional array.
 %
 %   M = FRAMESIZE(F0,Fs,MULT) returns M = ceil(MULT*Fs/F0), where MULT must
-%   be a nonnegative integer. Otherwise, MULT falls back to the default
+%   be a non-negative integer. Otherwise, MULT falls back to the default
 %   value of MULT = 3.
 %
 %   M = FRAMESIZE(F0,Fs,MULT,FOFLAG) uses the logical flag F0FLAG to
@@ -17,7 +17,8 @@ function framelen = framesize(f0,fs,mult,f0flag)
 %   See also HOPSIZE, FFTSIZE, tools.ceps.CEPSORDER
 
 % 2020 MCaetano SMT
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,7 +65,7 @@ if numel(mult) ~= 1 || mult <= 0 || tools.misc.isfrac(mult)
     [nrow,ncol] = size(mult);
     
     warning('SMT:FRAMESIZE:invalidInputArgument',...
-        ['MULT must be a nonnegative integer scalar.\n'...
+        ['MULT must be a non-negative integer scalar.\n'...
         'MULT entered was size %d x %d.'...
         'Using default value MULT = 3.\n'],nrow,ncol);
     

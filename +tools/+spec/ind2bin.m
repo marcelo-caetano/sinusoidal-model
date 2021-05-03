@@ -1,6 +1,6 @@
 function bin = ind2bin(ind,nfft)
 %IND2BIN Convert array index into frequency bin.
-%   K = IND2BIN(IND) converts the array indices IND into nonnegative
+%   K = IND2BIN(IND) converts the array indices IND into non-negative
 %   frequency bin numbers K = IND - 1. IND can be a scalar, array, or matrix.
 %   However, IND must be positive integers otherwise IND2BIN throws an error.
 %
@@ -9,7 +9,8 @@ function bin = ind2bin(ind,nfft)
 %
 %   See also BIN2IND, IND2FREQ, FREQ2IND, FREQ2BIN, BIN2FREQ, MKFREQ, NYQ_FREQ
 
-% 2020 MCaetano SMT 0.1.1% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2020 MCaetano SMT 0.1.1
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

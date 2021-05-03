@@ -10,7 +10,8 @@ function delta = freq_diff4peak_matching(fundfreq,mult)
 %
 %   See also FRAMESIZE, HOPSIZE, FFTSIZE
 
-% 2021 M Caetano SMT% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

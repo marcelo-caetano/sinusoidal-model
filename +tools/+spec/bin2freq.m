@@ -17,7 +17,8 @@ function freq = bin2freq(bin,fs,nfft,nnflag)
 %   See also FREQ2BIN, FREQ2IND, IND2FREQ, BIN2IND, IND2BIN, MKFREQ, NYQ_FREQ
 
 % 2016 MCaetano
-% 2020 MCaetano SMT 0.1.1 (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2020 MCaetano SMT 0.1.1 (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 % TODO: Check classes and dimensions of input arguments
@@ -43,7 +44,9 @@ out_range = bin < -nfft/2+1 | bin > nfft-1;
 
 if any(out_range(:))
     
-    error('SMT:ERROR: Bin numbers out of range');
+    error('SMT:BIN2FREQ:invalidInputArgument',['Invalid input argument.\n'...
+        'Bin numbers out of range.\nBin Numbers must be between -NFFT/2+1'...
+        'and NFFT-1.\n']);
     
 end
 

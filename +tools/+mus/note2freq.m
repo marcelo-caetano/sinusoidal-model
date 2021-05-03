@@ -19,7 +19,8 @@ function freq = note2freq(note,ref)
 % 2019 MCaetano SMT 0.1.0
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% 2021 M Caetano SMT (Revised)% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT (Revised)
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,7 +42,7 @@ if nargin == 1
 end
 
 % Check input argument type
-if ~(ischar(note) || isstring(note))
+if ~tools.misc.istext(note)
     
     error('SMT:NOTE2FREQ:wrongTypeInputArg',['Wrong Type of Input Argument.\n'...
         'NOTE must be class CHAR not %s.\n'...

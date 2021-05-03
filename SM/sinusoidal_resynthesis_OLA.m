@@ -12,7 +12,7 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 % 2016 M Caetano;
 % Revised 2019 SMT 0.1.1
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -59,7 +59,7 @@ for iframe = 1:nframe
 end
 
 % OLA scaling factor
-sc = colasum(winflag)*(framelen/2)/hop;
+sc = tools.ola.colasum(winflag)*(framelen/2)/hop;
 
 % Overlap-add time_frame
 sinusoidal = ola(time_frame,framelen,hop,nsample,center_frame,nframe,winflag,causalflag)/sc;

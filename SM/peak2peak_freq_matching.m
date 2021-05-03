@@ -9,8 +9,11 @@ function [amp,freq,ph,npart] = peak2peak_freq_matching(amplitude,frequency,phase
 % AND SIGNAL PROCESSING, VOL. ASSP-34, NO. 4.
 
 % 2020 MCaetano SMT
-% $Id 2021 M Caetano SM 0.5.0-alpha.3 $Id
+% 2021 M Caetano SMT
+% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
 
+
+% TODO: ADAPT FOR STEREO PROCESSING
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CHECK ARGUMENTS
@@ -35,11 +38,8 @@ ph = phase(:,1);
 for iframe = 2:nframe
     
     % Frequency matching
-    [amp,freq,ph] = freq_matching(amp,freq,ph,amplitude(:,iframe),frequency(:,iframe),phase(:,iframe),delta,hop,fs,iframe-1);
+    [amp,freq,ph,npart] = freq_matching(amp,freq,ph,amplitude(:,iframe),frequency(:,iframe),phase(:,iframe),delta,hop,fs,iframe-1);
     
 end
-
-% Number of Partials
-npart = size(amp,1);
 
 end
