@@ -76,6 +76,20 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 - Fixed bug in function `maxnumpeak.m` and replaced it by core function `tools.sin.maxnumpeak.m` and high-level function `SM/max_num_peak.m`
 
+## SM 0.5.0-alpha.4
+
+***
+
+Sinusoidal Model (SM) version 0.5.0 alpha release build 4
+
+Run the script `run_sm.m` inside the folder `sinusoidal-model-master` for an example of how to use the code. NOTE: You must change directories and go into `sinusoidal-model-master` to run `run_sm.m` because `run_sm.m` uses a relative path to point to the audio file and also because the folder `sinusoidal-model-master` is not automatically added to the Matlab search path.
+
+The file `run_sm_dependency.txt` lists all file dependencies.
+
+## What's new in version 0.5.0-alpha.4
+
+- Rebuild of previous version after standardization of nomenclature of entire codebase
+
 ## SM 0.5.0-alpha.3
 
 ***
