@@ -12,7 +12,7 @@
 
 ### Thanks -->
 
-# Sound Morphing Toolbox (SMT) Release Notes
+# Sinusoidal Modeling (SM) Release Notes
 
 ## SM 0.7.0-alpha.1
 
