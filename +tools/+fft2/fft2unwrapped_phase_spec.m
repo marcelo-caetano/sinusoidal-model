@@ -1,4 +1,4 @@
-function unwrapped_phspec = fft2unwrapped_phase_spec(fft_frame,nfft,posfreqflag)
+function unwrapped_phspec = fft2unwrapped_phase_spec(fft_frame,nfft,posspecflag)
 %FFT2UNWRAPPED_PHASE_SPEC From FFT to unwrapped phase spectrum.
 %   UPS = FFT2UNWRAPPED_PHASE_SPEC(FFT) returns the unwrapped phase
 %   spectrum of the complex FFT vector or matrix. FFT can be either an
@@ -8,23 +8,23 @@ function unwrapped_phspec = fft2unwrapped_phase_spec(fft_frame,nfft,posfreqflag)
 %   UPS = FFT2UNWRAPPED_PHASE_SPEC(FFT,NFFT) uses NFFT for the size of
 %   the FFT.
 %
-%   UPS = FFT2UNWRAPPED_PHASE_SPEC(FFT,NFFT,POSFREQFLAG) uses the logical
-%   flag POSFREQFLAG to control if UPS contains the full frequency range or
+%   UPS = FFT2UNWRAPPED_PHASE_SPEC(FFT,NFFT,POSSPECFLAG) uses the logical
+%   flag POSSPECFLAG to control if UPS contains the full frequency range or
 %   only the positive frequency range of the spectrum of FFTFR. Use
-%   POSFREQFLAG = TRUE to return the positive half of the unwrapped phase
-%   spectrum in UPS and POSFREQFLAG = FALSE to return the full unwrapped
-%   phase spectrum in UPS. The default is POSFREQFLAG = FALSE when
+%   POSSPECFLAG = TRUE to return the positive half of the unwrapped phase
+%   spectrum in UPS and POSSPECFLAG = FALSE to return the full unwrapped
+%   phase spectrum in UPS. The default is POSSPECFLAG = FALSE when
 %   FFT2UNWRAPPED_PHASE_SPEC is called with one or two input arguments.
 %
 %   See also FFT2POS_MAG_SPEC, FFT2MAG_SPEC,
 %   FFT2PHASE_SPEC, FFT2LOG_MAG_SPEC
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CHECK INPUT ARGUMENTS
+% CHECK ARGUMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Check number of input arguments
@@ -40,12 +40,12 @@ if nargin == 1
     [nfft,~] = size(fft_frame);
     
     % Default to full spectrum
-    posfreqflag = false;
+    posspecflag = false;
     
 elseif nargin == 2
     
     % Default to full spectrum
-    posfreqflag = false;
+    posspecflag = false;
     
 end
 
@@ -67,7 +67,7 @@ end
 % FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if posfreqflag
+if posspecflag
     
     % Positive phase spectrum
     phspec = tools.fft2.fft2pos_phase_spec(fft_frame,nfft);

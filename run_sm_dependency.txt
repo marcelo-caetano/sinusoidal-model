@@ -54,9 +54,14 @@ Required MATLAB functions:
 .\+tools\+sin\ispeak.m
 .\+tools\+sin\maxnumpeak.m
 .\+tools\+spec\bin2freq.m
-.\+tools\+spec\ind2bin.m
+.\+tools\+spec\bin2ind.m
+.\+tools\+spec\binshift.m
+.\+tools\+spec\ibinshift.m
+.\+tools\+spec\mkbin.m
+.\+tools\+spec\mkfreq.m
 .\+tools\+spec\mkfreqbin.m
-.\+tools\+spec\nyq_freq.m
+.\+tools\+spec\nyq_bin.m
+.\+tools\+spec\nyq_ind.m
 .\+tools\+spec\pos_freq_band.m
 .\+tools\+wav\srer.m
 .\+tools\+wav\stereo2mono.m
@@ -73,7 +78,6 @@ Required MATLAB functions:
 .\SM\interp_mag_spec.m
 .\SM\interp_phase_spec.m
 .\SM\mag_spec_scaling.m
-.\SM\parameter_estimation.m
 .\SM\parameter_interpolation.m
 .\SM\partial_tracking.m
 .\SM\peak2peak_freq_matching.m
@@ -81,6 +85,7 @@ Required MATLAB functions:
 .\SM\reldb.m
 .\SM\revert_mag_spec_scaling.m
 .\SM\sinusoidal_analysis.m
+.\SM\sinusoidal_parameter_estimation.m
 .\SM\sinusoidal_resynthesis.m
 .\SM\sinusoidal_resynthesis_OLA.m
 .\SM\sinusoidal_resynthesis_PI.m

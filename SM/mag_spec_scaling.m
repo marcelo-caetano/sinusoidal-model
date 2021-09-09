@@ -16,7 +16,7 @@ function [scaled_magspec,pow] = mag_spec_scaling(fft_frame,framelen,nfft,winflag
 % 2019 MCaetano SMT 0.1.0
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,7 +48,7 @@ end
 logflag = 'dbp';
 
 % Positive frequencies
-posfreqflag = true;
+posspecflag = true;
 
 % Add spectral energy of negative frequencies
 nrgflag = true;
@@ -57,6 +57,6 @@ nrgflag = true;
 nanflag = true;
 
 % Scale the magnitude spectrum
-scaled_magspec = tools.fft2.fft2scaled_mag_spec(fft_frame,nfft,pow,logflag,paramestflag,posfreqflag,nrgflag,nanflag);
+scaled_magspec = tools.fft2.fft2scaled_mag_spec(fft_frame,nfft,pow,logflag,paramestflag,posspecflag,nrgflag,nanflag);
 
 end

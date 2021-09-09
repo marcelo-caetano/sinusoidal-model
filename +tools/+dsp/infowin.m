@@ -21,65 +21,62 @@ function argout = infowin(winflag,infoflag)
 %   COLA(R).
 %
 %   MAIN_LOBE_WIDTH main lobe width in frequency bins.
-%   MAIN_LOBE_WIDTH is the width of the main-lobe of a WINTYPE window in frequency
-%   bins.
+%   MAIN_LOBE_WIDTH is the width of the main-lobe of a WINTYPE window in
+%   frequency bins.
 %
-%   SLL highest side-lobe level in dB.
+%   SLL highest side-lobe level in dBp.
 %   SLL is the amplitude in dB of the second side-lobe for a WINTYPE
 %   window. SLL is related to the minimum amplitude a nearby sinusoid can
 %   have to be detected.
 %
-%   SLFO side-lobe fall-off in dB per octave.
+%   SLFO side-lobe fall-off in dBp per octave.
 %   The SLFO is the rate in dB at which the amplitude of the spectral
 %   side-lobes attenuate per octave for a WINTYPE window.
 %
 %   CSF cepstral smoothing factor.
 %   CSF is the factor used to estimate the order in cepstral smoothing that
-%   compensates for using windows other than rectangular.
+%   compensates for using windows other than Rectangular.
 %
-% Harris, F.J.'On the Use of Windows for Harmonic Analysis with the
+% [1] Harris, F.J. 'On the Use of Windows for Harmonic Analysis with the
 % Discrete Fourier Transform,' Proc. IEEE, 66(1), 1978.
 %
-% Smith, J.O.'Spectral Audio Signal Processing', W3K Publishing, 2011,
+% [2] Nuttall, A.H. 'Some Windows with Very Good Sidelobe Behavior,' IEEE
+% TASLP, vol ASSP-29, pp. 84-91, Feb 1981.
+%
+% [3] Smith, J.O.'Spectral Audio Signal Processing', W3K Publishing, 2011,
 % ISBN 978-0-9745607-3-1. (https://ccrma.stanford.edu/~jos/sasp/)
 %
 %   See also WHICHWIN
 
 % 2016 MCaetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CHECK INPUT
+% CHECK ARGUMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Check number of input arguments
-if nargin ~= 2
-    % Trow error
-    error(['Not enough or too many input arguments.\n'...
-        'Number of input arguments entered was %d.\n'...
-        'The function INFOWIN takes 2 input arguments.\n'...
-        'Type HELP INFOWIN for more information.\n'],nargin)
+% Check number if input arguments
+narginchk(1,2);
+
+% Check number if output arguments
+nargoutchk(0,1);
+
+if nargin == 1
+    
+    infoflag = 'name';
+    
 end
 
-% Check class of input arguments
-if ~isnumeric(winflag)
-    error(['WrongClass: Input argument WINTYPE must be numeric.\n'...
-        'Input argument entered is %s.\n'...
-        'WINTYPE must be a number between 1 and 7.\n'...
-        'Type HELP WHICHWIN for more information.\n'],class(winflag))
-end
+% Validate WINFLAG
+validateattributes(winflag,{'numeric'},{'scalar','finite','nonnan','integer','real','positive','>=',1,'<=',7},mfilename,'WINFLAG',1)
 
-if ~ischar(infoflag)
-    error(['WrongClass: Input argument INFOFLAG must be a character.\n'...
-        'Input argument entered is %s.\n'...
-        'INFOFLAG is a character that specifies the output of INFOWIN.\n'...
-        'Type HELP INFOWIN for more information.\n'],class(infoflag))
-end
+% Validate INFOFLAG
+validateattributes(infoflag,{'char','string'},{'scalartext','nonempty'},mfilename,'INFOFLAG',2)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% MAIN FUNCTION
+% FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 switch winflag
@@ -257,10 +254,16 @@ switch lower(infoflag)
         
     otherwise
         
-        error('SMT:INFOWIN:invalidFlag',...
-            ['Invalid INFOFLAG entered: %s.\n'...
-            'INFOFLAG must be DEN, SUM, MLW, SLL, or SLFO.\n'...
+        warning('SMT:INFOWIN:UnknownFlag',...
+            ['Unknown INFOFLAG entered: %s.\n'...
+            'INFOFLAG must be ''NAME'', ''DEN'', ''SUM'', ''MLW'', '...
+            '''SLL'', ''SLFO'', or ''CSF''.\nUsing default ''NAME''\n'...
             'Type HELP INFOWIN for more information.\n'],infoflag)
+        
+        % Default to NAME
+        winname = {'rectwin';'bartlett';'hann';'hanning';'blackman';...
+            'blackmanharris';'hamming'};
+        argout = winname{winflag};
         
 end
 

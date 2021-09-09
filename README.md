@@ -14,9 +14,38 @@
 
 # Sound Morphing Toolbox (SMT) Release Notes
 
+## SM 0.7.0-alpha.1
+
+---
+
+Sinusoidal Model (SM) version 0.7.0 alpha release build 1
+
+Run the script `run_sm.m` inside the folder `sinusoidal-model-master` for an example of how to use the code. NOTE: You must change directories and go into `sinusoidal-model-master` to run `run_sm.m` because `run_sm.m` uses a relative path to point to the audio file and also because the folder `sinusoidal-model-master` is not automatically added to the Matlab search path.
+
+The file `run_sm_dependency.txt` lists all file dependencies.
+
+### What's new in version 0.7.0-alpha.1
+
+- Updated functions in folder +tools/+spec/ to also handle odd FFT size
+
+### New functions/features
+
+- Updated all functions in folder +tools/+spec/ to be able to handle even or odd size of the DFT
+- Added functions `tools.spec.nyq_ind.m` and `tools.spec.nyq_bin.m`
+- Added functions `tools.spec.bishift.m` and `tools.spec.ibinshift.m`
+- Added functions `tools.spec.mkbin.m` and `tools.spec.mkfreq.m`
+
+### Deprecated functions/features
+
+- Deprecated function `tools.spec.nyq.m`
+
+### Bug fixes
+
+- Several small bug fixes
+
 ## SM 0.6.0-alpha.1
 
-***
+---
 
 Sinusoidal Model (SM) version 0.6.0 alpha release build 1
 
@@ -26,19 +55,19 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ### What's new in version 0.6.0-alpha.1
 
-- Refactored *peak-to-peak frequency matching*
+- Refactored _peak-to-peak frequency matching_
 
-- Refactored *partial tracking* as an independent module
+- Refactored _partial tracking_ as an independent module
 
-- Refactored *parameter estimation* as an independent module
+- Refactored _parameter estimation_ as an independent module
 
-- Added ability to recognize *symmetrical spectral peaks*, which happen when the center of the main lobe is exactly between two frequency bins
+- Added ability to recognize _symmetrical spectral peaks_, which happen when the center of the main lobe is exactly between two frequency bins
 
-- Refactored *spectrum scaling functions*
+- Refactored _spectrum scaling functions_
 
-- Added *power scaling quadratic interpolation* to the sinusoidal parameter estimation methods
+- Added _power scaling quadratic interpolation_ to the sinusoidal parameter estimation methods
 
-- Moved all *FFT spectrum conversion functions* to folder `./+tools/+fft2/`
+- Moved all _FFT spectrum conversion functions_ to folder `./+tools/+fft2/`
 
 - Refactored codebase into low-level core functionality and high-level calls to core functions
 
@@ -52,11 +81,11 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 - Added functions `tools.sin.is2ptpeak.m`, `tools.sin.is3ptpeak.m`, `tools.sin.ispeak.m`
 
-- Added function `tools.math.quadfit.m` with improved implementation of quadratic fit that also handles *symmetrical spectral peaks*
+- Added function `tools.math.quadfit.m` with improved implementation of quadratic fit that also handles _symmetrical spectral peaks_
 
 - Introduced subroutine `SM/parameter_estimation.m`
 
-- Updated function `SM/peak_picking.m` inside *parameter estimation* to handle *regular* and *symmetrical* spectral peaks
+- Updated function `SM/peak_picking.m` inside _parameter estimation_ to handle _regular_ and _symmetrical_ spectral peaks
 
 - Standardized all flags inside the code base
 
@@ -78,7 +107,7 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.5.0-alpha.4
 
-***
+---
 
 Sinusoidal Model (SM) version 0.5.0 alpha release build 4
 
@@ -92,7 +121,7 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.5.0-alpha.3
 
-***
+---
 
 Sinusoidal Model (SM) version 0.5.0 alpha release build 3
 
@@ -110,7 +139,7 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.5.0-alpha.2
 
-***
+---
 
 Sinusoidal Model (SM) version 0.5.0 alpha release build 2
 
@@ -128,7 +157,7 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.5.0-alpha.1
 
-***
+---
 
 Sinusoidal Model (SM) version 0.5.0 alpha release build 1
 
@@ -156,10 +185,9 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 - Matlab packages require a different syntax to call the functions inside packages, making version 0.5.0-alpha.1 totally backwards incompatible with previous versions
 
-
 ## SM 0.4.0-alpha.1
 
-***
+---
 
 Sinusoidal Model (SM) version 0.4.0 alpha release build 1
 
@@ -198,7 +226,7 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.3.1-alpha.4
 
-***
+---
 
 Sinusoidal Model (SM) version 0.3.1 alpha release build 4
 
@@ -228,7 +256,7 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.3.1-alpha.3
 
-***
+---
 
 Sinusoidal Model (SM) version 0.3.1 alpha release build 3
 
@@ -262,7 +290,7 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.3.1-alpha.2
 
-***
+---
 
 Sinusoidal Model (SM) version 0.3.1 alpha release build 2
 
@@ -296,7 +324,7 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.3.1-alpha.1
 
-***
+---
 
 Sinusoidal Model (SM) version 0.3.1 alpha release build 1
 
@@ -334,7 +362,7 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.3.0-alpha.2
 
-***
+---
 
 Sinusoidal Model (SM)
 
@@ -364,7 +392,7 @@ The file `sm_run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.3.0-alpha.1
 
-***
+---
 
 Sinusoidal Model (SM)
 
@@ -404,7 +432,7 @@ The file `sm_run_sm_dependency.txt` lists all file dependencies.
 
 ## SM 0.2.0
 
-***
+---
 
 Sinusoidal Model (SM)
 
@@ -428,7 +456,7 @@ The file `run_sinusoidal_model_production_dependencies.txt` lists all file depen
 
 ## SM 0.1.0
 
-***
+---
 
 Sinusoidal Model (SM)
 

@@ -1,12 +1,12 @@
-function [f,nbin] = mkfreqbin(nfft,fs,nframe,nchannel,freqlimflag,frequnitflag)
-%MKFREQBIN Make frequency array in bins or in Hertz.
-%   F = MKFREQBIN(NFFT,Fs,NFRAME,NCHANNEL) returns a frequency array F
-%   in Hertz corresponding to the full frequency range of the DFT
-%   spectrum. F is size NFFT x NFRAME x NCHANNEL.
+function [f,nfreq] = mkfreq(nfft,fs,nframe,nchannel,freqlimflag)
+%MKFREQ Make frequency array in bins or in Hertz.
+%   F = MKFREQ(NFFT,Fs,NFRAME,NCHANNEL) returns a frequency array F in
+%   Hertz corresponding to the full frequency range of the DFT spectrum.
+%   F is size NFFT x NFRAME x NCHANNEL.
 %
-%   F = MKFREQBIN(NFFT,Fs,NFRAME,NCHANNEL,FREQLIMFLAG) uses FREQLIMFLAG
-%   to control the limits of the frequency axis. FREQLIMFLAG can be
-%   'POS', 'FULL', or 'NEGPOS'. The default is FREQLIMFLAG = 'FULL'.
+%   F = MKFREQ(NFFT,Fs,NFRAME,NCHANNEL,FREQLIMFLAG) uses FREQLIMFLAG to
+%   control the limits of the frequency axis. FREQLIMFLAG can be 'POS',
+%   'FULL', or 'NEGPOS'. The default is FREQLIMFLAG = 'FULL'.
 %
 %   FREQLIMFLAG = 'POS' generates frequencies from 0 to Nyquist. Use
 %   'POS' to get the positive half of the spectrum. F is size
@@ -22,16 +22,10 @@ function [f,nbin] = mkfreqbin(nfft,fs,nframe,nchannel,freqlimflag,frequnitflag)
 %   with the zero-frequency component in the middle of the spectrum. Use
 %   FFTFLIP to plot the spectrum. F is size NFFT x NFRAME x NCHANNEL.
 %
-%   F = MKFREQBIN(NFFT,Fs,NFRAME,NCHANNEL,FREQLIMFLAG,FUNITFLAG) uses
-%   the logical flag FUNITFLAG to control the unit of the frequency
-%   vector. FUNITFLAG = TRUE outputs frequencies in Hertz and
-%   FUNITFLAG = FALSE outputs frequencies in bins. The default is
-%   FUNITFLAG = FALSE.
-%
-%   [F,NBIN] = MKFREQBIN(...) also outputs the number of frequency bins
-%   corresponding to the fist dimension of the array F. NBIN = NFFT when
-%   FREQLIMFLAG = 'FULL' or FREQLIMFLAG = 'NEGPOS' and NBIN = NFFT/2
-%   when FREQLIMFLAG = 'POS'.
+%   [F,NFREQ] = MKFREQ(...) also outputs the number of frequencies
+%   corresponding to the fist dimension of the array F. NFREQ = NFFT
+%   when FREQLIMFLAG = 'FULL' or FREQLIMFLAG = 'NEGPOS' and
+%   NFREQ = NFFT/2 when FREQLIMFLAG = 'POS'.
 %
 %   See also NYQ, NYQ_FREQ, FFTFLIP
 
@@ -46,7 +40,7 @@ function [f,nbin] = mkfreqbin(nfft,fs,nframe,nchannel,freqlimflag,frequnitflag)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Check number of input arguments
-narginchk(4,6);
+narginchk(4,5);
 
 % Check number of output arguments
 nargoutchk(0,2);
@@ -54,12 +48,6 @@ nargoutchk(0,2);
 if nargin == 4
     
     freqlimflag = 'full';
-    
-    frequnitflag = false;
-    
-elseif nargin == 5
-    
-    frequnitflag = false;
     
 end
 
@@ -78,21 +66,15 @@ validateattributes(nframe,{'numeric'},{'scalar','finite','nonnan','integer','rea
 % Validate FREQLIMFLAG
 validateattributes(freqlimflag,{'char','string'},{'scalartext','nonempty'},mfilename,'FREQLIMFLAG',5)
 
-% Validate FREQUNITFLAG
-validateattributes(frequnitflag,{'logical','numeric'},{'scalar','nonempty','binary'},mfilename,'FREQUNITFLAG',6)
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if frequnitflag
-    
-    [f,nbin] = tools.spec.mkfreq(nfft,fs,nframe,nchannel,freqlimflag);
-    
-else
-    
-    [f,nbin] = tools.spec.mkbin(nfft,nframe,nchannel,freqlimflag);
-    
-end
+bin = tools.spec.mkbin(nfft,nframe,nchannel,freqlimflag);
+
+f = tools.spec.bin2freq(bin,fs,nfft);
+
+% Number of positive frequency bins
+nfreq = tools.spec.pos_freq_band(nfft);
 
 end

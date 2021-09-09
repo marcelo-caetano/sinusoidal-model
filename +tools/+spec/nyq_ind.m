@@ -1,12 +1,9 @@
-function nbin = pos_freq_band(nfft)
-%POS_FREQ_BAND Positive frequency band.
-%   PB = POS_FREQ_BAND(NFFT) returns the length of the positive frequency
-%   band in bins of a spectrum obtained with an FFT of size NFFT.
-%   PB includes the zero-frequency and Nyquist-frequency bins for even NFFT
-%   but only the zero-frequency bin for odd NFFT since the Nyquist bin is
-%   fractional in that case.
+function inyq = nyq_ind(nfft)
+%NYQ_IND Array index corresponding to Nyquist frequency.
+%   N = NYQ_IND(NFFT) returns the array index corresponding to the
+%   Nyquist frequency of an FFT with size NFFT.
 %
-%   See also NEG_FREQ_BAND, NYQBIN, FFTFLIP, IFFTFLIP, LEFTWIN, RIGHTWIN
+%   See also NYQ_BIN, NYQ_FREQ, NYQ
 
 % 2020 MCaetano SMT 0.1.1
 % 2021 M Caetano SMT
@@ -30,7 +27,17 @@ validateattributes(nfft,{'numeric'},{'scalar','finite','nonnan','integer','real'
 % FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Length of positive frequency band
-nbin = tools.spec.nyq_ind(nfft);
+% Retrieve Nyquist bin
+knyq = tools.spec.nyq_bin(nfft);
+
+% BNYQ is fractional when NFFT is odd
+if tools.misc.isodd(nfft)
+    
+    knyq = floor(knyq);
+    
+end
+
+% Convert to index
+inyq = tools.spec.bin2ind(knyq);
 
 end

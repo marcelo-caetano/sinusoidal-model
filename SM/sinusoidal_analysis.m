@@ -96,7 +96,7 @@ function [amp,freq,ph,center_frame,npartial,nsample,nframe,nchannel,dc] = sinuso
 % 2020 MCaetano SMT 0.1.2 (Revised)
 % 2020 MCaetano SMT 0.2.0
 % 2021 M Caetano SMT (Revised)
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -164,8 +164,12 @@ disp('Sinusoidal Analysis')
 % Short-Time Fourier Transform from namespace STFT
 [fft_frame,center_frame,nsample,nframe,nchannel,dc] = STFT.stft(wav,framelen,hop,nfft,winflag,causalflag,normflag,zphflag);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SINUSOIDAL PARAMETER ESTIMATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Estimation of parameters of sinusoids
-[amplitude,frequency,phase] = parameter_estimation(fft_frame,framelen,nfft,fs,nframe,nchannel,maxnpeak,winflag,paramestflag,frequnitflag,npeakflag);
+[amplitude,frequency,phase] = sinusoidal_parameter_estimation(fft_frame,framelen,nfft,fs,nframe,nchannel,maxnpeak,winflag,paramestflag,frequnitflag,npeakflag);
 
 if ~frequnitflag
     

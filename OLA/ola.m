@@ -38,8 +38,7 @@ function [olasynth,olawin] = ola(time_frame,framelen,hop,nsample,center_frame,nf
 
 % 2016 M Caetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
-% 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% 2020 MCaetano SMT 0.2.0% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

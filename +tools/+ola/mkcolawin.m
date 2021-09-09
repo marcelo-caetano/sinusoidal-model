@@ -31,7 +31,7 @@ function win = mkcolawin(framelen,winflag)
 % 2019 MCaetano (Revised)
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,17 +47,17 @@ nargoutchk(0,1);
 % Check WINLEN
 if ~isnumeric(framelen)
     
-    error('SMT:WrongWindowLength',['The window length must be numeric. '...
+    error('MKCOLAWIN:SMT:WrongWindowLength',['The window length must be numeric. '...
         'The window length entered is class %s.\n'],class(framelen))
     
 elseif tools.misc.isfrac(framelen)
     
-    error('SMT:WrongWindowLength',['The window length must be integer. '...
+    error('MKCOLAWIN:SMT:WrongWindowLength',['The window length must be integer. '...
         'The window length entered is %f.\n'],framelen)
     
 elseif framelen <= 0
     
-    error('SMT:WrongWindowLength',['The window length must be positive. '...
+    error('MKCOLAWIN:SMT:WrongWindowLength',['The window length must be positive. '...
         'The window length entered is %d.\n'],framelen)
     
 end
@@ -65,17 +65,17 @@ end
 % Check WINFLAG
 if ~isnumeric(winflag)
     
-    error('SMT:UnknownWindowFlag',['The window flag must be numeric. '...
+    error('MKCOLAWIN:SMT:UnknownWindowFlag',['The window flag must be numeric. '...
         'The window flag entered is class %s.\n'],class(winflag))
     
 elseif tools.misc.isfrac(winflag)
     
-    error('SMT:UnknownWindowFlag',['The window flag must be integer. '...
+    error('MKCOLAWIN:SMT:UnknownWindowFlag',['The window flag must be integer. '...
         'The window flag entered is %f.\n'],winflag)
     
 elseif winflag < 1 || winflag > 14
     
-    warning('SMT:UnknownWindowFlag',['The flag entered is out of '...
+    warning('MKCOLAWIN:SMT:UnknownWindowFlag',['The flag entered is out of '...
         'the range [1,...,7].\n Using default HANN window.\n']);
     
     % Hann window
@@ -154,7 +154,7 @@ switch winflag
         
     case 8
         
-        % BARTLETT-HANN        
+        % BARTLETT-HANN
         if tools.misc.iseven(framelen)
             win = barthannwin(framelen+1);
             win(end)=[];

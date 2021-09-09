@@ -1,4 +1,4 @@
-function [amplitude,frequency,phase] = parameter_estimation(fft_frame,framelen,nfft,fs,nframe,nchannel,maxnpeak,...
+function [amplitude,frequency,phase] = sinusoidal_parameter_estimation(fft_frame,framelen,nfft,fs,nframe,nchannel,maxnpeak,...
     winflag,paramestflag,frequnitflag,npeakflag)
 %PARAMETER_ESTIMATION Spectral estimation of the parameters of sinusoids.
 %   [A,F,P] = PARAMETER_ESTIMATION(FFTFR,M,NFFT,Fs,NFRAME,NCHANNEL,MAXNPEAK,
@@ -35,7 +35,7 @@ function [amplitude,frequency,phase] = parameter_estimation(fft_frame,framelen,n
 %   See also PARTIAL_TRACKING
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

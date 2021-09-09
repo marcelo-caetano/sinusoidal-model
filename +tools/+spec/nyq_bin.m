@@ -1,19 +1,18 @@
-function magspec = fft2mag_spec(fft_frame)
-%FFT2MAG_SPEC From FFT to magnitude spectrum.
-%   M = FFT2MAG_SPEC(FFT) returns the magnitude spectrum M of the
-%   complex FFT vector or matrix. FFT can be either a NFFT x 1 colum vector
-%   or an NFFT x NFRAME matrix with NFRAME frames of the STFT.
+function bnyq = nyq_bin(nfft)
+%NYQ_BIN Nyquist frequency bin.
+%   BNYQ = NYQ_BIN(NFFT) returns the frequency bin corresponding to the
+%   Nyquist frequency of an FFT with size NFFT. BNYQ = NFFT/2 so BNYQ
+%   is fractional when NFFT is odd.
 %
-%   See also FFT2PHASE_SPEC, FFT2POS_MAG_SPEC,
-%   FFT2POS_PHASE_SPEC, FFT2LOG_MAG_SPEC,
-%   FFT2UNWRAP_PHASE_SPEC
+%   See also NYQ_IND, NYQ_FREQ, NYQ
 
+% 2020 MCaetano SMT 0.1.1
 % 2021 M Caetano SMT
 % $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CHECK INPUT ARGUMENTS
+% CHECK ARGUMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Check number of input arguments
@@ -22,11 +21,14 @@ narginchk(1,1);
 % Check number of output arguments
 nargoutchk(0,1);
 
+% Validate NFFT
+validateattributes(nfft,{'numeric'},{'scalar','finite','nonnan','integer','real','positive'},mfilename,'NFFT',1)
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Magnitude of the complex FFT
-magspec = abs(fft_frame);
+% Nyquist bin
+bnyq = nfft/2;
 
 end

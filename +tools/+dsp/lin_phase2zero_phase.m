@@ -1,14 +1,15 @@
-function zeroph = lin_phase2zero_phase(linphase,framelen)
+function zeroph = lin_phase2zero_phase(linph,framelen)
 %LIN2ZERO Linear phase to zero phase.
-%   ZP = LIN2ZERO(LP,WINLEN) flips the linear phase signal LP around
-%   the causalflag CW of the window with WINLEN samples. CW = CENTERWIN(W,'CAUSAL').
+%   ZP = LIN2ZERO(LP,FRAMELEN) flips the linear phase signal LP around
+%   the center of the window with FRAMELEN samples. The sample at the
+%   center of the window CW is CW = TOOLS.DSP.CENTERWIN(FRAMELEN,'CAUSAL').
 %
 %   See also ZERO2LIN, FFTFLIP, IFFTFLIP
 
 % 2016 MCaetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2021 M Caetano SMT (Revised for stereo)
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,6 +30,6 @@ nargoutchk(0,1);
 winleft = tools.dsp.leftwin(framelen);
 
 % Flip left and right halves
-zeroph = [linphase(winleft+1:end,:,:);linphase(1:winleft,:,:)];
+zeroph = [linph(winleft+1:end,:,:);linph(1:winleft,:,:)];
 
 end

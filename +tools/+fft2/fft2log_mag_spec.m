@@ -1,4 +1,4 @@
-function logmagspec = fft2log_mag_spec(fft_frame,nfft,logflag,posfreqflag,nrgflag,nanflag)
+function logmagspec = fft2log_mag_spec(fft_frame,nfft,logflag,posspecflag,nrgflag,nanflag)
 %FFT2LOG_MAG_SPEC From complex FFT to log magnitude spectrum.
 %   LMS = FFT2LOG_MAG_SPEC(FFT) retuns the log magnitude spectrum
 %   LMS of the full frequency range of the complex FFT multi-dimensional
@@ -18,9 +18,9 @@ function logmagspec = fft2log_mag_spec(fft_frame,nfft,logflag,posfreqflag,nrgfla
 %   and 'BEL' for bels.
 %
 %   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LOGFLAG,POSFREQFLAGFLAG) uses
-%   the logical flag POSFREQFLAG to specify the frequency range of LMS.
-%   POSFREQFLAG = FALSE is the default to output the full frequency range
-%   of the log magnitude spectrum. POSFREQFLAG = TRUE forces
+%   the logical flag POSSPECFLAG to specify the frequency range of LMS.
+%   POSSPECFLAG = FALSE is the default to output the full frequency range
+%   of the log magnitude spectrum. POSSPECFLAG = TRUE forces
 %   FFT2LOG_MAG_SPEC to output the positive half of the FFT.
 %   LMS is NBIN x NFRAME x NCHANNEL, where NBIN = NFFT/2+1 is the number of
 %   _non-negative_ frequency bins of the FFT.
@@ -30,8 +30,8 @@ function logmagspec = fft2log_mag_spec(fft_frame,nfft,logflag,posfreqflag,nrgfla
 %   contain the spectral energy of the negative frequency bins.
 %   NRGFLAG = TRUE adds the negative frequency energy to the log magnitude
 %   spectrum and NRGFLAG = FALSE does not. The default is NRGFLAG = FALSE.
-%   POSFREQFLAG must be TRUE when NRGFLAG = TRUE, otherwise
-%   FFT2LOG_MAG_SPEC issues a warning and forces POSFREQFLAG = TRUE.
+%   POSSPECFLAG must be TRUE when NRGFLAG = TRUE, otherwise
+%   FFT2LOG_MAG_SPEC issues a warning and forces POSSPECFLAG = TRUE.
 %
 %   LMS = FFT2LOG_MAG_SPEC(FFT,NFFT,LOGFLAG,POSFREQFLAGFLAG,
 %   NRGFLAG,NANFLAG) uses the logical flag NANFLAG to handle the case
@@ -46,7 +46,7 @@ function logmagspec = fft2log_mag_spec(fft_frame,nfft,logflag,posfreqflag,nrgfla
 % 2020 MCaetano SMT 0.1.2
 % 2020 MCaetano SMT 0.2.1
 % 2021 M Caetano SMT (Revised)
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,7 +65,7 @@ if nargin == 1
     
     logflag = 'dbp';
     
-    posfreqflag = false;
+    posspecflag = false;
     
     nrgflag = false;
     
@@ -75,7 +75,7 @@ elseif nargin == 2
     
     logflag = 'dbp';
     
-    posfreqflag = false;
+    posspecflag = false;
     
     nrgflag = false;
     
@@ -83,7 +83,7 @@ elseif nargin == 2
     
 elseif nargin == 3
     
-    posfreqflag = false;
+    posspecflag = false;
     
     nrgflag = false;
     
@@ -115,15 +115,15 @@ if nfft ~= nrow
     
 end
 
-% POSFREQFLAG must be TRUE when NRGFLAG is TRUE
-if nrgflag && ~posfreqflag
+% POSSPECFLAG must be TRUE when NRGFLAG is TRUE
+if nrgflag && ~posspecflag
     
     warning('SMT:FFT2LOG_MAG_SPEC:wrongFlagCombination',...
-        ['POSFREQFLAG must be TRUE when NRGFLAG is TRUE.\n'...
-        'POSFREQFLAG entered was %d but NRGFLAG entered was %d.\n'...
-        'Using POSFREQFLAG = TRUE'],posfreqflag,nrgflag);
+        ['POSSPECFLAG must be TRUE when NRGFLAG is TRUE.\n'...
+        'POSSPECFLAG entered was %d but NRGFLAG entered was %d.\n'...
+        'Using POSSPECFLAG = TRUE'],posspecflag,nrgflag);
     
-    posfreqflag = true;
+    posspecflag = true;
     
 end
 
@@ -131,7 +131,7 @@ end
 % FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if posfreqflag
+if posspecflag
     
     % Positive magnitude spectrum
     magspec = tools.fft2.fft2pos_mag_spec(fft_frame,nfft,nrgflag);

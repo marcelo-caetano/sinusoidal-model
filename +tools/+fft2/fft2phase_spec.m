@@ -6,11 +6,11 @@ function phspec = fft2phase_spec(fft_frame)
 %
 %   See also FFT2MAG_SPEC, FFT2POS_MAG_SPEC,
 %   FFT2POS_PHASE_SPEC, FFT2LOG_MAG_SPEC,
-%   FFT2UNWRAP_PHASE_SPEC
+%   FFT2UNWRAPPED_PHASE_SPEC
 
 % 2020 M Caetano SMT 0.1.1
 % 2021 M Caetano SMT (Revised)
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -22,6 +22,11 @@ narginchk(1,1);
 
 % Check number of output arguments
 nargoutchk(0,1);
+
+% TODO: Validate [nfft,nframe,nchannel]=size(fft_frame)
+
+% Validate FFT_FRAME
+validateattributes(fft_frame,{'numeric'},{'nonempty','finite','nonnan'},mfilename,'FFT_FRAME',1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FUNCTION

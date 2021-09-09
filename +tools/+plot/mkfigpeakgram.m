@@ -5,9 +5,9 @@ function fig = mkfigpeakgram(plotdata,axeslim,axeslbl,figlayout)
 %   Input arguments are structures with fields:
 %
 %   PLOTDATA.SPECPEAK matrix with peaks of log magnitude spectrum in
-%   (dBpower) with NFREQ rows and NFRAME columns, where NFREQ = tools.spec.nyq_freq(NFFT)
-%   is the positive frequency band of the spectrum and NFRAME  is the
-%   number of frames.
+%   (dBpower) with NFREQ rows and NFRAME columns, where NFREQ is the
+%   positive frequency band of the spectrum and NFRAME is the number of
+%   frames.
 %   PLOTDATA.TIME NFREQ x NFRAME matrix with time in (s) for all peaks
 %   PLOTDATA.FREQUENCY NFREQ x NFRAME matrix with peak frequency in (Hz) for all time frames
 %
@@ -39,7 +39,7 @@ function fig = mkfigpeakgram(plotdata,axeslim,axeslbl,figlayout)
 %   See also MKFIGWAV, MKFIGSPEC, MKFIGSPECTROGRAM, MKFIGPARTTRACK, MKFIGSPECTROPEAKGRAM
 
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.6.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
 
 
 % https://www.mathworks.com/help/matlab/creating_plots/save-figure-at-specific-size-and-resolution.html
