@@ -43,6 +43,10 @@ The file `run_sm_dependency.txt` lists all file dependencies.
 
 - Several small bug fixes
 
+### Acknowledgements
+
+This project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 831852 (MORPH)
+
 ## SM 0.6.0-alpha.1
 
 ---
