@@ -7,7 +7,7 @@ function [amp,freq,ph] = absdb(amp,freq,ph,absthres)
 
 % 2020 MCaetano SMT 0.1.1
 % 2021 M Caetano SMT (Revised)
-% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

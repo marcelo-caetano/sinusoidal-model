@@ -14,6 +14,24 @@
 
 # Sinusoidal Modeling (SM) Release Notes
 
+## SM 0.7.0-alpha.2
+
+---
+
+Sinusoidal Model (SM) version 0.7.0 alpha release build 2
+
+Run the script `run_sm.m` inside the folder `sinusoidal-model-master` for an example of how to use the code. NOTE: You must change directories and go into `sinusoidal-model-master` to run `run_sm.m` because `run_sm.m` uses a relative path to point to the audio file and also because the folder `sinusoidal-model-master` is not automatically added to the Matlab search path.
+
+The file `run_sm_dependency.txt` lists all file dependencies.
+
+### Bug fixes
+
+- Corrected bug in previous version where the `data/` folder was missing
+
+### Acknowledgements
+
+This project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 831852 (MORPH)
+
 ## SM 0.7.0-alpha.1
 
 ---

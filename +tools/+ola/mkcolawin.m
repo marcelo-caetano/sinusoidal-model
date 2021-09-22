@@ -31,11 +31,11 @@ function win = mkcolawin(framelen,winflag)
 % 2019 MCaetano (Revised)
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CHECK FUNCTION ARGUMENTS
+% CHECK ARGUMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Check number of input arguments
@@ -44,47 +44,12 @@ narginchk(2,2);
 % Check number of output arguments
 nargoutchk(0,1);
 
-% Check WINLEN
-if ~isnumeric(framelen)
-    
-    error('MKCOLAWIN:SMT:WrongWindowLength',['The window length must be numeric. '...
-        'The window length entered is class %s.\n'],class(framelen))
-    
-elseif tools.misc.isfrac(framelen)
-    
-    error('MKCOLAWIN:SMT:WrongWindowLength',['The window length must be integer. '...
-        'The window length entered is %f.\n'],framelen)
-    
-elseif framelen <= 0
-    
-    error('MKCOLAWIN:SMT:WrongWindowLength',['The window length must be positive. '...
-        'The window length entered is %d.\n'],framelen)
-    
-end
+validateattributes(framelen,{'numeric'},{'scalar','finite','nonnan','integer','real','positive'},mfilename,'FRAMELEN',1)
 
-% Check WINFLAG
-if ~isnumeric(winflag)
-    
-    error('MKCOLAWIN:SMT:UnknownWindowFlag',['The window flag must be numeric. '...
-        'The window flag entered is class %s.\n'],class(winflag))
-    
-elseif tools.misc.isfrac(winflag)
-    
-    error('MKCOLAWIN:SMT:UnknownWindowFlag',['The window flag must be integer. '...
-        'The window flag entered is %f.\n'],winflag)
-    
-elseif winflag < 1 || winflag > 14
-    
-    warning('MKCOLAWIN:SMT:UnknownWindowFlag',['The flag entered is out of '...
-        'the range [1,...,7].\n Using default HANN window.\n']);
-    
-    % Hann window
-    winflag = 3;
-    
-end
+validateattributes(winflag,{'numeric'},{'scalar','finite','nonnan','integer','real','positive','>=',1,'<=',14},mfilename,'WINFLAG',2)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BODY OF FUNCTION
+% FUNCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if tools.misc.iseven(framelen)
@@ -137,20 +102,10 @@ switch winflag
         % BLACKMAN-HARRIS
         win = blackmanharris(framelen,wflag);
         
-        if tools.misc.isodd(framelen)
-            win(1) = win(1)/2;
-            win(end) = win(end)/2;
-        end
-        
     case 7
         
         % HAMMING (OLA > 1)
         win = hamming(framelen,wflag);
-        
-        if tools.misc.isodd(framelen)
-            win(1) = win(1)/2;
-            win(end) = win(end)/2;
-        end
         
     case 8
         

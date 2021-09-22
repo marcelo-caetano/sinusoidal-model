@@ -22,7 +22,7 @@ function [amp,freq,ph] = maxnumpeak(peak_amp,peak_freq,peak_ph,maxnpeak,nbin,nfr
 
 % 2020 MCaetano SMT 0.1.2 (Revised)
 % 2021 M Caetano SMT (Revised)
-% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

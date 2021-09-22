@@ -22,7 +22,7 @@ function posspec = full_spec2pos_spec(fft_frame,nfft,nrgflag)
 
 % 2020 M Caetano SMT 0.1.2
 % 2021 M Caetano SMT (Revised for stereo)
-% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

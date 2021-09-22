@@ -35,7 +35,7 @@ function [amplitude,frequency,phase] = sinusoidal_parameter_estimation(fft_frame
 %   See also PARTIAL_TRACKING
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.7.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
