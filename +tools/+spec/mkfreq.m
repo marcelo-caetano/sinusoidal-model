@@ -32,7 +32,7 @@ function [f,nfreq] = mkfreq(nfft,fs,nframe,nchannel,freqlimflag)
 % 2016 M Caetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

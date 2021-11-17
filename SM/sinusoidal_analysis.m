@@ -1,8 +1,9 @@
-function [amp,freq,ph,center_frame,npartial,nsample,nframe,nchannel,dc] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,...
-    winflag,causalflag,paramestflag,ptrackflag,normflag,zphflag,frequnitflag,npeakflag)
+function [amp,freq,ph,center_frame,npartial,nsample,nframe,nchannel,dc] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,...
+    maxnpeak,shapethres,rangethres,relthres,absthres,freqdiff,...
+    winflag,causalflag,paramestflag,ptrackflag,normflag,zphflag,frequnitflag,npeakflag,partselflag)
 %SINUSOIDAL_ANALYSIS Perform sinusoidal analysis [1].
 %   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
-%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,FDIFF,WINFLAG,CAUSALFLAG,
 %   PARAMESTFLAG) splits the input sound S into overlapping frames of length
 %   M with a hop size H and returns the amplitudes A, frequencies F, and
 %   phases P of the partials assumed to be the MAXNPEAK peaks with maximum
@@ -21,7 +22,7 @@ function [amp,freq,ph,center_frame,npartial,nsample,nframe,nchannel,dc] = sinuso
 %   energy is lower than ABSTHRES dB are discarded. Set ABSTHRES = -Inf to
 %   turn off the absolute threshold ABSTHRES.
 %
-%   DELTA sets the frequency interval in Hz around each spectral peak used
+%   FDIFF sets the frequency interval in Hz around each spectral peak used
 %   in the peak-to-peak continuation algorithm (also P2P partial tracking).
 %
 %   WINFLAG is a numerical flag that controls the window used. Type HELP
@@ -48,41 +49,41 @@ function [amp,freq,ph,center_frame,npartial,nsample,nframe,nchannel,dc] = sinuso
 %   PARAMESTFLAG = 'POW' uses parabolic interpolation over power scaling
 %
 %   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
-%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,FDIFF,WINFLAG,CAUSALFLAG,
 %   PARAMESTFLAG,PTRACKFLAG) uses the text flag PTRACKFLAG to control
 %   partial tracking. PTRACKFLAG = 'P2P' uses peak-to-peak partial
 %   tracking and PTRACKFLAG = '' (empty string) specifies no partial
 %   tracking. The default is PTRACKFLAG = '' for no partial tracking.
 %
 %   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
-%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,FDIFF,WINFLAG,CAUSALFLAG,
 %   PARAMESTFLAG,PTRACKFLAG,NORMFLAG) uses the logical flag NORMFLAG to
 %   control normalization of the analysis window. NORMFLAG = TRUE
 %   normalizes the analysis window and NORMFLAG = FALSE does not. The
 %   default is NORMFLAG = TRUE.
 %
 %   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
-%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,FDIFF,WINFLAG,CAUSALFLAG,
 %   PARAMESTFLAG,PTRACKFLAG,NORMFLAG,ZPHFLAG) uses the logical flag ZPHFLAG
 %   to specify whether the analysis window has linear phase or zero phase.
 %   ZPHFLAG = TRUE uses a zero phase analysis window and ZPHFLAG = FALSE
 %   uses a linear phase analysis window. The default is ZPHFLAG = TRUE.
 %
 %   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
-%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,FDIFF,WINFLAG,CAUSALFLAG,
 %   PARAMESTFLAG,PTRACKFLAG,NORMFLAG,ZPHFLAG,FREQUNITFLAG) uses the logical
 %   flag FREQUNITFLAG to control the unit of the frequency estimates.
 %   FREQUNITFLAG = TRUE estimates frequencies in Hz directly and
-%   FREQUNITFLAG = FALSE estimates in frequency bin number prior to
-%   conversion to Hz. The default is FREQUNITFLAG = TRUE.
+%   FREQUNITFLAG = FALSE estimates in frequency bin number. The default
+%   is FREQUNITFLAG = TRUE.
 %
 %   [A,F,P,CFR,NPART,NSAMPLE,NFRAME,NCHANNEL,DC] = SINUSOIDAL_ANALYSIS(S,M,
-%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,DELTA,WINFLAG,CAUSALFLAG,
+%   H,NFFT,FS,MAXNPEAK,RELTHRES,ABSTHRES,FDIFF,WINFLAG,CAUSALFLAG,
 %   PARAMESTFLAG,PTRACKFLAG,NORMFLAG,ZPHFLAG,FREQUNITFLAG,NPEAKFLAG) uses
 %   the logical flag NPEAKFLAG to specify whether the estimation of
 %   parameters should output MAXNPEAK rows instead of NBIN rows, where NBIN
 %   is the number of positive frequency bins. NPEAKFLAG = TRUE sets
-%   MAXNPEAK and NPEAKFLAG = FALSE sets NBIN rows. The default is
+%   MAXNPEAK rows and NPEAKFLAG = FALSE sets NBIN rows. The default is
 %   NPEAKFLAG = FALSE.
 %
 %   See also SINUSOIDAL_RESYNTHESIS
@@ -96,7 +97,7 @@ function [amp,freq,ph,center_frame,npartial,nsample,nframe,nchannel,dc] = sinuso
 % 2020 MCaetano SMT 0.1.2 (Revised)
 % 2020 MCaetano SMT 0.2.0
 % 2021 M Caetano SMT (Revised)
-% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -104,12 +105,30 @@ function [amp,freq,ph,center_frame,npartial,nsample,nframe,nchannel,dc] = sinuso
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Check number of input arguments
-narginchk(12,17);
+narginchk(5,20);
 
 % Check number of output arguments
 nargoutchk(0,9);
 
-if nargin == 12
+if nargin == 5
+    
+    maxnpeak = inf(1);
+    
+    shapethres = 0.8;
+    
+    rangethres = 20;
+    
+    relthres = -90;
+    
+    absthres = -120;
+    
+    freqdiff = 20;
+    
+    winflag = 3;
+    
+    causalflag = 'causal';
+    
+    paramestflag = 'pow';
     
     ptrackflag = '';
     
@@ -121,7 +140,27 @@ if nargin == 12
     
     npeakflag = false;
     
-elseif nargin == 13
+    partselflag = false;
+    
+elseif nargin == 6
+    
+    shapethres = 0.8;
+    
+    rangethres = 20;
+    
+    relthres = -90;
+    
+    absthres = -120;
+    
+    freqdiff = 20;
+    
+    winflag = 3;
+    
+    causalflag = 'causal';
+    
+    paramestflag = 'pow';
+    
+    ptrackflag = '';
     
     normflag = true;
     
@@ -131,7 +170,27 @@ elseif nargin == 13
     
     npeakflag = false;
     
-elseif nargin == 14
+    partselflag = false;
+    
+elseif nargin == 7
+    
+    rangethres = 20;
+    
+    relthres = -90;
+    
+    absthres = -120;
+    
+    freqdiff = 20;
+    
+    winflag = 3;
+    
+    causalflag = 'causal';
+    
+    paramestflag = 'pow';
+    
+    ptrackflag = '';
+    
+    normflag = true;
     
     zphflag = true;
     
@@ -139,15 +198,187 @@ elseif nargin == 14
     
     npeakflag = false;
     
-elseif nargin == 15
+    partselflag = false;
+    
+elseif nargin == 8
+    
+    relthres = -90;
+    
+    absthres = -120;
+    
+    freqdiff = 20;
+    
+    winflag = 3;
+    
+    causalflag = 'causal';
+    
+    paramestflag = 'pow';
+    
+    ptrackflag = '';
+    
+    normflag = true;
+    
+    zphflag = true;
     
     frequnitflag = true;
     
     npeakflag = false;
     
-elseif nargin == 16
+    partselflag = false;
+    
+elseif nargin == 9
+    
+    absthres = -120;
+    
+    freqdiff = 20;
+    
+    winflag = 3;
+    
+    causalflag = 'causal';
+    
+    paramestflag = 'pow';
+    
+    ptrackflag = '';
+    
+    normflag = true;
+    
+    zphflag = true;
+    
+    frequnitflag = true;
     
     npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 10
+    
+    freqdiff = 20;
+    
+    winflag = 3;
+    
+    causalflag = 'causal';
+    
+    paramestflag = 'pow';
+    
+    ptrackflag = '';
+    
+    normflag = true;
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 11
+    
+    winflag = 3;
+    
+    causalflag = 'causal';
+    
+    paramestflag = 'pow';
+    
+    ptrackflag = '';
+    
+    normflag = true;
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 12
+    
+    causalflag = 'causal';
+    
+    paramestflag = 'pow';
+    
+    ptrackflag = '';
+    
+    normflag = true;
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 13
+    
+    paramestflag = 'pow';
+    
+    ptrackflag = '';
+    
+    normflag = true;
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 14
+    
+    ptrackflag = '';
+    
+    normflag = true;
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 15
+    
+    normflag = true;
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 16
+    
+    zphflag = true;
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 17
+    
+    frequnitflag = true;
+    
+    npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 18
+    
+    npeakflag = false;
+    
+    partselflag = false;
+    
+elseif nargin == 19
+    
+    partselflag = false;
     
 end
 
@@ -169,23 +400,28 @@ disp('Sinusoidal Analysis')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Estimation of parameters of sinusoids
-[amplitude,frequency,phase] = sinusoidal_parameter_estimation(fft_frame,framelen,nfft,fs,nframe,nchannel,maxnpeak,winflag,paramestflag,frequnitflag,npeakflag);
+[amplitude,frequency,phase,indmaxnpeak] = sinusoidal_parameter_estimation(fft_frame,framelen,nfft,fs,nframe,nchannel,maxnpeak,winflag,paramestflag,frequnitflag,npeakflag);
 
 if ~frequnitflag
+    
+    disp('Frequency estimation in bins')
     
     frequency = tools.spec.bin2freq(frequency,fs,nfft);
     
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% SPECTRAL POST-PROCESSING
+% PEAK SELECTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Apply absolute threshold
-[amplitude,frequency,phase] = absdb(amplitude,frequency,phase,absthres);
-
-% Apply relative threshold
-[amplitude,frequency,phase] = reldb(amplitude,frequency,phase,relthres);
+if partselflag
+    
+    disp('Peak selection')
+    
+    [amplitude,frequency,phase] = sinusoidal_peak_selection(fft_frame,amplitude,frequency,phase,indmaxnpeak,...
+        framelen,nfft,fs,nframe,nchannel,maxnpeak,shapethres,rangethres,relthres,absthres,winflag,normflag,zphflag,npeakflag);
+    
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PARTIAL TRACKING
@@ -194,7 +430,9 @@ end
 % Handle partial tracking
 if ~isempty(ptrackflag)
     
-    [amp,freq,ph,npartial] = partial_tracking(amplitude,frequency,phase,delta,hop,fs,nframe,ptrackflag);
+    disp('Partial tracking')
+    
+    [amp,freq,ph,npartial] = partial_tracking(amplitude,frequency,phase,freqdiff,hop,fs,nframe,ptrackflag);
     
 else
     

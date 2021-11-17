@@ -1,7 +1,7 @@
 function [f,nbin] = mkfreqbin(nfft,fs,nframe,nchannel,freqlimflag,frequnitflag)
 %MKFREQBIN Make frequency array in bins or in Hertz.
 %   F = MKFREQBIN(NFFT,Fs,NFRAME,NCHANNEL) returns a frequency array F
-%   in Hertz corresponding to the full frequency range of the DFT
+%   in bins corresponding to the full frequency range of the DFT
 %   spectrum. F is size NFFT x NFRAME x NCHANNEL.
 %
 %   F = MKFREQBIN(NFFT,Fs,NFRAME,NCHANNEL,FREQLIMFLAG) uses FREQLIMFLAG
@@ -38,7 +38,7 @@ function [f,nbin] = mkfreqbin(nfft,fs,nframe,nchannel,freqlimflag,frequnitflag)
 % 2016 M Caetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

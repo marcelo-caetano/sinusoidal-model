@@ -4,6 +4,8 @@
 % SINUSOIDAL ANALYSIS PARAMETERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+partselflag = true;
+
 % Blackman-Harris analysis window
 winflag = 6;
 
@@ -27,7 +29,11 @@ ptrackflag = {'','p2p'};
 ptrck = 2;
 
 % Number of fundamental periods
-nT0 = 3;
+if partselflag
+    nT0 = 6;
+else
+    nT0 = 4;
+end
 
 % Normalize analysis window
 normflag = true;
@@ -39,22 +45,27 @@ zphflag = true;
 frequnitflag = true;
 
 % Maximum number of peaks to retrieve from analysis
-maxnpeak = 80;
+maxnpeak = 150;
 
 % MAXNPEAK frequency bins
-% npeakflag = false;
 npeakflag = true;
 
 % Replace -Inf in spectrogram
 nanflag = false;
 
-% Relative threshold
-% relthres = -inf(1);
-relthres = -100;
+% Peak shape threshold (normalized)
+shapethres = 0.8;
 
-% Absolute threshold
+% Peak range threshold (dB power)
+rangethres = 20;
+
+% Relative threshold (dB power)
+% relthres = -inf(1);
+relthres = -80;
+
+% Absolute threshold (dB power)
 % absthres = -inf(1);
-absthres = -120;
+absthres = -100;
 
 % Resynthesis flag
 synthflag = {'OLA','PI','PRFI'};
@@ -104,14 +115,15 @@ osfac = 4;
 nfft = tools.dsp.fftsize(framelen,osfac);
 
 % Frequency difference for peak matching (Hz)
-delta = tools.dsp.freq_diff4peak_matching(ref0);
+freqdiff = tools.dsp.freq_diff4peak_matching(ref0);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SINUSOIDAL ANALYSIS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[amplitude,frequency,phase,center_frame,npartial,nsample,nframe,nchannel,dc] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,maxnpeak,relthres,absthres,delta,...
-    winflag,causalflag{cf},paramestflag{mf},ptrackflag{ptrck},normflag,zphflag,frequnitflag,npeakflag);
+[amplitude,frequency,phase,center_frame,npartial,nsample,nframe,nchannel,dc] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,...
+    maxnpeak,shapethres,rangethres,relthres,absthres,freqdiff,...
+    winflag,causalflag{cf},paramestflag{mf},ptrackflag{ptrck},normflag,zphflag,frequnitflag,npeakflag,partselflag);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIGURE PARAMETERS
@@ -169,7 +181,7 @@ tools.plot.mkfigpeakgram(plot_part,axes_lim,axes_lbl,fig_layout);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [sinusoidal,partial,amp_partial,freq_partial,phase_partial] = sinusoidal_resynthesis(amplitude,frequency,phase,...
-    framelen,hop,fs,nsample,center_frame,npartial,nframe,delta,winflag,causalflag{cf},synthflag{rf},ptrackflag{ptrck},dispflag);
+    framelen,hop,fs,nsample,center_frame,npartial,nframe,freqdiff,winflag,causalflag{cf},synthflag{rf},ptrackflag{ptrck},dispflag);
 
 % Make residual
 residual = wav - sinusoidal;

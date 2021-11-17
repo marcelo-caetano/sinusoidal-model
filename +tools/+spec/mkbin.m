@@ -1,6 +1,6 @@
 function [bin,nbin] = mkbin(nfft,nframe,nchannel,freqlimflag)
 %MKBIN Make frequency bin array.
-%   K = MKBIN(NFFT,NFRAME,NCHANNEL) returns a frequency bin array K 
+%   K = MKBIN(NFFT,NFRAME,NCHANNEL) returns a frequency bin array K
 %   corresponding to the full frequency range of the DFT spectrum.
 %   K is size NFFT x NFRAME x NCHANNEL.
 %
@@ -32,7 +32,7 @@ function [bin,nbin] = mkbin(nfft,nframe,nchannel,freqlimflag)
 % 2016 M Caetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -72,27 +72,24 @@ switch lower(freqlimflag)
     
     case 'pos'
         
-        % Do NOT shiftflag zero frequency to the middle of the spectrum
-        shiftflag = false;
+        bin_min = 0;
         
-        % ISPOS flag
-        ispos = true;
+        bin_max = tools.spec.nyq_bin(nfft);
         
     case 'full'
         
-        % Do NOT shiftflag zero frequency to the middle of the spectrum
-        shiftflag = false;
+        bin_min = 0;
         
-        % ISPOS flag
-        ispos = false;
+        bin_max = nfft - 1;
         
     case 'negpos'
         
-        % Shift zero-frequency bin to the center of the spectrum
-        shiftflag = true;
+        % Shift zero frequency to the middle of the spectrum
+        binrange = tools.spec.binshift([0 nfft-1],nfft);
         
-        % ISPOS flag
-        ispos = false;
+        bin_min = binrange(1);
+        
+        bin_max = binrange(end);
         
     otherwise
         
@@ -100,31 +97,19 @@ switch lower(freqlimflag)
             'FREQLIMFLAG must be FULL, POS, or NEGPOS.\nValue entered'...
             'was %s\nUsing default value FREQLIMFLAG = FULL'],freqlinflag)
         
-        % Do NOT shiftflag zero frequency to the middle of the spectrum
-        shiftflag = false;
+        bin_min = 0;
         
-        % ISPOS flag
-        ispos = false;
+        bin_max = nfft - 1;
         
 end
 
 % Make bin vector
-bvec = (0:nfft-1)';
+bin_vec = tools.spec.mkbinvec(bin_min,bin_max);
 
 % Make bin array
-bin = repmat(bvec,1,nframe,nchannel);
+bin = repmat(bin_vec,1,nframe,nchannel);
 
-if shiftflag
-    
-    % Shift zero frequency bin
-    bin = tools.spec.binshift(bin,nfft);
-    
-end
-
-if ispos
-    
-    % Bins corresponding to positive half of frequency spectrum
-    bin = tools.fft2.full_spec2pos_spec(bin,nfft);
+if strcmpi(freqlimflag,'pos')
     
     % Number of positive frequency bins
     nbin = tools.spec.pos_freq_band(nfft);

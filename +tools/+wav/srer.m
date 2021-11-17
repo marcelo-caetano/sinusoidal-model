@@ -15,7 +15,7 @@ function rms_db = srer(sig,res,logflag,nanflag)
 %   See also LIN2LOG, RMSDB
 
 % 2021 M Caetano SMT (Revised)
-% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
 
 
 %   TODO: Add flag GLOBAL or LOCAL to control SRER

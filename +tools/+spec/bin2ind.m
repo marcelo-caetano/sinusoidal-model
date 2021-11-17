@@ -14,7 +14,7 @@ function ind = bin2ind(bin,nfft)
 %   See also IND2BIN, IND2FREQ, FREQ2IND, FREQ2BIN, BIN2FREQ, MKFREQ, NYQ_FREQ
 
 % 2020 MCaetano SMT 0.1.1
-% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
 
 
 % TODO: REPLACE NARGIN LOGIC WITH EXPLICIT OPTION FLAGS
@@ -37,7 +37,7 @@ if nargin == 1
 end
 
 % Validate BIN
-validateattributes(bin,{'numeric'},{'nonempty','finite','nonnan','real'},mfilename,'BIN',1)
+validateattributes(bin,{'numeric'},{'nonempty','real'},mfilename,'BIN',1)
 
 if isnan(nfft)
     

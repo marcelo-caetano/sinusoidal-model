@@ -9,7 +9,7 @@ function [amplitude,frequency,phase_argument,synthwin] = stationary_synthesis(am
 
 % 2017 M Caetano; Revised 2019
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -32,7 +32,7 @@ samples = (cframe-tools.dsp.leftwin(framelen):cframe+tools.dsp.rightwin(framelen
 % Make synthesis window
 synthwin = tools.ola.mkcolawin(framelen,winflag);
 
-% Calculate phase shift (using causalflag of frame as reference)
+% Calculate phase shift (using center of frame as reference)
 phase_shift = ph - (2*pi*cframe/fs)*freq;
 
 % Calculate phase argument

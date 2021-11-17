@@ -9,7 +9,8 @@ function ref0 = reference_f0(f0,f0flag)
 %   and F0FLAG = TRUE uses the mean. The default is F0FLAG = FALSE when
 %   REFERENCE_F0 is called with one input argument.
 
-% 2021 M Caetano SMT% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
+% 2021 M Caetano SMT
+% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

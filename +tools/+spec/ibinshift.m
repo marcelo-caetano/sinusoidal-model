@@ -7,7 +7,7 @@ function bin = ibinshift(negbin,nfft)
 %   See also BINSHIFT, FFTFLIP, NYQ, BIN2IND, BIN2FREQ
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.7.0-alpha.2 $Id
+% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
