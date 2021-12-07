@@ -1,16 +1,38 @@
 % RUN SINUSOIDAL MODEL
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ADD FOLDER FROM CURRENTLY RUNNING SCRIPT TO MATLAB PATH
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Get full path & name of executing file
+exeFile = mfilename('fullpath');
+
+% Get full path of executing directory
+exeDir = fileparts(exeFile);
+
+% If EXEDIR is not on the path
+if ~tools.iofun.isdironpath(exeDir)
+    
+    % Add EXEDIR (and all subfolders) to Matlab path
+    tools.iofun.add2path(exeDir);
+    
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SINUSOIDAL ANALYSIS PARAMETERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-partselflag = true;
+% Peak selection
+peakselflag = true;
+
+% Track duration
+trackdurflag = true;
 
 % Blackman-Harris analysis window
 winflag = 6;
 
 % Display name of analysis window in the terminal
-% fprintf(1,'%s analysis window\n',tools.dsp.infowin(winflag,'name'));
+fprintf(1,'%s analysis window\n',tools.dsp.infowin(winflag,'name'));
 
 % Flag for causality of first window
 causalflag = {'causal','non','anti'};
@@ -22,17 +44,20 @@ lmsf = 2;
 
 % Flag for parameter estimation
 paramestflag = {'nne','lin','log','pow'};
-mf = 4;
+pef = 4;
 
 % Partial tracking flag
 ptrackflag = {'','p2p'};
-ptrck = 2;
+ptf = 2;
 
 % Number of fundamental periods
-if partselflag
+if peakselflag
     nT0 = 6;
+    % Oversampling factor
+    osfac = 4;
 else
     nT0 = 4;
+    osfac = 2;
 end
 
 % Normalize analysis window
@@ -41,37 +66,38 @@ normflag = true;
 % Use zero phase window
 zphflag = true;
 
-% Estimate frequencies in Hz
-frequnitflag = true;
-
 % Maximum number of peaks to retrieve from analysis
 maxnpeak = 150;
 
-% MAXNPEAK frequency bins
+% Return MAXNPEAK frequency bins
 npeakflag = true;
 
 % Replace -Inf in spectrogram
 nanflag = false;
 
 % Peak shape threshold (normalized)
-shapethres = 0.8;
+shapethres = 0.87;
 
 % Peak range threshold (dB power)
-rangethres = 20;
+rangethres = 15;
 
 % Relative threshold (dB power)
-% relthres = -inf(1);
-relthres = -80;
+relthres = -90;
 
 % Absolute threshold (dB power)
-% absthres = -inf(1);
 absthres = -100;
+
+% Minimum partial track segment duration (ms)
+durthres = 10.5;
+
+% Connect over (ms)
+gapthres = 22.5;
 
 % Resynthesis flag
 synthflag = {'OLA','PI','PRFI'};
-rf = 2;
+sf = 2;
 
-% Display flag
+% Display resynthesis info
 dispflag = false;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -108,9 +134,6 @@ framelen = tools.dsp.framesize(f0,fs,nT0);
 % 50% overlap
 hop = tools.dsp.hopsize(framelen,0.5);
 
-% Oversampling factor
-osfac = 4;
-
 % FFT size
 nfft = tools.dsp.fftsize(framelen,osfac);
 
@@ -121,9 +144,9 @@ freqdiff = tools.dsp.freq_diff4peak_matching(ref0);
 % SINUSOIDAL ANALYSIS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[amplitude,frequency,phase,center_frame,npartial,nsample,nframe,nchannel,dc] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,...
-    maxnpeak,shapethres,rangethres,relthres,absthres,freqdiff,...
-    winflag,causalflag{cf},paramestflag{mf},ptrackflag{ptrck},normflag,zphflag,frequnitflag,npeakflag,partselflag);
+[amplitude,frequency,phase,center_frame,npartial,nframe,nchannel,nsample,dc] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,...
+    winflag,maxnpeak,shapethres,rangethres,relthres,absthres,durthres,gapthres,freqdiff,...
+    causalflag{cf},paramestflag{pef},ptrackflag{ptf},normflag,zphflag,npeakflag,peakselflag,trackdurflag);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIGURE PARAMETERS
@@ -181,7 +204,8 @@ tools.plot.mkfigpeakgram(plot_part,axes_lim,axes_lbl,fig_layout);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [sinusoidal,partial,amp_partial,freq_partial,phase_partial] = sinusoidal_resynthesis(amplitude,frequency,phase,...
-    framelen,hop,fs,nsample,center_frame,npartial,nframe,freqdiff,winflag,causalflag{cf},synthflag{rf},ptrackflag{ptrck},dispflag);
+    framelen,hop,fs,nsample,center_frame,npartial,nframe,nchannel,durthres,gapthres,freqdiff,...
+    winflag,causalflag{cf},synthflag{sf},ptrackflag{ptf},~trackdurflag,dispflag);
 
 % Make residual
 residual = wav - sinusoidal;

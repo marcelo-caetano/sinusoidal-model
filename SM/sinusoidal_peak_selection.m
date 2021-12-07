@@ -1,5 +1,5 @@
 function [amp,freq,ph] = sinusoidal_peak_selection(fft_frame,amp,freq,ph,indmaxnpeak,framelen,nfft,fs,nframe,nchannel,...
-    maxnpeak,shapethres,rangethres,relthres,absthres,winflag,normflag,zphflag,npeakflag)
+    winflag,maxnpeak,shapethres,rangethres,relthres,absthres,normflag,zphflag,npeakflag)
 %SINUSOIDAL_PEAK_SELECTION Selection of spectral peaks as sinusoids.
 %   [AMP,FREQ,PH] = SINUSOIDAL_PEAK_SELECTION(FFTFR,A,F,P,IND,M,N,Fs,NFRAME,NCHANNEL,MAXNPEAK,
 %   SHAPETHRES,RANGETHRES,RELTHRES,ABSTHRES,WINFLAG,NORMFLAG,ZPHFLAG,NPEAKFLAG)
@@ -38,7 +38,7 @@ function [amp,freq,ph] = sinusoidal_peak_selection(fft_frame,amp,freq,ph,indmaxn
 %   See also PEAKSEL, PEAK_SHAPE, PEAK_RANGE, PEAK_RELDB
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,77 +51,43 @@ narginchk(10,19);
 % Check number of output arguments
 nargoutchk(0,3);
 
+defaults = {3, 200, 0.8, 20, -100, -120, true, true, true};
+
 if nargin == 10
     
-    maxnpeak = inf(1);
-    shapethres = 0;
-    rangethres = -inf(1);
-    relthres = -inf(1);
-    absthres = -inf(1);
-    winflag = 3;
-    normflag = true;
-    zphflag = true;
-    npeakflag = true;
+    [winflag,maxnpeak,shapethres,rangethres,relthres,absthres,normflag,zphflag,npeakflag] = defaults{1:end};
     
 elseif nargin == 11
     
-    shapethres = 0;
-    rangethres = -inf(1);
-    relthres = -inf(1);
-    absthres = -inf(1);
-    winflag = 3;
-    normflag = true;
-    zphflag = true;
-    npeakflag = true;
+    [maxnpeak,shapethres,rangethres,relthres,absthres,normflag,zphflag,npeakflag] = defaults{2:end};
     
 elseif nargin == 12
     
-    rangethres = -inf(1);
-    relthres = -inf(1);
-    absthres = -inf(1);
-    winflag = 3;
-    normflag = true;
-    zphflag = true;
-    npeakflag = true;
+    [shapethres,rangethres,relthres,absthres,normflag,zphflag,npeakflag] = defaults{3:end};
     
 elseif nargin ==13
     
-    relthres = -inf(1);
-    absthres = -inf(1);
-    winflag = 3;
-    normflag = true;
-    zphflag = true;
-    npeakflag = true;
+    [rangethres,relthres,absthres,normflag,zphflag,npeakflag] = defaults{4:end};
     
 elseif nargin == 14
     
-    absthres = -inf(1);
-    winflag = 3;
-    normflag = true;
-    zphflag = true;
-    npeakflag = true;
+    [relthres,absthres,normflag,zphflag,npeakflag] = defaults{5:end};
     
 elseif nargin == 15
     
-    winflag = 3;
-    normflag = true;
-    zphflag = true;
-    npeakflag = true;
+    [absthres,normflag,zphflag,npeakflag] = defaults{6:end};
     
 elseif nargin == 16
     
-    normflag = true;
-    zphflag = true;
-    npeakflag = true;
+    [normflag,zphflag,npeakflag] = defaults{7:end};
     
 elseif nargin == 17
     
-    zphflag = true;
-    npeakflag = true;
+    [zphflag,npeakflag] = defaults{8:end};
     
 elseif nargin == 18
     
-    npeakflag = true;
+    [npeakflag] = defaults{9:end};
     
 end
 
@@ -135,12 +101,12 @@ validateattributes(nfft,{'numeric'},{'scalar','nonempty','integer','real','posit
 validateattributes(fs,{'numeric'},{'scalar','nonempty','integer','real','positive'},mfilename,'Fs',8)
 validateattributes(nframe,{'numeric'},{'scalar','integer','nonempty','real','positive'},mfilename,'NFRAME',9)
 validateattributes(nchannel,{'numeric'},{'scalar','integer','nonempty','real','positive'},mfilename,'NCHANNEL',10)
-validateattributes(maxnpeak,{'numeric'},{'nonempty','scalar','real','positive'},mfilename,'MAXNPEAK',11)
-validateattributes(shapethres,{'numeric'},{'nonempty','scalar','real','>=',0,'<=',1},mfilename,'SHAPETHRES',12)
-validateattributes(rangethres,{'numeric'},{'nonempty','scalar','real'},mfilename,'RANGETHRES',13)
-validateattributes(relthres,{'numeric'},{'nonempty','scalar','real'},mfilename,'RELTHRES',14)
-validateattributes(absthres,{'numeric'},{'nonempty','scalar','real'},mfilename,'ABSTHRES',15)
-validateattributes(winflag,{'numeric'},{'scalar','integer','nonempty','>=',1,'<=',8},mfilename,'WINFLAG',16)
+validateattributes(winflag,{'numeric'},{'scalar','integer','nonempty','>=',1,'<=',8},mfilename,'WINFLAG',11)
+validateattributes(maxnpeak,{'numeric'},{'nonempty','scalar','real','positive'},mfilename,'MAXNPEAK',12)
+validateattributes(shapethres,{'numeric'},{'nonempty','scalar','real','>=',0,'<=',1},mfilename,'SHAPETHRES',13)
+validateattributes(rangethres,{'numeric'},{'nonempty','scalar','real'},mfilename,'RANGETHRES',14)
+validateattributes(relthres,{'numeric'},{'nonempty','scalar','real'},mfilename,'RELTHRES',15)
+validateattributes(absthres,{'numeric'},{'nonempty','scalar','real'},mfilename,'ABSTHRES',16)
 validateattributes(normflag,{'numeric','logical'},{'scalar','nonempty','binary'},mfilename,'NORMFLAG',17)
 validateattributes(zphflag,{'numeric','logical'},{'scalar','nonempty','binary'},mfilename,'ZPHFLAG',18)
 validateattributes(npeakflag,{'numeric','logical'},{'scalar','nonempty','binary'},mfilename,'NPEAKFLAG',19)
@@ -162,7 +128,7 @@ realsigflag = true;
 normdprodflag = true;
 
 [amp,freq,ph] = tools.psel.peaksel(fft_frame,amp,freq,ph,indmaxnpeak,framelen,nfft,fs,nframe,nchannel,...
-    maxnpeak,nbinspan,shapethres,rangethres,relthres,absthres,winflag,normflag,zphflag,posfreqflag,...
+    winflag,maxnpeak,nbinspan,shapethres,rangethres,relthres,absthres,normflag,zphflag,posfreqflag,...
     realsigflag,npeakflag,normdprodflag);
 
 end

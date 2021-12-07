@@ -14,9 +14,60 @@
 
 # Sinusoidal Modeling (SM) Release Notes
 
-Run the script `run_sm.m` inside the folder `sinusoidal-model-master` for an example of how to use the code. NOTE: You must change directories and go into `sinusoidal-model-master` to run `run_sm.m` because `run_sm.m` uses a relative path to point to the audio file and also because the folder `sinusoidal-model-master` is not automatically added to the Matlab search path.
+SM is a set of Matlab functions that implement several algorithms for sinusoidal analysis and resynthesis of isolated sounds with (or without) partial tracking. All the code is freely available as open-source `.m` files.
 
-The file `run_sm_dependency.txt` lists all file dependencies.
+## Quick Setup
+
+1. Download and unzip the files to a folder (e.g., `/userhome/myfolder`)
+2. Start Matlab
+3. Open the SM folder (e.g., `/userhome/myfolder`) in Matlab (Navigate to `/userhome/myfolder/sinusoidal-model-master/` under the **Current Folder** menu)
+4. Run the script `run_sm.m` to generate the example (type `run_sm.m` in the _**Command Window**_ or click on _**Run**_ from the _**Editor**_).
+5. Add your own sounds to the `./audio` subfolder, open and edit `run_sm.m` appropriately to analyze/resynthesize your own sounds
+
+NOTE: The script `run_sm.m` uses a relative path to point to the audio file, so you must either always run it inside the folder `sinusoidal-model-master` or change the relative path to an absolute path.
+
+WARNING! Before running the script `run_sm.m` for the first time, you must add the folder `sinusoidal-model-master` and all its subfolders to the Matlab search path. The script `run_sm.m` automatically adds the folder (and all subfolders) of the currently running script (`run_sm.m`) to the path. So the folder structure and the location of the script `run_sm.m` in that folder structure are important. If you change the location of `run_sm.m` (or if anything goes wrong), add the SM folder (e.g., `/userhome/myfolder/sinusoidal-model-master/`) to your Matlab path by hand (right click on the folder `/userhome/myfolder/sinusoidal-model-master/` in the _**Current Folder**_ menu and choose _**Add to path > Selected Folders and Subfolders**_).
+
+## Dependencies
+
+The file `run_sm_dependency.txt` lists all file dependencies. All required `.m` files can be found in this SMT repository. However, the SMT also requires the Matlab signal processing toolbox.
+
+## Acknowledgements
+
+This project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 831852 (MORPH)
+
+## SM 0.9.0-alpha.1
+
+Sinusoidal Model (SM) version 0.9.0 alpha release build 1
+
+### What's new in version 0.9.0-alpha.1
+
+- Added selection of partial track segments using duration as criterion
+  - DURTHRES is the threshold for the minimum duration of the segments of partial tracks
+  - GAPTHRES is the threshold for the duration of the gaps between partial track segments to connect over
+
+### New functions/features in version 0.9.0-alpha.1
+
+- Low-level partial duration in folder `+tools/+track`
+  - `+tools/+track/dur.m`
+  - `+tools/+track/durgap.m`
+  - `+tools/+track/durtrack.m`
+  - `+tools/+track/trimtrack.m`
+- High-level partial duration function `SM/partial_track_duration.m`
+
+### Backwards compatibility in version 0.9.0-alpha.1
+
+- New peak selection feature resulted in API changes to high-level functions inside the folder `SM/`
+  - Additional input arguments in a different order in function `SM/sinusodal_analysis.m`
+  - Different order of output arguments in function `SM/sinusoidal_analysis.m`
+  - Additional arguments in function `SM/sinusoidal_resynthesis.m`
+  - Different order of input arguments in function `SM/sinusoidal_peak_selection.m`
+
+### Bug fixes in version 0.9.0-alpha.1
+
+- Fixed bug in function `+tools/+psel/spec_trough.m` when the spectral peaks and troughs found are not consistent
+  - Added local function to check condition `ntrough == npeak+1`
+  - Added local function to fix frames where `ntrough != npeak+1`
 
 ## SM 0.8.0-alpha.1
 
@@ -402,7 +453,3 @@ Sinusoidal Model (SM)
 Sinusoidal Model (SM)
 
 ### Initial release
-
-## Acknowledgements
-
-This project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 831852 (MORPH)

@@ -4,7 +4,7 @@ function pow = interp_pow_scaling(powtable,framelen,winflag)
 %
 %   See also XQIFFT
 
-% 2021 M Caetano SMT% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
+% 2021 M Caetano SMT% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
 
 
 % TODO: CHECK INPUT ARGUMENTS (NaN,class, etc)

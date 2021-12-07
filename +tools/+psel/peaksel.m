@@ -1,5 +1,5 @@
 function [amp,freq,ph] = peaksel(fft_frame,amp,freq,ph,indmaxnpeak,framelen,nfft,fs,nframe,nchannel,...
-    maxnpeak,nbinspan,shapethres,rangethres,relthres,absthres,winflag,normflag,zphflag,...
+    winflag,maxnpeak,nbinspan,shapethres,rangethres,relthres,absthres,normflag,zphflag,...
     posfreqflag,realsigflag,npeakflag,normdprodflag)
 %PEAKSEL Selection of spectral as sinusoids.
 %   [AMP,FREQ,PH] = PEAKSEL(FFTFR,A,F,P,IND,M,N,Fs,NFRAME,NCHANNEL,MAXNPEAK,NBINSPAN,
@@ -39,7 +39,7 @@ function [amp,freq,ph] = peaksel(fft_frame,amp,freq,ph,indmaxnpeak,framelen,nfft
 %   See also SINUSOIDAL_PEAK_SELECTION, PEAK_SHAPE, PEAK_RANGE, PEAK_RELDB
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,11 +96,11 @@ measure_absdb = tools.math.lin2log(amp,'dbp');
 % APPLY THRESHOLD
 bool_shape = measure_shape < shapethres;
 
-bool_range = measure_range < rangethres;
+bool_range = measure_range < abs(rangethres);
 
-bool_reldb = measure_reldb < relthres;
+bool_reldb = measure_reldb < -abs(relthres);
 
-bool_absdb = measure_absdb < absthres;
+bool_absdb = measure_absdb < -abs(absthres);
 
 % COMBINE SELECTION CRITERIA
 bool = bool_shape | bool_range | bool_reldb | bool_absdb;

@@ -9,7 +9,7 @@ function zeroph = lin_phase2zero_phase(linph,framelen)
 % 2016 MCaetano
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2021 M Caetano SMT (Revised for stereo)
-% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

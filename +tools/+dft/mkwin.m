@@ -46,7 +46,7 @@ function dftwin = mkwin(binfreq,binamp,binph,binrange,binspan,framelen,nfft,winf
 %   See also RECTWIN, HANNWIN, HAMMINGWIN, BLACKMANWIN, BLACKMANHARRISWIN
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

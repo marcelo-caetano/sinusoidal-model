@@ -1,6 +1,7 @@
 Required MATLAB functions:
 
 .\+STFT\stft.m
+.\+tools\+algo\callArrayFunReturnArray.m
 .\+tools\+algo\findIndFirstLastTrueVal.m
 .\+tools\+dft\blackman.m
 .\+tools\+dft\blackmanharris.m
@@ -44,6 +45,8 @@ Required MATLAB functions:
 .\+tools\+fft2\fft2unwrapped_phase_spec.m
 .\+tools\+fft2\full_spec2pos_spec.m
 .\+tools\+fft2\scaled_mag_spec2lin_mag_spec.m
+.\+tools\+iofun\add2path.m
+.\+tools\+iofun\isdironpath.m
 .\+tools\+math\dotprod.m
 .\+tools\+math\lin2log.m
 .\+tools\+math\lin2pow.m
@@ -67,6 +70,7 @@ Required MATLAB functions:
 .\+tools\+plot\mktime.m
 .\+tools\+plot\plotpeakgram.m
 .\+tools\+plot\plotwav.m
+.\+tools\+poly\pagetranspose.m
 .\+tools\+psel\is2pttroughl.m
 .\+tools\+psel\is2pttroughr.m
 .\+tools\+psel\is3pttrough.m
@@ -97,6 +101,10 @@ Required MATLAB functions:
 .\+tools\+spec\nyq_bin.m
 .\+tools\+spec\nyq_ind.m
 .\+tools\+spec\pos_freq_band.m
+.\+tools\+track\dur.m
+.\+tools\+track\durgap.m
+.\+tools\+track\durtrack.m
+.\+tools\+track\trimtrack.m
 .\+tools\+wav\srer.m
 .\+tools\+wav\stereo2mono.m
 .\F0\swipep_mod.m
@@ -112,6 +120,7 @@ Required MATLAB functions:
 .\SM\interp_phase_spec.m
 .\SM\mag_spec_scaling.m
 .\SM\parameter_interpolation.m
+.\SM\partial_track_duration.m
 .\SM\partial_tracking.m
 .\SM\peak2peak_freq_matching.m
 .\SM\peak_picking.m

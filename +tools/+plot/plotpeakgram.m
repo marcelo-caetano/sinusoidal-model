@@ -21,7 +21,7 @@ function [fig,figaxes,specgram,nrglbl,timelbl,freqlbl,titlelbl] = plotpeakgram(s
 %   See also PLOTWAV, PLOTSPEC, PLOTSPECTROGRAM, PLOTPARTTRACK, PLOTSPECTROPEAKGRAM
 
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.8.0-alpha.1 $Id
+% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
