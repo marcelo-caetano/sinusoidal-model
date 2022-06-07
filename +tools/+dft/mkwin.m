@@ -46,7 +46,7 @@ function dftwin = mkwin(binfreq,binamp,binph,binrange,binspan,framelen,nfft,winf
 %   See also RECTWIN, HANNWIN, HAMMINGWIN, BLACKMANWIN, BLACKMANHARRISWIN
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -59,8 +59,8 @@ narginchk(12,12);
 % Check number of output arguments
 nargoutchk(0,1);
 
-validateattributes(binfreq,{'numeric'},{'3d','nonempty','real','positive'},mfilename,'BINFREQ',1)
-validateattributes(binamp,{'numeric'},{'3d','nonempty','real','positive'},mfilename,'BINAMP',2)
+validateattributes(binfreq,{'numeric'},{'3d','nonempty','real','nonnegative'},mfilename,'BINFREQ',1)
+validateattributes(binamp,{'numeric'},{'3d','nonempty','real','nonnegative'},mfilename,'BINAMP',2)
 validateattributes(binph,{'numeric'},{'3d','nonempty','real'},mfilename,'BINPH',3)
 validateattributes(binrange,{'numeric'},{'real'},mfilename,'BINRANGE',4)
 validateattributes(binspan,{'numeric'},{'scalar','integer','real'},mfilename,'BINSPAN',5)

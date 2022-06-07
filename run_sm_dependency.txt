@@ -1,6 +1,5 @@
 Required MATLAB functions:
 
-.\+STFT\stft.m
 .\+tools\+algo\callArrayFunReturnArray.m
 .\+tools\+algo\findIndFirstLastTrueVal.m
 .\+tools\+dft\blackman.m
@@ -31,7 +30,6 @@ Required MATLAB functions:
 .\+tools\+dsp\lin_phase2zero_phase.m
 .\+tools\+dsp\numframe.m
 .\+tools\+dsp\rightwin.m
-.\+tools\+dsp\sample2frame.m
 .\+tools\+dsp\zeropad.m
 .\+tools\+f0\reference_f0.m
 .\+tools\+fft2\fft2lin_mag_spec.m
@@ -45,6 +43,8 @@ Required MATLAB functions:
 .\+tools\+fft2\fft2unwrapped_phase_spec.m
 .\+tools\+fft2\full_spec2pos_spec.m
 .\+tools\+fft2\scaled_mag_spec2lin_mag_spec.m
+.\+tools\+harm\harm_sel.m
+.\+tools\+harm\mkharm.m
 .\+tools\+iofun\add2path.m
 .\+tools\+iofun\isdironpath.m
 .\+tools\+math\dotprod.m
@@ -60,11 +60,17 @@ Required MATLAB functions:
 .\+tools\+misc\isodd.m
 .\+tools\+misc\istext.m
 .\+tools\+misc\mkodd.m
+.\+tools\+mus\cents2freq.m
+.\+tools\+mus\cents2hertz.m
+.\+tools\+mus\hertz2cents.m
 .\+tools\+mus\note2freq.m
 .\+tools\+mus\note2step.m
+.\+tools\+mus\step2cents.m
 .\+tools\+mus\step2freq.m
 .\+tools\+ola\colasum.m
 .\+tools\+ola\mkcolawin.m
+.\+tools\+ola\ola.m
+.\+tools\+ola\sof.m
 .\+tools\+plot\mkfigpeakgram.m
 .\+tools\+plot\mkfigwav.m
 .\+tools\+plot\mktime.m
@@ -101,21 +107,22 @@ Required MATLAB functions:
 .\+tools\+spec\nyq_bin.m
 .\+tools\+spec\nyq_ind.m
 .\+tools\+spec\pos_freq_band.m
+.\+tools\+stft\stft.m
 .\+tools\+track\dur.m
 .\+tools\+track\durgap.m
 .\+tools\+track\durtrack.m
 .\+tools\+track\trimtrack.m
 .\+tools\+wav\srer.m
 .\+tools\+wav\stereo2mono.m
+.\+tools\+win\mkwin.m
 .\F0\swipep_mod.m
-.\OLA\ola.m
-.\OLA\sof.m
 .\SM\OLA_resynthesis.m
 .\SM\PI_resynthesis.m
 .\SM\PRFI_resynthesis.m
 .\SM\find_spec_peak.m
 .\SM\freq_matching.m
 .\SM\frequency_integration.m
+.\SM\harmonic_selection.m
 .\SM\interp_mag_spec.m
 .\SM\interp_phase_spec.m
 .\SM\mag_spec_scaling.m

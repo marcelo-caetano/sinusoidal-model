@@ -5,7 +5,7 @@ function [phpeak,ph_slope,ph_intercept] = interp_phase_spec(freq,ph,freqest)
 % 2016 M Caetano
 % 2019 MCaetano SMT 0.1.0 (Revised)
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 % TODO: Input NBIN NFRAME

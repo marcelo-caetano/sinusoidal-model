@@ -1,9 +1,10 @@
-function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis(amp,freq,ph,framelen,hop,fs,...
-    nsample,center_frame,npartial,nframe,nchannel,durthres,gapthres,freqdiff,winflag,causalflag,synthflag,...
+function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis(amp,freq,ph,framelen,hop,fs,winflag,...
+    nsample,center_frame,npartial,nframe,nchannel,durthres,gapthres,freqdiff,causalflag,synthflag,...
     ptrackflag,partdurflag,dispflag)
 %SINUSOIDAL_RESYNTHESIS Resynthesis from the output of sinusoidal analysis [1].
-%   [SIN,PART,AMP,FREQ,PH] = SINUSOIDAL_RESYNTHESIS(A,F,P,M,H,FS,NSAMPLE,...
-%   CFR,NPARTIAL,NFRAME,FREQDIFF,WINFLAG,CAUSALFLAG,SYNTHFLAG,PTRACKFLAG,DISPFLAG)
+%   [SIN,PART,AMP,FREQ,PH] = SINUSOIDAL_RESYNTHESIS(A,F,P,M,H,FS,WINFLAG,...
+%   NSAMPLE,CFR,NPARTIAL,NFRAME,NCHANNEL,DURTHRES,GAPTHRES,FREQDIFF,...
+%   CAUSALFLAG,SYNTHFLAG,PTRACKFLAG,DISPFLAG)
 %   resynthesizes the sinusoidal model SIN from the output parameters of
 %   SINUSOIDAL_ANALYSIS (A,F,P), where A=amplitude, F=frequency, and
 %   P=phases estimated with a hop H and a frame size of M. FREQDIFF
@@ -18,7 +19,7 @@ function [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis
 % 2020 MCaetano SMT 0.2.0
 % 2020 MCaetano SMT 0.2.1
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -80,7 +81,7 @@ switch lower(synthflag)
         disp('Overlap-Add Resynthesis')
         
         [sinusoidal,partial,amplitude,frequency,phase] = sinusoidal_resynthesis_OLA...
-            (amp,freq,ph,framelen,hop,fs,nsample,center_frame,npartial,nframe,winflag,causalflag,dispflag);
+            (amp,freq,ph,framelen,hop,fs,winflag,nsample,center_frame,npartial,nframe,nchannel,causalflag,dispflag);
         
     case 'pi'
         

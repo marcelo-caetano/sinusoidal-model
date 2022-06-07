@@ -23,7 +23,8 @@ function measure_range = peak_range(fft_frame,amp,indmaxnpeak,nfft,fs,nframe,nch
 %
 %   See also PEAK_SHAPE, SPEC_PEAK_SHAPE
 
-% 2021 M Caetano SMT% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% 2021 M Caetano SMT
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 % TODO: MAKE FUNCTION THAT USES FREQ TO CALCULATE RANGE

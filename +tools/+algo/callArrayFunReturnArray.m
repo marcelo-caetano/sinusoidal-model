@@ -7,7 +7,8 @@ function arr = callArrayFunReturnArray(fun,varargin)
 %
 %   See also ARRAYFUN
 
-% 2021 M Caetano SMT% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% 2021 M Caetano SMT
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 cellArr = arrayfun(fun,varargin{:},'UniformOutput',false);

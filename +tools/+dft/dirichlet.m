@@ -5,7 +5,7 @@ function dirich_kernel = dirichlet(bin,framelen,nfft,normflag,zphflag)
 %   at NFFT. BIN can be positive or negative real numbers. The positive
 %   integer FRAMELEN is the number of equally spaced extrema of D in the
 %   interval 0 to 2*pi. NFFT is the sampling of the discrete frequency axis
-%   given by OMEGA = 2*pi*k/NFFT. NORMFLAG is a ligocal flag that
+%   given by OMEGA = 2*pi*k/NFFT. NORMFLAG is a logical flag that
 %   determines if D is normalized by FRAMELEN. NORMFLAG = TRUE sets
 %   normalization and NORMFLAG = FALSE does not. ZPHFLAG is a logical flag
 %   that determines if D is zero phase or linear phase. ZPHFLAG = TRUE sets
@@ -24,7 +24,7 @@ function dirich_kernel = dirichlet(bin,framelen,nfft,normflag,zphflag)
 
 % 2019 M Caetano
 % 2021 M Caetano SMT (Revised)
-% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,7 +96,7 @@ end
 % LOCAL FUNCTION TO CALCULATE THE DIRICHLET KERNEL
 function dkernel = dirichletKernel(bin,framelen,nfft)
 
-% Initialize dirich_kernel (otherwise dirich_kernel becomes row vector with assignement dirich_kernel(bool_divzero)
+% Initialize dirich_kernel (otherwise DKERNEL becomes row vector with assignement DKERNEL(isDivZero)
 dkernel = nan(size(bin));
 
 % Normalized frequencies
@@ -107,28 +107,28 @@ norm_freq = tools.dft.normfreq(bin,nfft);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Find indices with potential division by zero (integer multiples of 2*pi)
-bool_divzero = isIntegerMultiple2PI(norm_freq);
+isDivZero = isIntegerMultiple2PI(norm_freq);
 
 % Normalized kernel for integer multiples of 2*pi
-dkernel(bool_divzero) = dirichletKernelIntegerMultiple2PI(norm_freq(bool_divzero),framelen);
+dkernel(isDivZero) = dirichletKernelIntegerMultiple2PI(norm_freq(isDivZero),framelen);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DIRICHLET KERNEL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Numerator
-num = sin(framelen*norm_freq(~bool_divzero)/2);
+num = sin(framelen*norm_freq(~isDivZero)/2);
 
 % Denominator
-den = framelen * sin(norm_freq(~bool_divzero)/2);
+den = framelen * sin(norm_freq(~isDivZero)/2);
 
 % Normalized Dirichlet kernel
-dkernel(~bool_divzero) = num ./ den;
+dkernel(~isDivZero) = num ./ den;
 
 end
 
 % Local function to find integer multiples of 2*PI
-function bool = isIntegerMultiple2PI(normFreq)
+function isIntMult = isIntegerMultiple2PI(normFreq)
 
 % Tolerance for floating point arithmetic
 tol = 1e-11;
@@ -143,7 +143,7 @@ remIntFreq = rem(intFreq,1);
 absRemIntFreq = abs(remIntFreq);
 
 % TRUE for remainder smaller than TOL
-bool = absRemIntFreq < tol;
+isIntMult = absRemIntFreq < tol;
 
 end
 

@@ -10,7 +10,7 @@ function [amp,freq,ph,npart] = peak2peak_freq_matching(amplitude,frequency,phase
 
 % 2020 MCaetano SMT
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 % TODO: ADAPT FOR STEREO PROCESSING

@@ -39,7 +39,7 @@ function [amp,freq,ph] = peaksel(fft_frame,amp,freq,ph,indmaxnpeak,framelen,nfft
 %   See also SINUSOIDAL_PEAK_SELECTION, PEAK_SHAPE, PEAK_RANGE, PEAK_RELDB
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

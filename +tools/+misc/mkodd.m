@@ -12,7 +12,7 @@ function num = mkodd(num,upflag)
 %   See also MKEVEN, ISEVEN, ISODD
 
 % 2021 M Caetano SMT
-% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

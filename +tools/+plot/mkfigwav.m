@@ -1,4 +1,4 @@
-function fig = mkfigwav(plotdata,axeslim,axeslbl,figlayout)
+function [fig,figaxes] = mkfigwav(plotdata,axeslim,axeslbl,figlayout)
 %MKFIGWAV Make the figure with the plot of the waveform.
 %   FIG = MKFIGWAV(PLOTDATA,AXESLIM,AXESLBL,FIGLAYOUT)
 %
@@ -18,12 +18,15 @@ function fig = mkfigwav(plotdata,axeslim,axeslbl,figlayout)
 %   FIGLAYOUT.AXESFS axes font size (DEFAULT 14)
 %   FIGLAYOUT.TITLEFS title font size (DEFAULT 22)
 %   FIGLAYOUT.LINWIDTH line width (DEFAULT 1.0)
+%   FIGLAYOUT.LINSTY line style (DEFAULT '-')
+%   FIGLAYOUT.MTYPE marker type (DEFAULT 'none')
+%   FIGLAYOUT.MSIZE marker size (DEFAULT 4)
+%   FIGLAYOUT.LINCOLOR line color (DEFAULT [0.5 0.5 0.5])
 %   FIGLAYOUT.BCKGDC background color (DEFAULT [1 1 1])
 %   FIGLAYOUT.CMAP colormap (DEFAULT 'gray')
 %   FIGLAYOUT.FIGSIZE figure size (DEFAULT [15 10])
 %   FIGLAYOUT.FIGPOS figure position (DEFAULT [0.5 0.5 14.5 9.5])
 %   FIGLAYOUT.FIGUNIT unit measurement of figure size (DEFAULT 'centimeters')
-%   FIGLAYOUT.LINSTY line style (DEFAULT '-')
 %   FIGLAYOUT.DISP figure visibility display (DEFAULT 'on')
 %   FIGLAYOUT.PRINT renderer used to print figure (DEFAULT 'opengl')
 %   FIGLAYOUT.LEGDISP legend display (DEFAULT repmat('Waveform',1,NWAV))
@@ -33,7 +36,7 @@ function fig = mkfigwav(plotdata,axeslim,axeslbl,figlayout)
 %   See also MKFIGSPEC, MKFIGSPECTROGRAM, MKFIGPEAKGRAM, MKFIGPARTTRACK, MKFIGSPECTROPEAKGRAM
 
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 % https://www.mathworks.com/help/matlab/creating_plots/save-figure-at-specific-size-and-resolution.html
@@ -49,7 +52,7 @@ function fig = mkfigwav(plotdata,axeslim,axeslbl,figlayout)
 narginchk(4,4);
 
 % Check number of output arguments
-nargoutchk(0,1);
+nargoutchk(0,2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PRE-PROCESSING
@@ -57,6 +60,21 @@ nargoutchk(0,1);
 
 % Get number of waveforms to plot
 [~,nwav] = size(plotdata.wav);
+
+% Define colors
+col = [0 0 1;... % blue
+    0.5 0.5 0.5;... % grey
+    0 0 0;... % black
+    1 0 0;... % red
+    0.83 0.8 0.75;... % light grey
+    1 1 0;... % yellow
+    0.25 0.25 0.25;... % very dark grey
+    1 0 1;... % magenta
+    0.8 0.8 0.8;... % half tone
+    0 1 1;... % cyan
+    0.35 0.35 0.35;... % dark grey
+    0 1 0;... % green
+    0.95 0.95 0.95]'; % very light grey
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DEFINE DEFAULT FIGURE LAYOUT
@@ -110,6 +128,16 @@ end
 % Define line width
 if ~isfield(figlayout,'linwidth')
     figlayout.linwidth = 1;
+end
+
+% Define marker
+if ~isfield(figlayout,'mtype')
+    figlayout.mtype = 'none';
+end
+
+% Define marker size
+if ~isfield(figlayout,'msize')
+    figlayout.msize = 4;
 end
 
 % Define display figure
@@ -269,6 +297,12 @@ set(fig,'PaperPosition',figlayout.figpos);
 % Set line style
 set(wavform,'LineStyle',figlayout.linsty);
 
+% Set marker
+set(wavform,'Marker',figlayout.mtype);
+
+% Set marker
+set(wavform,'MarkerSize',figlayout.msize);
+
 % Set line width
 set(wavform,'LineWidth',figlayout.linwidth);
 
@@ -276,7 +310,14 @@ set(wavform,'LineWidth',figlayout.linwidth);
 for iwav = 1:nwav
     
     % Set waveform colors
-    set(wavform(iwav),'Color',mklincolor(iwav));
+    if ~isfield(figlayout,'lincolor')
+        
+        set(wavform(iwav),'Color',mklincolor(col,iwav));
+        
+    else
+        
+        set(wavform(iwav),'Color',figlayout.lincolor);
+    end
     
 end
 
@@ -303,23 +344,12 @@ end
 
 end
 
-% Private function to assign line colors
-function lincolor = mklincolor(count)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LOCAL FUNCTIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define colors
-col = [0 0 1;... % blue
-    0.5 0.5 0.5;... % grey
-    0 0 0;... % black
-    1 0 0;... % red
-    0.83 0.8 0.75;... % light grey
-    1 1 0;... % yellow
-    0.25 0.25 0.25;... % very dark grey
-    1 0 1;... % magenta
-    0.8 0.8 0.8;... % half tone
-    0 1 1;... % cyan
-    0.35 0.35 0.35;... % dark grey
-    0 1 0;... % green
-    0.95 0.95 0.95]'; % very light grey
+% Private function to assign line colors
+function lincolor = mklincolor(col,count)
 
 % Assign color
 lincolor = cyclethru(col,count);

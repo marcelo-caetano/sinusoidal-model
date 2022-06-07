@@ -26,7 +26,7 @@ SM is a set of Matlab functions that implement several algorithms for sinusoidal
 
 NOTE: The script `run_sm.m` uses a relative path to point to the audio file, so you must either always run it inside the folder `sinusoidal-model-master` or change the relative path to an absolute path.
 
-WARNING! Before running the script `run_sm.m` for the first time, you must add the folder `sinusoidal-model-master` and all its subfolders to the Matlab search path. The script `run_sm.m` automatically adds the folder (and all subfolders) of the currently running script (`run_sm.m`) to the path. So the folder structure and the location of the script `run_sm.m` in that folder structure are important. If you change the location of `run_sm.m` (or if anything goes wrong), add the SM folder (e.g., `/userhome/myfolder/sinusoidal-model-master/`) to your Matlab path by hand (right click on the folder `/userhome/myfolder/sinusoidal-model-master/` in the _**Current Folder**_ menu and choose _**Add to path > Selected Folders and Subfolders**_).
+WARNING! Before running the code for the first time, you must add the folder `sinusoidal-model-master` and all its subfolders to the Matlab search path. The script `run_sm.m` automatically adds the folder (and all subfolders) of the currently running script (`run_sm.m`) to the path. So the folder structure and the location of the script `run_sm.m` in that folder structure are important. If you change the location of `run_sm.m` (or if anything goes wrong), add the SM folder (e.g., `/userhome/myfolder/sinusoidal-model-master/`) to your Matlab path by hand (right click on the folder `/userhome/myfolder/sinusoidal-model-master/` in the _**Current Folder**_ menu and choose _**Add to path > Selected Folders and Subfolders**_).
 
 ## Dependencies
 
@@ -36,6 +36,18 @@ The file `run_sm_dependency.txt` lists all file dependencies. All required `.m` 
 
 This project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 831852 (MORPH)
 
+## SM 0.10.0-alpha.1
+
+Sinusoidal Model (SM) version 0.10.0 alpha release build 1
+
+### What's new in version 0.10.0-alpha.1
+
+- Improved harmonic selection
+
+### New functions/features in version 0.10.0-alpha.1
+
+- Replaced deprecated function `SM/track2harm.m` with `SM/harmonic_selection.m`
+
 ## SM 0.9.0-alpha.1
 
 Sinusoidal Model (SM) version 0.9.0 alpha release build 1
@@ -43,8 +55,8 @@ Sinusoidal Model (SM) version 0.9.0 alpha release build 1
 ### What's new in version 0.9.0-alpha.1
 
 - Added selection of partial track segments using duration as criterion
-  - DURTHRES is the threshold for the minimum duration of the segments of partial tracks
-  - GAPTHRES is the threshold for the duration of the gaps between partial track segments to connect over
+  - `DURTHRES` is the threshold for the minimum duration of the segments of partial tracks
+  - `GAPTHRES` is the threshold for the duration of the gaps between partial track segments to connect over
 
 ### New functions/features in version 0.9.0-alpha.1
 

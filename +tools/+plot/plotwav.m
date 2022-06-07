@@ -19,7 +19,7 @@ function [fig,figaxes,wavform,timelbl,amplbl,titlelbl] = plotwav(timesample,wav)
 %   See also PLOTSPEC, PLOTSPECTROGRAM, PLOTPEAKGRAM, PLOTPARTTRACK, PLOTSPECTROPEAKGRAM
 
 % 2020 MCaetano SMT 0.2.0
-% $Id 2021 M Caetano SM 0.9.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,6 +51,12 @@ linsty = '-';
 % Line width
 lwidth = 1;
 
+% Marker
+mtype = 'none';
+
+% Marker size
+msize = 4;
+
 % Time axis
 tlbl = 'Time (s)';
 
@@ -65,8 +71,8 @@ tmin = timesample(1);
 tmax = timesample(end);
 
 % Frequency limits
-amin = min(wav,[],'all','omitnan');
-amax = max(wav,[],'all','omitnan');
+amin = -1;
+amax = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   PLOT PARTIAL TRACKS
@@ -98,7 +104,7 @@ xlim(figaxes,[tmin tmax]);
 ylim(figaxes,[amin amax]);
 
 % Set default parameters
-set(wavform,'Color',grey,'LineStyle',linsty,'LineWidth',lwidth);
+set(wavform,'Color',grey,'LineStyle',linsty,'LineWidth',lwidth,'Marker',mtype,'MarkerSize',msize);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ADD LABELS
