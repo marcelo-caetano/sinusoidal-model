@@ -24,8 +24,6 @@ SM is a set of Matlab functions that implement several algorithms for sinusoidal
 4. Run the script `run_sm.m` to generate the example (type `run_sm.m` in the _**Command Window**_ or click on _**Run**_ from the _**Editor**_).
 5. Add your own sounds to the `./audio` subfolder, open and edit `run_sm.m` appropriately to analyze/resynthesize your own sounds
 
-NOTE: The script `run_sm.m` uses a relative path to point to the audio file, so you must either always run it inside the folder `sinusoidal-model-master` or change the relative path to an absolute path.
-
 WARNING! Before running the code for the first time, you must add the folder `sinusoidal-model-master` and all its subfolders to the Matlab search path. The script `run_sm.m` automatically adds the folder (and all subfolders) of the currently running script (`run_sm.m`) to the path. So the folder structure and the location of the script `run_sm.m` in that folder structure are important. If you change the location of `run_sm.m` (or if anything goes wrong), add the SM folder (e.g., `/userhome/myfolder/sinusoidal-model-master/`) to your Matlab path by hand (right click on the folder `/userhome/myfolder/sinusoidal-model-master/` in the _**Current Folder**_ menu and choose _**Add to path > Selected Folders and Subfolders**_).
 
 ## Dependencies
