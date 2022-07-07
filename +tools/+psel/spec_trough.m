@@ -6,7 +6,7 @@ function [ampTroughLeft,ampTroughRight,freqTroughLeft,freqTroughRight] = spec_tr
 %   See also
 
 % 2021 M Caetano SMT (Revised)
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

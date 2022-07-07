@@ -11,7 +11,7 @@ function [amp,freq,ph] = partial_track_duration(amp,freq,ph,hop,fs,npartial,nfra
 %   See also PARTIAL_TRACKING
 
 % 2021 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -14,7 +14,7 @@ function mag = rect(bin,framelen,nfft,normflag,zphflag)
 %   See also HANN, HAMMING, BLACKMAN, BLACKMANHARRIS
 
 % 2021 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

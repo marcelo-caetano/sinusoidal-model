@@ -5,7 +5,7 @@ function [dur_peak,dur_prev_gap,dur_next_gap] = durtrack(amp_transp,hop,fs,npart
 %   See also TRIMTRACK, DURGAP, DUR
 
 % 2021 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -43,7 +43,8 @@ Required MATLAB functions:
 .\+tools\+fft2\fft2unwrapped_phase_spec.m
 .\+tools\+fft2\full_spec2pos_spec.m
 .\+tools\+fft2\scaled_mag_spec2lin_mag_spec.m
-.\+tools\+harm\harm_sel.m
+.\+tools\+harm\harm_part_sel.m
+.\+tools\+harm\harm_peak_sel.m
 .\+tools\+harm\mkharm.m
 .\+tools\+iofun\add2path.m
 .\+tools\+iofun\isdironpath.m

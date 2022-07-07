@@ -7,7 +7,7 @@ function freq_num = cents2freq(cents,freq_den)
 %   See also FREQ2CENTS, CENTS2HERTZ, HERTZ2CENTS
 
 % 2022 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

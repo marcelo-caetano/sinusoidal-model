@@ -4,7 +4,7 @@ function [fft_peak,dft_mag_peak] = spec_peak_shape(fft_frame,amp,freq,ph,framele
 %   Detailed explanation goes here
 
 % 2021 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

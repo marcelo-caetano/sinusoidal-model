@@ -10,7 +10,7 @@ function [arr_transp] = pagetranspose(arr)
 %   See also
 
 %   2021 M Caetano
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 arr_transp = permute(arr,[2 1 3:ndims(arr)]);

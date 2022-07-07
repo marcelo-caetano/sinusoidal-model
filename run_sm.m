@@ -25,83 +25,83 @@ setenv('SM',exeDir)
 % SINUSOIDAL ANALYSIS PARAMETERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Peak selection
-peakselflag = true;
-
-% Track duration
-trackdurflag = true;
-
-% Harmonic selection
-harmselflag = true;
-
-% Blackman-Harris analysis window
+% SPECTRAL ANALYSIS
+% Analysis window
 winflag = 6;
-
 % Display name of analysis window in the terminal
 fprintf(1,'%s analysis window\n',tools.dsp.infowin(winflag,'name'));
-
 % Flag for causality of first window
 causalflag = {'causal','non','anti'};
 cf = 3;
+% Normalize analysis window
+normflag = true;
+% Use zero phase window
+zphflag = true;
+
+% PARAMETER ESTIMATION
+paramestflag = {'nne','lin','log','pow'};
+pef = 4;
+% Maximum number of peaks to retrieve from analysis
+maxnpeak = 150;
+% Return MAXNPEAK frequency bins
+npeakflag = true;
+
+% PARTIAL TRACKING
+ptrackflag = true;
+ptrackalgflag = {'','p2p'};
+ptf = 2;
+
+% PEAK SELECTION
+peakselflag = true;
+% Peak shape threshold (normalized)
+shapethres = 0.8;
+% Peak range threshold (dB power)
+rangethres = 10;
+% Relative threshold (dB power)
+relthres = -90;
+% Absolute threshold (dB power)
+absthres = -100;
+
+if peakselflag
+    % Number of fundamental periods
+    nT0 = 6;
+    % Oversampling factor
+    osfac = 4;
+    overlap = 0.75;
+else
+    % Number of fundamental periods
+    nT0 = 4;
+    % Oversampling factor
+    osfac = 2;
+    overlap = 0.5;
+end
+
+% TRACK DURATION SELECTION
+trackdurflag = true;
+% Minimum partial track segment duration (ms)
+durthres = 50;
+% Connect over (ms)
+% gapthres = inf(1);
+gapthres = 20;
+
+% HARMONIC SELECTION
+harmselflag = true;
+tvarf0flag = false;
+% Maximum harmonic deviation (cents)
+max_harm_dev = 100;
+harm_thresh = 0.8;
+harmpartflag = 'count';
+sndmodel = {'sin','harm'};
+
+% RESYNTHESIS
+synthflag = {'OLA','PI','PRFI'};
+rf = 2;
 
 % Flag for log magnitude spectrum
 logflag = {'dbr','dbp','nep','oct','bel'};
 lmsf = 2;
-
-% Flag for parameter estimation
-paramestflag = {'nne','lin','log','pow'};
-pef = 4;
-
-% Partial tracking flag
-ptrackflag = {'','p2p'};
-ptf = 2;
-
-% Number of fundamental periods
-if peakselflag
-    nT0 = 6;
-    % Oversampling factor
-    osfac = 4;
-else
-    nT0 = 4;
-    osfac = 2;
-end
-
-% Normalize analysis window
-normflag = true;
-
-% Use zero phase window
-zphflag = true;
-
-% Maximum number of peaks to retrieve from analysis
-maxnpeak = 150;
-
-% Return MAXNPEAK frequency bins
-npeakflag = true;
-
 % Replace -Inf in spectrogram
 nanflag = false;
-
-% Peak shape threshold (normalized)
-shapethres = 0.87;
-
-% Peak range threshold (dB power)
-rangethres = 15;
-
-% Relative threshold (dB power)
-relthres = -90;
-
-% Absolute threshold (dB power)
-absthres = -100;
-
-% Minimum partial track segment duration (ms)
-durthres = 10.5;
-
-% Connect over (ms)
-gapthres = 22.5;
-
-% Resynthesis flag
-synthflag = {'OLA','PI','PRFI'};
-sf = 2;
 
 % Display resynthesis info
 dispflag = false;
@@ -128,6 +128,10 @@ fprintf(1,'Sound %s\n',sndname);
 % Convert from stereo to mono
 wav = tools.wav.stereo2mono(wav);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% VARIABLE PARAMETERS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Fundamental freq of source sound
 f0 = swipep_mod(wav,fs,[75 500],1000/fs,[],1/20,0.5,0.2);
 
@@ -138,7 +142,7 @@ ref0 = tools.f0.reference_f0(f0);
 framelen = tools.dsp.framesize(f0,fs,nT0);
 
 % 50% overlap
-hop = tools.dsp.hopsize(framelen,0.5);
+hop = tools.dsp.hopsize(framelen,overlap);
 
 % FFT size
 nfft = tools.dsp.fftsize(framelen,osfac);
@@ -146,27 +150,16 @@ nfft = tools.dsp.fftsize(framelen,osfac);
 % Frequency difference for peak matching (Hz)
 freqdiff = tools.dsp.freq_diff4peak_matching(ref0);
 
-% Maximum harmonic deviation (cents)
-max_harm_dev = 80;
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SINUSOIDAL ANALYSIS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [amplitude,frequency,phase,center_frame,npartial,nframe,nchannel,nsample,dc] = sinusoidal_analysis(wav,framelen,hop,nfft,fs,...
-    winflag,maxnpeak,shapethres,rangethres,relthres,absthres,durthres,gapthres,freqdiff,...
-    causalflag{cf},paramestflag{pef},ptrackflag{ptf},normflag,zphflag,npeakflag,peakselflag,trackdurflag);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% HARMONIC SELECTION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-if harmselflag
-    
-    disp('Harmonic Selection')
-    [amplitude,frequency,phase,nharmonic] = harmonic_selection(amplitude,frequency,phase,npartial,nframe,nchannel,ref0,max_harm_dev);
-    
-end
+    winflag,causalflag{cf},normflag,zphflag,paramestflag{pef},maxnpeak,npeakflag,...
+    ptrackflag,ptrackalgflag{ptf},freqdiff,...
+    peakselflag,shapethres,rangethres,relthres,absthres,...
+    trackdurflag,durthres,gapthres,...
+    harmselflag,ref0,tvarf0flag,max_harm_dev,harm_thresh,harmpartflag);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIGURE PARAMETERS
@@ -204,14 +197,8 @@ axes_lim.dblim = [-120 0];
 % Log Mag Amp peaks
 plot_part.specpeak = tools.math.lin2log(amplitude,logflag{lmsf},nanflag);
 
-if harmselflag
-    npart = nharmonic;
-else
-    npart = npartial;
-end
-
 % Time peaks
-plot_part.time = repmat(center_frame/fs,[1,npart])';
+plot_part.time = repmat(center_frame/fs,[1,npartial])';
 
 % Frequency peaks
 plot_part.frequency = frequency/1000;
@@ -234,8 +221,8 @@ tools.plot.mkfigpeakgram(plot_part,axes_lim,axes_lbl,fig_layout);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [sinusoidal,partial,amp_partial,freq_partial,phase_partial] = sinusoidal_resynthesis(amplitude,frequency,phase,...
-    framelen,hop,fs,winflag,nsample,center_frame,npart,nframe,nchannel,durthres,gapthres,freqdiff,...
-    causalflag{cf},synthflag{sf},ptrackflag{ptf},~trackdurflag,dispflag);
+    framelen,hop,fs,winflag,nsample,center_frame,npartial,nframe,nchannel,durthres,gapthres,freqdiff,...
+    causalflag{cf},synthflag{rf},ptrackalgflag{ptf},trackdurflag,dispflag);
 
 % Make residual
 residual = wav - sinusoidal;

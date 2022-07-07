@@ -16,17 +16,24 @@ function [amp,freq,ph] = sinusoidal_peak_selection(fft_frame,amp,freq,ph,indmaxn
 %   of each peak with the theoretical DFT of the window determined by
 %   WINDOWFLAG modulated by a sinusoid with amplitude A, frequency F, and
 %   phase P around NBINSPAN bins of F. The normalized dot product between
-%   the peak in FFTFR and the theoretical peak is the final measure.
+%   the peak in FFTFR and the theoretical peak is the final measure. The
+%   default is 0.8. Higher values remove more noisy peaks but may also
+%   introduce artifacts by removing sinusoids.
 %
 %   The measure of spectral range uses the average of the difference in
 %   amplitude between the spectral peak and the troughs to its left- and
-%   right-hand sides.
+%   right-hand sides. The default is 10dB. Higher values remove more noisy
+%   peaks but may also introduce artifacts by removing sinusoids.
 %
 %   The relative amplitude of each peak is a measure of its amplitude in dB
-%   using the amplitude of the maximum peak in that frame as reference.
+%   using the amplitude of the maximum peak in that frame as reference. The
+%   default is -100dB. Values closer to 0 remove more noise but may also
+%   introduce artifacts by removing sinusoids.
 %
 %   The absolute amplitude of each peak is a measure of its amplitude in
-%   dB using 0dB as reference.
+%   dB using 0dB as reference. The default is -120dB. Values closer to 0
+%   remove more noise but may also introduce artifacts by removing
+%   sinusoids.
 %
 %   The peaks are selected using the thresholds:
 %
@@ -38,7 +45,7 @@ function [amp,freq,ph] = sinusoidal_peak_selection(fft_frame,amp,freq,ph,indmaxn
 %   See also PEAKSEL, PEAK_SHAPE, PEAK_RANGE, PEAK_RELDB
 
 % 2021 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,7 +58,7 @@ narginchk(10,19);
 % Check number of output arguments
 nargoutchk(0,3);
 
-defaults = {3, 200, 0.8, 20, -100, -120, true, true, true};
+defaults = {3, 200, 0.8, 10, -100, -120, true, true, true};
 
 if nargin == 10
     

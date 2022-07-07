@@ -19,7 +19,7 @@ function posmagspec = fft2pos_mag_spec(fft_frame,nfft,nrgflag)
 
 % 2020 M Caetano SMT 0.1.2
 % 2021 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

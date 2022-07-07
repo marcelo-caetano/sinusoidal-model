@@ -15,7 +15,7 @@ function qdirich = quaddirich(bin,framelen,nfft,coeff0,coeff1,coeff2,coeff3,norm
 %   See also DIRICHLET
 
 % 2021 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 % TODO: CHECK ATTRIBUTES OF INPUT ARGUMENTS

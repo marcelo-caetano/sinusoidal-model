@@ -7,7 +7,7 @@ function cents = step2cents(step)
 %   See also CENTS2STEP, FREQ2CENTS, CENTS2FREQ
 
 % 2022 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

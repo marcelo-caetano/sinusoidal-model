@@ -36,6 +36,37 @@ The file `run_sm_dependency.txt` lists all file dependencies. All required `.m` 
 
 This project has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 831852 (MORPH)
 
+## SM 0.11.0-alpha.1
+
+Sinusoidal Model (SM) version 0.11.0 alpha release build 1
+
+## What's new in version 0.11.0-alpha.1
+
+- Further improvements to harmonic selection
+- Harmonic selection fully integrated into sinusoidal analysis
+- Choice of harmonic selection of partials (_after_ partial tracking) or strict harmonic selection of spectral peaks (_without_ partial tracking)
+
+## New functions/features in version 0.11.0-alpha.1
+
+- Added low-level function `+tools/+harm/harm_part_sel.m`
+- Added low-level function `+tools/+harm/harm_peak_sel.m`
+- Updated high-level function `SM/harmonic_selection.m`
+- Added logical flag `HARMSELFLAG` to function `SM/sinusoidal_analysis.m` to enable/disable harmonic selection
+- Added logical flag `PTRACKFLAG` to function `SM/sinusoidal_analysis.m` to enable/disblable partial tracking
+- Added text flag `PTRACKALGFLAG` to function `SM/sinusoidal_analysis.m` to select partial tracking algorithm
+
+## Backwards compatibility in version 0.11.0-alpha.1
+
+- New harmonic selection feature resulted in API changes to high-level functions inside the folder `SM/`
+  - Additional input arguments in a different order in function `SM/sinusodal_analysis.m`
+  - Different order of input arguments in function `SM/sinusoidal_analysis.m`
+  - Additional arguments in function `SM/sinusoidal_resynthesis.m`
+  - Different order of input arguments in function `+tools/+harm/harm_peak_sel.m`
+
+## Bug fixes in version 0.11.0-alpha.1
+
+- Fixed bug in function `+tools/+harm/harm_peak_sel.m`
+
 ## SM 0.10.0-alpha.1
 
 Sinusoidal Model (SM) version 0.10.0 alpha release build 1

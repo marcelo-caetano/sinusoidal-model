@@ -13,7 +13,7 @@ function posphspec = fft2pos_phase_spec(fft_frame,nfft)
 %   See also FFT2POS_MAG_SPEC, FFT2MAG_SPEC, FFT2PHASE_SPEC, FFT2LOG_MAG_SPEC, FFT2UNWRAPPED_PHASE_SPEC
 
 % 2021 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -13,7 +13,7 @@ function bool_trough = is2pttroughl(mag)
 % Revised 2019 SMT 0.1.1
 % 2020 MCaetano SMT 0.1.1 (Revised)
 % 2021 M Caetano SMT (Stereo processing)
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

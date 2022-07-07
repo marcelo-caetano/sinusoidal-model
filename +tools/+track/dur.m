@@ -5,7 +5,7 @@ function [dur_seq,ind_dur] = dur(bool_seq,fun,npart,nframe,nchannel)
 %   See also TRIMTRACK, DURTRACK, DURGAP, DUR
 
 % 2021 M Caetano SMT
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

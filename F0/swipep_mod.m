@@ -58,7 +58,7 @@ function [p,t,s] = swipep_mod(x,fs,plim,dt,dlog2p,dERBs,woverlap,sTHR)
 %    MAINTENANCE HISTORY:
 %    - Added line 153 to avoid division by zero in line 154 if loudness
 %      equals zero (06/23/2010).
-% $Id 2022 M Caetano SM 0.10.0-alpha.1 $Id
+% $Id 2022 M Caetano SM 0.11.0-alpha.1 $Id
 
 
 
